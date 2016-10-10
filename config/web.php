@@ -37,21 +37,38 @@ $config = [
                 ],
             ],
         ],
+        'view' => [
+            'class' => 'yii\web\View',
+            'renderers' => [
+                'twig' => [
+                    'class' => 'yii\twig\ViewRenderer',
+                    'cachePath' => '@runtime/Twig/cache',
+                    // Array of twig options:
+                    'options' => [
+                        'auto_reload' => true,
+                    ],
+                    'globals' => ['html' => '\yii\helpers\Html'],
+                    'uses' => ['yii\bootstrap'],
+                ],
+            ],
+        ],
         'db' => require(__DIR__ . '/db.php'),
 
         'urlManager' => [
+            'class' => 'yii\web\UrlManager',
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<action:auth|register|about|contact>' => 'index/<action>'
             ],
         ],
 
     ],
     'params' => $params,
-    'defaultRoute' => 'index/index',
+    'defaultRoute' => 'index/index'
 ];
 
 if (YII_ENV_DEV) {
