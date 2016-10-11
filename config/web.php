@@ -14,10 +14,10 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ],
+//        'user' => [
+//            'identityClass' => 'app\models\User',
+//            'enableAutoLogin' => true,
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -39,16 +39,9 @@ $config = [
         ],
         'view' => [
             'class' => 'yii\web\View',
-            'renderers' => [
-                'twig' => [
-                    'class' => 'yii\twig\ViewRenderer',
-                    'cachePath' => '@runtime/Twig/cache',
-                    // Array of twig options:
-                    'options' => [
-                        'auto_reload' => true,
-                    ],
-                    'globals' => ['html' => '\yii\helpers\Html'],
-                    'uses' => ['yii\bootstrap'],
+            'theme' => [
+                'pathMap' => [
+                    '@dektrium/user/views' => '@app/views/user'
                 ],
             ],
         ],
@@ -62,13 +55,25 @@ $config = [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '<action:auth|register|about|contact>' => 'index/<action>'
+//                '<action:auth|register|about|contact>' => 'index/<action>'
             ],
         ],
 
     ],
+    'modules' => [
+        'user' => [
+            'class' => 'dektrium\user\Module',
+            'modelMap' => [
+                'RegistrationForm' => 'app\models\RegistrationForm'
+            ],
+            'urlPrefix' => '/',
+            'enableConfirmation' => false,
+            'admins' => ['user']
+        ],
+    ],
     'params' => $params,
-    'defaultRoute' => 'index/index'
+    'defaultRoute' => 'index/index',
+    'layout' => 'layout.php'
 ];
 
 if (YII_ENV_DEV) {
