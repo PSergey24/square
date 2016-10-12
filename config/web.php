@@ -55,7 +55,6 @@ $config = [
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-//                '<action:auth|register|about|contact>' => 'index/<action>'
             ],
         ],
 
@@ -64,6 +63,7 @@ $config = [
         'user' => [
             'class' => 'dektrium\user\Module',
             'modelMap' => [
+                'User'             => 'app\models\User',
                 'RegistrationForm' => 'app\models\RegistrationForm'
             ],
             'urlPrefix' => '/',
@@ -73,7 +73,8 @@ $config = [
     ],
     'params' => $params,
     'defaultRoute' => 'index/index',
-    'layout' => 'layout.php'
+    'layout' => 'layout.php',
+    'language' => 'ru_RU',
 ];
 
 if (YII_ENV_DEV) {

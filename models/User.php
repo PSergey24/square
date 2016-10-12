@@ -2,15 +2,23 @@
 
 namespace app\models;
 
-use yii\db\ActiveRecord;
+use dektrium\user\models\User as BaseUser;
 
-class User extends ActiveRecord {
-    
-    public $login;
-    
-    public $password;
+class User extends BaseUser {
 
-    public static function tableName() {
-        return 'users';
+    public function scenarios() {
+
+        $base_scenarious = parent::scenarios();
+
+        return array_merge($base_scenarious, ['custom' => ['username', 'password']]);
+    }
+
+    public function rules()
+    {
+        $parent_rules = parent::rules();
+        
+        unset($parent_rules['emailRequired']);
+        
+        return $parent_rules;
     }
 }

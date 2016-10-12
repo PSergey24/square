@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <?= $form->field($model, 'password', ['inputOptions' =>
                     ['autofocus' => 'autofocus','class' => 'form-control',
-                        'placeholder' => 'Пароль']])->label(false) ?>
+                        'placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
 
                 <?= $form->field($model, 'password_repeat', ['inputOptions' =>
                     ['autofocus' => 'autofocus','class' => 'form-control',
