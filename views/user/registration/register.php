@@ -45,3 +45,4 @@ $this->params['breadcrumbs'][] = $this->title;
         </p>
     </div>
 </div>
+<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>

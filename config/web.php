@@ -45,6 +45,19 @@ $config = [
                 ],
             ],
         ],
+        'i18n'=> [
+            'translations' => [
+                'user'=> [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => "@app/messages",
+                    'sourceLanguage' => 'en_US',
+                    'fileMap' => [
+                        'app' => 'user.php'
+                    ]
+                ],
+            ]
+        ],
+
         'db' => require(__DIR__ . '/db.php'),
 
         'urlManager' => [
@@ -62,6 +75,9 @@ $config = [
     'modules' => [
         'user' => [
             'class' => 'dektrium\user\Module',
+            'controllerMap' => [
+              'security' => 'app\controllers\user\SecurityController'
+            ],
             'modelMap' => [
                 'User'             => 'app\models\User',
                 'RegistrationForm' => 'app\models\RegistrationForm'
