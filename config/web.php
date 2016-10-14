@@ -84,11 +84,12 @@ $config = [
             ],
             'urlPrefix' => '/',
             'enableConfirmation' => false,
-            'admins' => ['user']
+            'enablePasswordRecovery' => false,
+            'admins' => ['user'],
         ],
     ],
     'params' => $params,
-    'defaultRoute' => 'index/index',
+    'defaultRoute' => 'site/index',
     'layout' => 'layout.php',
     'language' => 'ru_RU',
 ];

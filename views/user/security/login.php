@@ -14,40 +14,10 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('user', 'Регистрация/Авторизация');
 ?>
-<div class="row">
-    <div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4" >
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title text-center"><?= Html::encode('Регистрация') ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'registration-form',
-                ]); ?>
+<?= $this->render('@app/views/user/registration/register.php', ['model' => $model_register]); ?>
 
-                <?= $form->field($model_register, 'username', ['inputOptions' =>
-                    ['autofocus' => 'autofocus', 'class' => 'form-control',
-                        'placeholder' => 'Логин']])->label(false) ?>
-
-                <?= $form->field($model_register, 'password', ['inputOptions' =>
-                    ['autofocus' => 'autofocus','class' => 'form-control',
-                        'placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
-
-                <?= $form->field($model_register, 'password_repeat', ['inputOptions' =>
-                    ['autofocus' => 'autofocus','class' => 'form-control',
-                        'placeholder' => 'Повторите пароль']])->passwordInput()->label(false) ?>
-
-                <?= Html::submitButton(Yii::t('user', 'Присоединиться'), ['class' => 'btn btn-success btn-block']) ?>
-
-                <?php ActiveForm::end(); ?>
-            </div>
-        </div>
-        <p class="text-center">
-            <?= Html::a(Yii::t('user', 'Уже зарегистрированы? Войдите в свой аккаунт'), ['/user/security/login']) ?>
-        </p>
-    </div>
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
+<div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -66,7 +36,7 @@ $this->title = Yii::t('user', 'Регистрация/Авторизация');
                 <?= $form->field(
                     $model_login,
                     'login',
-                    ['inputOptions' => ['autofocus' => 'autofocus', 'class' => 'form-control', 'tabindex' => '1']]
+                    ['inputOptions' => ['class' => 'form-control', 'tabindex' => '1']]
                 ) ?>
 
                 <?= $form
@@ -97,18 +67,5 @@ $this->title = Yii::t('user', 'Регистрация/Авторизация');
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
-        <?php if ($module->enableConfirmation): ?>
-            <p class="text-center">
-                <?= Html::a(Yii::t('user', 'Didn\'t receive confirmation message?'), ['/user/registration/resend']) ?>
-            </p>
-        <?php endif ?>
-        <?php if ($module->enableRegistration): ?>
-            <p class="text-center">
-                <?= Html::a(Yii::t('user', 'Don\'t have an account? Sign up!'), ['/user/registration/register']) ?>
-            </p>
-        <?php endif ?>
-        <?= Connect::widget([
-            'baseAuthUrl' => ['/user/security/auth'],
-        ]) ?>
     </div>
 </div>

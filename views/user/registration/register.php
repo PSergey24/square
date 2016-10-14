@@ -28,7 +28,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'placeholder' => 'Логин']])->label(false) ?>
 
                 <?= $form->field($model, 'password', ['inputOptions' =>
-                    ['autofocus' => 'autofocus','class' => 'form-control',
+                    ['class' => 'form-control',
                         'placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
 
                 <?= $form->field($model, 'password_repeat', ['inputOptions' =>
@@ -40,9 +40,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
-        <p class="text-center">
-            <?= Html::a(Yii::t('user', 'Уже зарегистрированы? Войдите в свой аккаунт'), ['/user/security/login']) ?>
-        </p>
     </div>
 </div>
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
