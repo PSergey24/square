@@ -70,7 +70,21 @@ $config = [
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
             ],
         ],
-
+        'authClientCollection' => [
+            'class'   => \yii\authclient\Collection::className(),
+            'clients' => [
+                'vkontakte' => [
+                    'class'        => 'dektrium\user\clients\VKontakte',
+                    'clientId'     => $params['vk_client_id'],
+                    'clientSecret' => $params['vk_secret'],
+                ],
+                'facebook' => [
+                    'class'        => 'dektrium\user\clients\Facebook',
+                    'clientId'     => $params['fb_app_id'],
+                    'clientSecret' => $params['fb_client_secret'],
+                ],
+            ],
+        ],
     ],
     'modules' => [
         'user' => [
@@ -82,11 +96,22 @@ $config = [
                 'User'             => 'app\models\User',
                 'RegistrationForm' => 'app\models\RegistrationForm'
             ],
-            'urlPrefix' => '/',
+            'urlPrefix' => '',
+//            'urlRules' => [
+//                '<id:\d+>'                               => 'profile/show',
+//                '<action:(login|logout)>'                => 'security/<action>',
+//                '<action:(register|resend)>'             => 'registration/<action>',
+//                'confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'registration/confirm',
+//                'forgot'                                 => 'recovery/request',
+//                'recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'recovery/reset',
+//                'settings/<action:\w+>'                  => 'settings/<action>',
+//                'admin/<action: index>'                    => 'admin/<action>',
+//                'admin' => 'admin/index'
+//             ],
             'enableConfirmation' => false,
             'enablePasswordRecovery' => false,
-            'admins' => ['user'],
-        ],
+                'admins' => $params['admin_account_username'],
+            ],
     ],
     'params' => $params,
     'defaultRoute' => 'site/index',

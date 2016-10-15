@@ -24,7 +24,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]); ?>
 
                 <?= $form->field($model, 'username', ['inputOptions' =>
-                    ['autofocus' => 'autofocus', 'class' => 'form-control',
+                    ['class' => 'form-control',
                         'placeholder' => 'Логин']])->label(false) ?>
 
                 <?= $form->field($model, 'password', ['inputOptions' =>
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
                         'placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
 
                 <?= $form->field($model, 'password_repeat', ['inputOptions' =>
-                    ['autofocus' => 'autofocus','class' => 'form-control',
+                    ['class' => 'form-control',
                         'placeholder' => 'Повторите пароль']])->passwordInput()->label(false) ?>
 
                 <?= Html::submitButton(Yii::t('user', 'Присоединиться'), ['class' => 'btn btn-success btn-block']) ?>
@@ -40,6 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
+        <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['security/auth'], 'popupMode' => false]) ?>
     </div>
 </div>
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
