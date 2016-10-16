@@ -88,13 +88,16 @@ $config = [
     ],
     'modules' => [
         'user' => [
-            'class' => 'dektrium\user\Module',
+            'class' => \dektrium\user\Module::className(),
             'controllerMap' => [
-              'security' => 'app\controllers\user\SecurityController'
+                'security'      => 'app\controllers\user\SecurityController',
+                'registration'  => 'app\controllers\user\RegistrationController',
+                'settings'      => 'app\controllers\user\SettingsController',
             ],
             'modelMap' => [
                 'User'             => 'app\models\User',
-                'RegistrationForm' => 'app\models\RegistrationForm'
+                'RegistrationForm' => 'app\models\RegistrationForm',
+                'Profile'          => 'app\models\Profile'
             ],
             'urlPrefix' => '',
 //            'urlRules' => [
@@ -110,8 +113,8 @@ $config = [
 //             ],
             'enableConfirmation' => false,
             'enablePasswordRecovery' => false,
-                'admins' => $params['admin_account_username'],
-            ],
+            'admins' => $params['admin_account_username'],
+        ],
     ],
     'params' => $params,
     'defaultRoute' => 'site/index',

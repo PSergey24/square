@@ -42,10 +42,11 @@ class RegistrationForm extends BaseRegistrationForm {
         }
 
         Yii::$app->session->setFlash(
-            'info',
+            'success',
             Yii::t(
                 'user',
-                'Your account has been created and a message with further instructions has been sent to your email'
+                'Account <b>{0}</b> has been created',
+                $user->username
             )
         );
         return true;

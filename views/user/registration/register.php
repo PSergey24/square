@@ -12,6 +12,8 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Регистрация');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
+
 <div class="row">
     <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-default">
@@ -43,4 +45,3 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['security/auth'], 'popupMode' => false]) ?>
     </div>
 </div>
-<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>

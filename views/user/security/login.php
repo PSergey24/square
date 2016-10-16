@@ -14,9 +14,9 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('user', 'Регистрация/Авторизация');
 ?>
+
 <?= $this->render('@app/views/user/registration/register.php', ['model' => $model_register]); ?>
 
-<?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 <div class="row">
     <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3">
         <div class="panel panel-default">

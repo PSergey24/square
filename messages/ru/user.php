@@ -166,7 +166,7 @@ return [
     'Your account details have been updated' => 'Настройки аккаунта были изменены',
     'Your account has been blocked' => 'Ваш аккаунт был блокирован',
     'Your account has been connected' => 'Аккаунт был успешно подключен',
-    'Your account has been created' => 'Ваш аккаунт был создан',
+    'Account <b>{0}</b> has been created' => 'Аккаунт <b>{0}</b> был успешно создан',
     'Your account has been created and a message with further instructions has been sent to your email' => 'Ваш аккаунт был создан и сообщение с дальнейшими инструкциями отправлено на ваш email',
     'Your account on {0} has been created' => 'Ваш аккаунт на сайте "{0}" был успешно создан',
     'Your confirmation token is invalid or expired' => 'Ваша ссылка устарела или является ошибочной',

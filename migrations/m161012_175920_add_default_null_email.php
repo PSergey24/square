@@ -20,6 +20,6 @@ class m161012_175920_add_default_null_email extends Migration
      */
     public function down()
     {
-        $this->alterColumn('{{%user}}', 'email', 'string DEFAULT None');
+        $this->alterColumn('{{%user}}', 'email', 'string');
     }
 }
