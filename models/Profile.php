@@ -7,7 +7,6 @@ use yii\web\UploadedFile;
 use yii\validators\ImageValidator;
 use dektrium\user\Finder;
 
-
 /**
  * This is the model class for table "profile".
  * 
@@ -16,20 +15,28 @@ use dektrium\user\Finder;
  */
 
 class Profile extends BaseProfile {
+
+    //default picture name that applied to every new user
+    const DEFAULT_PICTURE_NAME = 'default_avatar.png';
+
+    //default folder where are store all profile picture
+    const DEFAULT_PICTURE_FOLDER = '/img/uploads/';
+
     /**
-     * @var UploadedFile
+     * @var string
      */
-    public $picture;
+    public $picture = self::DEFAULT_PICTURE_NAME;
 
     public function uploadPicture()
     {
         if ($this->validate()) {
-            $this->picture->saveAs('../web/img/uploads/' . $this->picture->baseName . '.' . $this->picture->extension);
+            $this->picture->saveAs(getcwd() . self::DEFAULT_PICTURE_FOLDER . $this->picture->baseName . '.' . $this->picture->extension);
             return true;
         } else {
             return false;
         }
     }
+
     public function rules() 
     {
         $parent_rules = parent::rules();
@@ -41,10 +48,11 @@ class Profile extends BaseProfile {
         ]]);
     }
     
-    public function getPicture() {
+    public function getPicture()
+    {
         $finder = \Yii::createObject(Finder::className());
         $model = $finder->findProfileById(\Yii::$app->user->identity->getId());
         $picture_filename = $model->getAttribute('picture');
-        return '../img/uploads/' . $picture_filename;
+        return self::DEFAULT_PICTURE_FOLDER . $picture_filename;
     }
 }

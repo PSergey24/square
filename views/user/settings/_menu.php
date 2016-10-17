@@ -15,6 +15,7 @@ $networksVisible = count(Yii::$app->authClientCollection->clients) > 0;
             <?= Html::img($user->profile->getPicture(), [
                 'class' => 'img-rounded',
                 'alt'   => $user->username,
+                'width' => '100'
             ]) ?>
             <?= $user->username ?>
         </h3>

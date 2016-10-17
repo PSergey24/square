@@ -4,12 +4,11 @@ namespace app\models;
 
 use Yii;
 use \dektrium\user\models\RegistrationForm as BaseRegistrationForm;
-use yii\helpers\Url;
 
 class RegistrationForm extends BaseRegistrationForm {
 
     public $password_repeat;
-
+    
     public function attributeLabels() {
        return array_merge(parent::attributeLabels(), ['password_repeat' => Yii::t('user', 'Password repeat')]);
     }
@@ -50,5 +49,19 @@ class RegistrationForm extends BaseRegistrationForm {
             )
         );
         return true;
+    }
+    
+    protected function loadAttributes(\dektrium\user\models\User $user) {
+
+        $user->setAttributes([
+            'username' => $this->attributes['username'],
+            'password' => $this->attributes['password'],
+        ]);
+
+        /** @var Profile $profile */
+        $profile = \Yii::createObject(Profile::className());
+
+        $profile->setAttribute('picture', $profile->picture);
+        $user->setProfile($profile);
     }
 }
