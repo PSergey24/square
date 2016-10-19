@@ -22,22 +22,4 @@ class User extends BaseUser {
         
         return $parent_rules;
     }
-
-    public function afterSave($insert, $changedAttributes)
-    {
-        //instead of parent::afterSave() call ActiveRecord method afterSave()
-        ActiveRecord::afterSave($insert, $changedAttributes);
-
-        if ($insert) {
-            if (!isset($this->_profile)) {
-                $profile = \Yii::createObject(Profile::className());
-                //set picture in _attributes
-                $profile->setAttribute('picture', Profile::DEFAULT_PICTURE_NAME);
-                $this->setProfile($profile);
-            }
-
-            $profile->link('user', $this);
-
-        }
-    }
 }

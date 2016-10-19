@@ -53,6 +53,17 @@ class Profile extends BaseProfile {
         $finder = \Yii::createObject(Finder::className());
         $model = $finder->findProfileById(\Yii::$app->user->identity->getId());
         $picture_filename = $model->getAttribute('picture');
+        //check if $picture_filename is url from vk
+        $vk_image_path = ['https://pp.vk.me/', 'http://vk.com/images/'];
+        foreach ($vk_image_path as $path) {
+            if (strpos($picture_filename, $path) === 0) {
+                $url_flag = 1;
+            }
+        }
+        if (isset($url_flag))
+            return $picture_filename;
+
         return self::DEFAULT_PICTURE_FOLDER . $picture_filename;
+
     }
 }

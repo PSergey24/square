@@ -97,7 +97,8 @@ $config = [
             'modelMap' => [
                 'User'             => 'app\models\User',
                 'RegistrationForm' => 'app\models\RegistrationForm',
-                'Profile'          => 'app\models\Profile'
+                'Profile'          => 'app\models\Profile',
+                'Account'          => 'app\models\Account'
             ],
             'urlPrefix' => '',
 //            'urlRules' => [
