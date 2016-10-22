@@ -4,8 +4,8 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /**
- * @var yii\web\View              $this
- * @var yii\widgets\ActiveForm    $form
+ * @var yii\web\View $this
+ * @var yii\widgets\ActiveForm $form
  * @var dektrium\user\models\User $user
  */
 
@@ -14,34 +14,26 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
 
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?= Html::encode($this->title) ?></h3>
-            </div>
-            <div class="panel-body">
-                <?php $form = ActiveForm::begin([
-                    'id' => 'registration-form',
-                ]); ?>
+    <p>Присоединяйся к нам, чтобы быть в курсе всех последних игр на любых площадках</p>
+    <?php $form = ActiveForm::begin([
+        'id' => 'registration-form',
+    ]); ?>
 
-                <?= $form->field($model, 'username', ['inputOptions' =>
-                    ['class' => 'form-control',
-                        'placeholder' => 'Логин']])->label(false) ?>
+    <?= $form->field($model, 'username', ['inputOptions' =>
+        ['placeholder' => 'Логин']])->label(false) ?>
 
-                <?= $form->field($model, 'password', ['inputOptions' =>
-                    ['class' => 'form-control',
-                        'placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
+    <?= $form->field($model, 'password', ['inputOptions' =>
+        ['placeholder' => 'Пароль']])->passwordInput()->label(false) ?>
 
-                <?= $form->field($model, 'password_repeat', ['inputOptions' =>
-                    ['class' => 'form-control',
-                        'placeholder' => 'Повторите пароль']])->passwordInput()->label(false) ?>
+    <?= $form->field($model, 'password_repeat', ['inputOptions' =>
+        ['placeholder' => 'Повторите пароль']])->passwordInput()->label(false) ?>
 
-                <?= Html::submitButton(Yii::t('user', 'Присоединиться'), ['class' => 'btn btn-success btn-block']) ?>
+    <?= Html::submitButton(Yii::t('user', 'Присоединиться'), ['class' => 'btn btn-success btn-block']) ?>
 
-                <?php ActiveForm::end(); ?>
-            </div>
-        </div>
-        <?= yii\authclient\widgets\AuthChoice::widget(['baseAuthUrl' => ['security/auth'], 'popupMode' => false]) ?>
-    </div>
-</div>
+    <?php ActiveForm::end(); ?>
+
+    <fieldset>
+        <legend>Через социальные сети</legend>
+        <a href="/user/security/auth?authclient=vkontakte"><img src="../img/vk.png"></a>
+        <a href="/user/security/auth?authclient=facebook"><img src="../img/facebook.png"></a>
+    </fieldset>

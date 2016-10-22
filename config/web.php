@@ -101,17 +101,6 @@ $config = [
                 'Account'          => 'app\models\Account'
             ],
             'urlPrefix' => '',
-//            'urlRules' => [
-//                '<id:\d+>'                               => 'profile/show',
-//                '<action:(login|logout)>'                => 'security/<action>',
-//                '<action:(register|resend)>'             => 'registration/<action>',
-//                'confirm/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'registration/confirm',
-//                'forgot'                                 => 'recovery/request',
-//                'recover/<id:\d+>/<code:[A-Za-z0-9_-]+>' => 'recovery/reset',
-//                'settings/<action:\w+>'                  => 'settings/<action>',
-//                'admin/<action: index>'                    => 'admin/<action>',
-//                'admin' => 'admin/index'
-//             ],
             'enableConfirmation' => false,
             'enablePasswordRecovery' => false,
             'admins' => $params['admin_account_username'],

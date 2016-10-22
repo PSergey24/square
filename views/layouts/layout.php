@@ -14,14 +14,37 @@ AppAsset::register($this);
 <head>
     <meta charset="UTF-8"/>
     <?= Html::csrfMetaTags() ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/site.css">
 </head>
 <body>
     <?php $this->beginBody() ?>
-    <header
+<!--    <header>-->
+        <div id="menu" class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="container">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="/" id="logo" class="hidden-xs"><?= Html::img(Yii::getAlias('@web') . '/img/logo.png') ?></a>
+                        <a href="#" id="logo" class="visible-xs"><?= Html::img(Yii::getAlias('@web') . '/img/logo1.png') ?></a>
+                        <ul>
+                            <a href="#"><li><img src="#" class="visible-xs"><span>Площадки</span></li></a>
+                            <a href="#"><li><img src="#" class="visible-xs"><span>Игры</span></li></a>
+                        </ul>
+                        <div class="collapse " id="responsive-menu">
+                            <a href="/login" id="registration" class="blue-big-button">Регистрация</a>
+                            <a href="#" id="enter">Вход</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--    </header>-->
     <div class="container">
         <?php $link_attr = Yii::$app->user->isGuest ?
             ['label' => 'Авторизоваться', 'url' => ['/login']] :
@@ -64,13 +87,16 @@ AppAsset::register($this);
 
         ?>
     </div>
-    </header>
     <div class="container">
         <?= $content ?>
     </div>
-    <footer></footer>
-    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    
+    <div id="footer" class="container-fluid footer">
+        <a href="#">Обратная связь</a>
+        <a href="#">О компании</a>
+        <a href="#">Пользовательское соглашение</a>
+        <p>Квадрат 2016</p>
+    </div>
     <?php $this->endBody() ?>
 </body>
 </html>
