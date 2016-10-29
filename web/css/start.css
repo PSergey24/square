@@ -1,0 +1,94 @@
+body{
+	min-height: 100%;
+	background: #fefefe;
+}
+#menu, #menu ul.main-menu a li:hover{
+	background: rgba(0,0,0,0);
+	box-shadow: none;
+}
+.top{
+	max-height: 100%;
+	background-image: url(../../img/basketball.png);
+	background-size: cover;
+	text-align: center !important;
+}
+.big{
+	font-size: 3rem;
+	margin-bottom: 0;
+	margin-top: 5rem;
+}
+.text{
+	font-size: 1.5rem;
+	margin: 2.5rem 0;
+	margin-top: 1.3rem;
+	color: rgb(255,255,255);
+	max-width: 800px;
+	display: inline-block;
+	line-height: 1.6;
+	padding: 0 1rem;
+
+}
+form{
+	margin-bottom: 6rem;
+}
+.arrow{
+	margin-bottom: 3rem;
+}
+.input{
+	background-color: rgb(255,255,255);
+	margin-right: 0.25rem;
+	width: 17%;
+	min-width: 140px;
+	margin-bottom: 1rem;
+	padding-top: 9px;
+	padding-bottom: 9px;
+}
+
+.mid-green-btn{
+	padding: 9px 33px;
+}
+
+
+.mid{
+	text-align: center;
+}
+.mid .h1-black{
+	margin: 2rem ;
+}
+.kv-is{
+	font-size: 1.125rem;
+	color: rgba(0,0,0,0.87);
+	margin: 1rem 0;
+	font-weight: 500;
+}
+.kv-is p{
+	margin: 1.5rem 0;
+}
+.kv-is:last-child{
+	margin-bottom: 2rem;
+}
+
+.bg{
+	text-align: center;
+	background:url('../img/bg-join.png');
+	background-repeat:  repeat;
+}
+.bg .h1-white{
+	margin-top: 2.5rem;
+	margin-bottom:1.5rem;
+}
+.big-green-btn{
+	margin-top: 1.5rem;
+	margin-bottom:2.5rem;
+	display: inline-block;
+}
+
+@media (max-width: 767px) {
+.hello{
+	display: block;
+}
+.input, .mid-green-btn{
+	padding-top:12px;
+	padding-bottom:12px;
+}
+}

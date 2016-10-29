@@ -17,7 +17,7 @@ $config = [
 //        'user' => [
 //            'identityClass' => 'app\models\User',
 //            'enableAutoLogin' => true,
-//        ],
+//        ],    
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
@@ -84,6 +84,17 @@ $config = [
                     'clientSecret' => $params['fb_client_secret'],
                 ],
             ],
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dosamigos\google\maps\MapAsset' => [
+                    'options' => [
+                        'key' => $params['google_map_key'],
+                        'language' => 'ru',
+                        'version' => '*'
+                    ]
+                ]
+            ]
         ],
     ],
     'modules' => [
