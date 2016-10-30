@@ -15,11 +15,11 @@ use yii\helpers\Url;
             <a href="#"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
             <div id="responsive-menu2">
                 <ul class="dropdown">
-                    <?= Html::img('@web/img/man-profile.png', ['class' => 'imgProfile']) ?>
+                    <?= Html::img('@web/img/man.jpg', ['class' => 'imgProfile']) ?>
                     <!-- <a href="#" class="dropdown-top hidden-xs">SuperBro</a> -->
                     <ul class="dropdown-inside">
                         <a class="newLetters" href="#">Оповещения</a>
-                        <a class="setting" href="/user/settings/profile">Профиль</a>
+                        <a class="setting" href="/profile">Профиль</a>
                         <!-- <img src="../img/mail.png"> -->
                         <a class="exit" href="/logout" data-method="POST">Выход</a>
                     </ul>

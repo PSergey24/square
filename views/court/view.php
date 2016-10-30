@@ -66,13 +66,16 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
         </p>
         <div class="description ">
-            <a href="javascript:collapsElement('description-text')" title="" rel="nofollow" class="link">Описание площадки</a><?= Html::img('@web/img/down.png', ['class' => 'arrow', 'id' => '1']) ?>
-            <div class="description-text" id="identifikator" style="display: none">
+            <a id="description_link" href="javascript:void(0)" title="" rel="nofollow" class="link">Описание площадки</a><?= Html::img('@web/img/down.png', ['class' => 'arrow', 'id' => '1']) ?>
+            <div class="description-text" id="description" style="display: none">
                 <p>Классная площадка, с искусстенным газоном. Есть хорошие баскетбольные кольца. Так же есть 2 беговые дорожки. Ворота без сетки, но игре это особо не мешает.</p>
             </div>
         </div>
         <div class="buttons">
-            <button class="mid-green-btn shadow"><?= Html::img('@web/img/star.png', ['class' => 'img']) ?><span class="hidden-xs">Добавить в избранные</span></button>
+            <a class="mid-green-btn shadow" id="bookmark">
+                <?= Html::img('@web/img/star.png', ['class' => 'img']) ?>
+                <span class="hidden-xs">Добавить в избранные</span>
+            </a>
             <button class="mid-blue-btn shadow"><?= Html::img('@web/img/heart.png', ['class' => 'img']) ?><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
         </div>
 
@@ -177,9 +180,26 @@ $this->params['breadcrumbs'][] = $this->title;
            game_html = game + game_html;
 //           $(game).appendTo('#game_list');
            $('#game_list').html(game_html);
-       });
 
+        });
+        $('#bookmark').click(function () {
+            var url = window.location.href;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $.ajax({
+                url: '/court/bookmark',
+                data: {court_id: id},
+                success: function(success) {
+                    $('#bookmark img').attr('src', '/img/star-active.png');
+                    $('#bookmark span').text('Удалить из избранного');
+                    console.log(success);
+                },
+            });
+        });
+        $('#description_link').click(function () {
+            $('#description').toggle(300);
+        });
     });
+
 </script>
 <script>
     function collapsElement(id) {

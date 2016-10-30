@@ -4,7 +4,10 @@ namespace app\controllers;
 
 use app\models\LoginForm;
 use Yii;
+use yii\db\Query;
 use yii\web\Controller;
+use app\models\Court;
+use DateTime;
 
 class SiteController extends Controller
 {
@@ -29,6 +32,51 @@ class SiteController extends Controller
         return $this->render('index.php');
     }
 
+    public function actionProfile() {
+
+        $query = new Query();
+        $query_games = new Query();
+        $user_id = Yii::$app->user->getId();
+        $query->select('court_id')
+            ->from('court_bookmark')
+            ->where(['user_id' => $user_id]);
+        $bookmarks = $query->all();
+        $courts = [];
+        $games = [];
+        $address = array();
+        foreach ($bookmarks as $bookmark) {
+            $query->select('id, address')
+                ->from('court')
+                ->where(['id' => $bookmark['court_id']]);
+            $court_addr = $query->one();
+            $query_games->select('time, need_ball')
+                ->from(['game'])
+                ->where(['court_id' => $court_addr['id']]);
+            $game_rows = $query_games->all();
+
+            foreach ($game_rows as $row) {
+                $tm = strtotime($row['time']);
+                $current_datetime = new DateTime();
+                $current_datetime = date_format($current_datetime, 'Y-m-d');
+                $tm_current = strtotime($current_datetime);
+                if (date("d", $tm) == date("d", $tm_current))
+                    $row['time'] = 'Сегодня ' . date("H:m", $tm);
+                else
+                    $row['time'] = 'Завтра ' . date("H:m", $tm);
+                $row['address'] = $court_addr['address'];
+                array_push($games, $row);
+            }
+
+//            $all_games = array_merge($game_rows, $games);
+            array_push($courts, $court_addr);
+        }
+
+        return $this->render('profile.php', [
+            'courts' => $courts,
+            'games' => $games
+        ]);
+    }
+    
     public function actionAbout()
     {
         return 'About ';

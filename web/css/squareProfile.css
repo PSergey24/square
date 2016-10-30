@@ -54,6 +54,10 @@
 	position: relative;
 	
 }
+.buttons a{
+	position: relative;
+	z-index: 1;
+}
 .buttons button:first-child{
 	margin-left: 0;
 }

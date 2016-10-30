@@ -156,6 +156,7 @@ border:1px solid green;
 				text-transform: uppercase;
 				line-height: 65px;
 				padding: 0px 5px;
+				cursor: pointer;
 			}
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
@@ -265,7 +266,7 @@ border:1px solid green;
 	width:30px; 
 	height: 30px; 
 	border-radius: 5px; 
-	/* border:1px solid green;*/ 
+	margin-right: 3px;
 	} 
 	.imgPolygon{ 
 	width:10px; 

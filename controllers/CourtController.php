@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\CourtBookmark;
 use app\models\CourtType;
 use app\models\Game;
 use Yii;
@@ -225,7 +226,14 @@ class CourtController extends Controller
 
         return $rows;
     }
-    public function actionProfile() {
-        
+
+    public function actionBookmark($court_id) {
+        if (Yii::$app->request->isAjax) {
+            $bookmark = Yii::createObject(CourtBookmark::className());
+            $bookmark->court_id = $court_id;
+            $bookmark->user_id = Yii::$app->user->getId();
+            $bookmark->save();
+
+        }
     }
 }
