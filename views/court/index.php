@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 $this->title = 'Courts';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<link rel="stylesheet" href="/css/searchArena.css">
 <script>
     var map;
     var markers = new Array();
@@ -91,6 +92,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     $('#court_link').attr('href', 'court/view/' + this.id);
                     $('#address').text(this.address);
                     $('#court_photo').css('background-image', 'url(img/' + this.photo +')');
+                    $('#court_info').css('display', 'block');
                 });
                 markers.push(marker);
             })
@@ -136,7 +138,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span class="nearArena">Близжайшие к вам</span>
                 </div>
             </div>
-            <div class="searchImgForm col-lg-5 col-md-5 col-sm-5 col-xs-12">
+            <div id="court_info" class="searchImgForm col-lg-5 col-md-5 col-sm-5 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
                     <div style="background-image: url(img/arena.jpg);" class="image-right" id="court_photo">
                         <a href="#" id="court_link"><div class="open"><span>Открыть</span></div></a>

@@ -19,7 +19,7 @@ use yii\helpers\Url;
                     <!-- <a href="#" class="dropdown-top hidden-xs">SuperBro</a> -->
                     <ul class="dropdown-inside">
                         <a class="newLetters" href="#">Оповещения</a>
-                        <a class="setting" href="user/settings/profile">Настройки</a>
+                        <a class="setting" href="/user/settings/profile">Профиль</a>
                         <!-- <img src="../img/mail.png"> -->
                         <a class="exit" href="/logout" data-method="POST">Выход</a>
                     </ul>

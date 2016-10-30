@@ -96,7 +96,7 @@ background:#00d12d;
 
 /*ЗАГОЛОВОК -------------------------------------*/
 .h1-black, .h1-white{
-font-size: 2.25rem;
+font-size: 2rem;
 margin: 1.5rem 0px;
 font-weight:500;
 }
@@ -164,6 +164,7 @@ border:1px solid green;
 			}
 	#responsive-menu{
 		float:right;
+		z-index: 100;
 	}
 		#enter{
 			float:right;
@@ -215,10 +216,10 @@ border:1px solid green;
 /* Шапка для авторизованных*/ 
 	#responsive-menu2 { 
 	float:right; 
-	line-height: 65px;
+	line-height: 65px; 
 	/* border:1px solid red;*/ 
-	position: relative;
-		z-index: 100;
+	position: relative; 
+	z-index: 100;
 	} 
 	#responsive-menu2 > img{ 
 	width:35px; 
@@ -502,7 +503,6 @@ border:1px solid green;
 		padding-top:10px;
 		right:0;
 		width: 150px;
-		z-index: 100;
 	}
 	#logo{
 		margin-top:14px;

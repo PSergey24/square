@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\CourtType;
+use app\models\Game;
 use Yii;
 use app\models\Court;
 use app\models\CourtSearch;
@@ -15,7 +16,8 @@ use yii\helpers\ArrayHelper;
 use app\common\MapCreate;
 use yii\db\Query;
 use yii\web\Response;
-
+use DateTime;
+use DateInterval;
 /**
  * CourtController implements the CRUD actions for Court model.
  */
@@ -82,8 +84,41 @@ class CourtController extends Controller
      */
     public function actionView($id)
     {
+        $model_game = Yii::createObject(Game::className());
+        $query = new Query;
+        $query->select('id, address, type_id, name, lat, lon')
+            ->from('court')
+            ->where(['id' => $id]);
+        $court = $query->all();
+
+        $query_games = new Query;
+        $query->select('time, need_ball')
+            ->from('game')
+            ->where(['court_id' => $id]);
+        $games = $query->all();
+
+        if (Yii::$app->request->isPost) {
+            $model_game = Yii::createObject(Game::className());
+            $game = Yii::$app->request->getBodyParam('Game');
+            $date = new DateTime();
+            if ($game['time']){
+                $date->add(new DateInterval('P1D'));
+            }
+            $time = Yii::$app->request->getBodyParam('time_digit');
+            $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
+
+            $model_game->time = $datetime;
+            $model_game->need_ball = intval($game['need_ball']);
+            $model_game->sport_type_id = intval($court[0]['type_id']);
+            $model_game->court_id = intval($court[0]['id']);
+            $model_game->save();
+        }
+
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'court' => $court,
+            'model_game' => $model_game,
+            'games' => $games
         ]);
     }
 
@@ -189,5 +224,8 @@ class CourtController extends Controller
 
 
         return $rows;
+    }
+    public function actionProfile() {
+        
     }
 }
