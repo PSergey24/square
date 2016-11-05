@@ -3,15 +3,23 @@
 use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
+use app\assets\CustomBootstrapAsset;
+
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CourtSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Courts';
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<link rel="stylesheet" href="/css/searchArena.css">
-<script>
+$this->registerCssFile('/css/searchArena.css',[
+        'depends' => [CustomBootstrapAsset::className()]
+]);
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
+    [
+        'async' => true,
+    ]
+);
+$this->registerJs("
     var map;
     var markers = new Array();
     function initMap() {
@@ -31,87 +39,66 @@ $this->params['breadcrumbs'][] = $this->title;
 
         map = new google.maps.Map(document.getElementById('map'), options);
     }
+", $this::POS_HEAD);
+
+$this->registerJs("
     // sport_type select
-    $(document).ready(function () {
-        var court_images = [
-            'court_img_0.jpg',
-            'court_img_1.jpg',
-            'court_img_2.jpg',
-            'court_img_3.jpg',
-            'court_img_4.jpg',
-            'court_img_5.jpg',
-            'court_img_6.jpg',
-            'court_img_7.jpg',
-            'court_img_8.jpg',
-            'court_img_9.jpg',
-            'court_img_10.jpg',
-            'court_img_11.jpg',
-            'court_img_12.jpg',
-            'court_img_13.jpg',
-            'court_img_14.jpg',
-            'court_img_15.jpg',
-            'court_img_16.jpg',
-            'court_img_17.jpg',
-            'court_img_18.jpg',
-            'court_img_19.jpg',
-            'court_img_20.jpg',
-            'court_img_21.jpg',
-        ];
+    var court_images = [
+        'court_img_0.jpg','court_img_1.jpg','court_img_2.jpg','court_img_3.jpg','court_img_4.jpg','court_img_5.jpg',
+        'court_img_6.jpg','court_img_7.jpg','court_img_8.jpg','court_img_9.jpg','court_img_10.jpg','court_img_11.jpg',
+        'court_img_12.jpg','court_img_13.jpg','court_img_14.jpg','court_img_15.jpg','court_img_16.jpg','court_img_17.jpg',
+        'court_img_18.jpg','court_img_19.jpg','court_img_20.jpg','court_img_21.jpg',
+    ];
+    
+    $.ajax({url: '/court/get_points', success: function(result) {
+        var sport_type = " . $sport_type . ";
+        var visible_val;
+        $('#sport_type').val(sport_type);
+        $.each(result, function (index, value) {
+            var rnd = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
+            if(value['type_id'] == sport_type || sport_type == 0)
+                visible_val = true;
+            else
+                visible_val = false;
+            if (value['type_id'] == 1) {
+                var pinImgLink = '/img/basket.png';
+            }else
+                var pinImgLink = '/img/foot.png';
 
-        $.ajax({url: 'court/get_points', success: function(result) {
-            var sport_type = getUrlVars()['sport_type'];
-
-            if (!sport_type)
-                sport_type = 0;
-
-            var visible_val;
-            $('#sport_type').val(sport_type);
-            $.each(result, function (index, value) {
-                var rnd = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
-                if(value['type_id'] == sport_type || sport_type == 0)
-                    visible_val = true;
-                else
-                    visible_val = false;
-                if (value['type_id'] == 1) {
-                    var pinImgLink = 'img/basket.png';
-                }else
-                    var pinImgLink = 'img/foot.png';
-
-                var marker = new google.maps.Marker({
-                    id: value['id'],
-                    position: {lat: Number(value['lat']), lng: Number(value['lon'])},
-                    map: map,
-                    animation: google.maps.Animation.DROP,
-                    type_id: value['type_id'],
-                    address: value['address'],
-                    photo: court_images[rnd],
-                    visible: visible_val,
-                    icon: pinImgLink
-                });
-                google.maps.event.addListener(marker, 'click', function() {
-                    $('#court_link').attr('href', 'court/view/' + this.id);
-                    $('#address').text(this.address);
-                    $('#court_photo').css('background-image', 'url(img/' + this.photo +')');
-                    $('#court_info').css('display', 'block');
-                });
-                markers.push(marker);
-            })
-        }});
-    });
-    $(document).ready(function() {
-        $('#sport_type').change(function (e) {
-            for (var i = 0; i < markers.length; i++) {
-                if (markers[i].type_id !== $('#sport_type').val()) {
-                    console.log(markers[i].type_id);
-                    markers[i].setVisible(false);
-                }else {
-                    markers[i].setVisible(true);
-                }
-            }
+            var marker = new google.maps.Marker({
+                id: value['id'],
+                position: {lat: Number(value['lat']), lng: Number(value['lon'])},
+                map: map,
+                animation: google.maps.Animation.DROP,
+                type_id: value['type_id'],
+                address: value['address'],
+                photo: court_images[rnd],
+                visible: visible_val,
+                icon: pinImgLink
+            });
+            google.maps.event.addListener(marker, 'click', function() {
+                $('#court_link').attr('href', '/court/view/' + this.id);
+                $('#address').text(this.address);
+                $('#court_photo').css('background-image', 'url(/img/' + this.photo +')');
+                $('#court_info').css('display', 'block');
+            });
+            markers.push(marker);
         })
-    });
+    }});
+");
 
-</script>
+$this->registerJs("
+     $('#sport_type').change(function (e) {
+        for (var i = 0; i < markers.length; i++) {
+            if (markers[i].type_id !== $('#sport_type').val()) {
+                markers[i].setVisible(false);
+            }else {
+                markers[i].setVisible(true);
+            }
+        }
+    });
+");
+?>
 
 <div class="container-fluid" id="center" >
     <div class="container">
@@ -175,12 +162,3 @@ $this->params['breadcrumbs'][] = $this->title;
         <p><input class="big-green-btn shadow" type="button" value="Добавить площадку"></p>
     </div>
 </div>
-<script>
-    function getUrlVars() {
-        var vars = {};
-        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-            vars[key] = value;
-        });
-        return vars;
-    }
-</script>

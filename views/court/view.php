@@ -11,18 +11,20 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\models\SportType;
+use app\assets\AppAsset;
 
 $this->title = $model->name;
 $this->params['breadcrumbs'][] = ['label' => 'Courts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-?>
-<link href="/css/squareProfile.css" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
+$this->registerCssFile('/css/squareProfile.css',[
+    'depends' => [AppAsset::className()]
+]);
 
-<script>
+$this->registerJs("
     var map;
-
+    var court = " . $court_json . ";
     function initMap() {
-        var latlng = new google.maps.LatLng(<?= $court[0]['lat'] ?>, <?= $court[0]['lon'] ?>);
+        var latlng = new google.maps.LatLng(court.lat, court.lon);
         var options = {
             zoom: 15,
             center: latlng,
@@ -38,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         map = new google.maps.Map(document.getElementById('map'), options);
 
-        if (<?= $court[0]['type_id'] ?> == 1) {
+        if (court.type_id == 1) {
             var pinImgLink = '/img/basket.png';
         }else
             var pinImgLink = '/img/foot.png';
@@ -50,16 +52,57 @@ $this->params['breadcrumbs'][] = $this->title;
             icon: pinImgLink
         });
     }
-</script>
-
+", $this::POS_HEAD);
+$this->registerJs("
+    // On submit btn 'Create game' add game block 
+    $('#game-create').submit(function () {
+        var game_html = $('#game_list').html();
+        if ($('#game-need_ball').prop('checked'))
+           var ballImg = '<img src=\"/img/ball-ok.png\">';
+        else
+           var ballImg = '<img src=\"/img/ball-not.png\">';
+        
+        var game = '<div class=\"game\">' +
+                      '<div class=\"time\">' + $('#game-time :selected').text() + ' ' + $('#time').val() +
+        
+                      '</div>' + ballImg+
+                      '<button class=\"mid-blue-btn\">+ ' +
+                      '<span class=\"players\">1  </span><' +
+                      '/button><' +
+                '/div>';
+        
+        game_html = game + game_html;
+        $('#game_list').html(game_html);
+    });
+    
+    //Bookmark btn onclick change pic and text
+    $('#bookmark').click(function () {
+            var url = document.URL;
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            $.ajax({
+                url: '/court/bookmark',
+                data: {court_id: id},
+                success: function(success) {
+                    $('#bookmark img').attr('src', '/img/star-active.png');
+                    $('#bookmark span').text('Удалить из избранного');
+                    console.log(success);
+                },
+            });
+        });
+    //Description link on click smoothly fade in description block
+    $('#description_link').click(function () {
+        $('#description').toggle(300);
+    });
+");
+?>
 
 <div class="container-fluid top">
     <div class="container s">
 
-        <h2 class="h2-white"><?= $court[0]['address'] ?></h2>
+        <h2 class="h2-white"><?= $court['address'] ?></h2>
         <p>
             <?php
-            if ($court['0']['type_id'] != 1)
+            if ($court['type_id'] != 1)
                 echo '<a href="http://square.ru/court?sport_type=2" class="tag">Футбол</a>';
             else
                 echo '<a href="http://square.ru/court?sport_type=1" class="tag">Баскетбол</a>';
@@ -159,48 +202,7 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {
-       $('#game-create').submit(function () {
-          var game_html = $('#game_list').html();
-           if ($('#game-need_ball').prop('checked'))
-               var ballImg = '<img src="/img/ball-ok.png">';
-           else
-               var ballImg = '<img src="/img/ball-not.png">';
 
-           var game = '<div class="game">' +
-                          '<div class="time">' + $('#game-time :selected').text() + ' ' + $('#time').val() +
-
-                          '</div>' + ballImg+
-                          '<button class="mid-blue-btn">+ ' +
-                          '<span class="players">1  </span><' +
-                          '/button><' +
-                    '/div>';
-
-           game_html = game + game_html;
-//           $(game).appendTo('#game_list');
-           $('#game_list').html(game_html);
-
-        });
-        $('#bookmark').click(function () {
-            var url = window.location.href;
-            var id = url.substring(url.lastIndexOf('/') + 1);
-            $.ajax({
-                url: '/court/bookmark',
-                data: {court_id: id},
-                success: function(success) {
-                    $('#bookmark img').attr('src', '/img/star-active.png');
-                    $('#bookmark span').text('Удалить из избранного');
-                    console.log(success);
-                },
-            });
-        });
-        $('#description_link').click(function () {
-            $('#description').toggle(300);
-        });
-    });
-
-</script>
 <script>
     function collapsElement(id) {
         if ( document.getElementsByClassName(id)[0].style.display != "none" ) {

@@ -71,8 +71,13 @@ class CourtController extends Controller
             ->from('court')
             ->limit(3);
         $popular = $query->all();
+        $sport_type = 0;
+        if (isset(Yii::$app->getRequest()->queryParams['sport_type']))
+            $sport_type = Yii::$app->getRequest()->queryParams['sport_type'];
+        
         return $this->render('index', [
-            'popular' => $popular
+            'popular' => $popular,
+            'sport_type' => $sport_type
         ]);
     }
 
@@ -90,7 +95,7 @@ class CourtController extends Controller
         $query->select('id, address, type_id, name, lat, lon')
             ->from('court')
             ->where(['id' => $id]);
-        $court = $query->all();
+        $court = $query->one();
 
         $query_games = new Query;
         $query->select('time, need_ball')
@@ -117,6 +122,7 @@ class CourtController extends Controller
 
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'court_json' => json_encode($court),
             'court' => $court,
             'model_game' => $model_game,
             'games' => $games

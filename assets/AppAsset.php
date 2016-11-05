@@ -8,6 +8,7 @@
 namespace app\assets;
 
 use yii\web\AssetBundle;
+use yii\web\JqueryAsset;
 
 /**
  * @author Qiang Xue <qiang.xue@gmail.com>
@@ -18,13 +19,14 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/style.css'
+        'css/style.css',
     ];
     public $js = [
-        'js/main.js',
     ];
+    
     public $depends = [
         'yii\web\YiiAsset',
         'app\assets\CustomBootstrapAsset'
+
     ];
 }

@@ -1,11 +1,20 @@
 <?php
 
 use yii\helpers\Html;
+use app\assets\AppAsset;
 
 /* @var $this yii\web\View */
-?>
 
-<link href="/css/start.css" rel="stylesheet">
+$this->registerCssFile('/css/start.css',[
+    'depends' => [AppAsset::className()]
+]);
+
+$this->registerJs("
+    $('#submit').click(function(){
+        location.href = 'http://square.ru/court?sport_type=' + $('#sport_type').val();
+    });
+");
+?>
 
 <div class="container mid" id="mid">
     <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12"><h1 class="h1-black">Что такое Квадрат?</h1></div>
@@ -34,10 +43,3 @@ use yii\helpers\Html;
         <a href="#" class="big-green-btn shadow">Регистрация</a>
     </div>
 </div>
-<script>
-    $(document).ready(function(){
-        $('#submit').click(function(){
-            location.href = "http://square.ru/court?sport_type=" + $('#sport_type').val();
-        });
-    });
-</script>

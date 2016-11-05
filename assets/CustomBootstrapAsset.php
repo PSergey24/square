@@ -10,4 +10,8 @@ class CustomBootstrapAsset extends BootstrapAsset {
         'js/bootstrap.js'
     ];
 
+    public $depends = [
+        'yii\web\JqueryAsset'
+    ];
+
 }

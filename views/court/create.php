@@ -11,6 +11,21 @@ use yii\helpers\Html;
 $this->title = 'Create Court';
 $this->params['breadcrumbs'][] = ['label' => 'Courts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+
+$this->registerJs("
+    //set name to description in marker
+    $('#court-name').on('keyup', function() {
+    
+        var court_name = $('#court-name').val();
+        var court_description = $('#court_description');
+    
+        if (court_name != '')
+            court_description.text(court_name);
+        else
+            court_description.text($('#court-name').attr('placeholder'))
+    });
+");
+
 ?>
 <div class="court-create">
 

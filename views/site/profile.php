@@ -1,9 +1,12 @@
 <?php
 
 use yii\helpers\Html;
+use app\assets\AppAsset;
 
+$this->registerCssFile('/css/userProfile.css',[
+    'depends' => [AppAsset::className()]
+]);
 ?>
-<link href="/css/userProfile.css" rel="stylesheet" xmlns="http://www.w3.org/1999/html">
 
 <div class="container-fluid top">
     <div class="container s">
