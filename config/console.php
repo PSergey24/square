@@ -25,13 +25,16 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    /*
     'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
+        'migrate' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationNamespaces' => [
+                'app\migrations',
+
+            ],
+            'migrationPath' => '@vendor/dektrium/yii2-user/migrations', // allows to disable not namespaced migration completely
         ],
     ],
-    */
 ];
 
 if (YII_ENV_DEV) {

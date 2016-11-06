@@ -11,7 +11,7 @@ $this->registerCssFile('/css/start.css',[
 
 $this->registerJs("
     $('#submit').click(function(){
-        location.href = 'http://square.ru/court?sport_type=' + $('#sport_type').val();
+        location.href = document.URL + 'court?sport_type=' + $('#sport_type').val();
     });
 ");
 ?>

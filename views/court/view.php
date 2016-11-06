@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Court */
@@ -103,9 +104,13 @@ $this->registerJs("
         <p>
             <?php
             if ($court['type_id'] != 1)
-                echo '<a href="http://square.ru/court?sport_type=2" class="tag">Футбол</a>';
+                echo Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), [
+                        'class' => 'tag'
+                      ]);
             else
-                echo '<a href="http://square.ru/court?sport_type=1" class="tag">Баскетбол</a>';
+                echo Html::a('Баскетбол', Url::to(['/court', 'sport_type' => 1], true), [
+                    'class' => 'tag'
+                ]);;
             ?>
         </p>
         <div class="description ">

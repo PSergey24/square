@@ -1,8 +1,8 @@
 {
     "name": "yiisoft/yii2-app-basic",
-    "description": "Yii 2 Basic Project Template",
+    "description": "Web app for manage sport games",
     "keywords": ["yii2", "framework", "basic", "project template"],
-    "homepage": "http://www.yiiframework.com/",
+    "homepage": "http://kvadrat.online/",
     "type": "project",
     "license": "BSD-3-Clause",
     "support": {
@@ -15,12 +15,11 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.0",
-        "yiisoft/yii2": ">=2.0.5",
+        "yiisoft/yii2": ">=2.0.10",
         "yiisoft/yii2-bootstrap": "2.0.6",
         "yiisoft/yii2-swiftmailer": "*",
         "dektrium/yii2-user": "0.9.*@dev",
-        "cakebake/yii2-bootstrap-select": "*",
-        "2amigos/yii2-google-maps-library": "*"
+        "cakebake/yii2-bootstrap-select": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

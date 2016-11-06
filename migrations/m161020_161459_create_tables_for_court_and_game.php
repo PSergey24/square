@@ -1,6 +1,8 @@
 <?php
 
-use yii\db\Migration;
+namespace app\migrations;
+
+use app\migrations\Migration;
 
 /*
  * Create tables 'court', 'game', 'court_sport_type', 'district_city', 'court_type', 'sport_type', 'court_photo'
@@ -21,7 +23,7 @@ class m161020_161459_create_tables_for_court_and_game extends Migration
             'creator_id' => $this->integer()->notNull(),
             'district_city_id' => $this->integer()->notNull(),
             'type_id' => $this->integer()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex(
             'court-creator_id',
@@ -45,7 +47,7 @@ class m161020_161459_create_tables_for_court_and_game extends Migration
             'sport_type_id' => $this->integer()->notNull(),
             'court_id' => $this->integer()->notNull(),
             'creator_id' => $this->integer()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex(
             'game-sport_type_id',
@@ -66,7 +68,7 @@ class m161020_161459_create_tables_for_court_and_game extends Migration
             'id' => $this->primaryKey(),
             'court_id' => $this->integer()->notNull(),
             'sport_type_id' => $this->integer()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex(
             'court_sport_type-court_id',
@@ -82,24 +84,24 @@ class m161020_161459_create_tables_for_court_and_game extends Migration
         $this->createTable('district_city', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createTable('court_type', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createTable('sport_type', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createTable('court_photo', [
             'id' => $this->primaryKey(),
             'court_id' => $this->integer()->notNull(),
             'photo' => $this->string()->notNull(),
             'avatar' => $this->boolean()->notNull(),
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex(
             'court_photo-court_id',

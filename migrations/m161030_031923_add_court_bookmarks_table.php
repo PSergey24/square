@@ -1,6 +1,8 @@
 <?php
 
-use yii\db\Migration;
+namespace app\migrations;
+
+use app\migrations\Migration;
 
 class m161030_031923_add_court_bookmarks_table extends Migration
 {
@@ -10,7 +12,7 @@ class m161030_031923_add_court_bookmarks_table extends Migration
                 'id' => $this->primaryKey(),
                 'user_id' => $this->integer()->notNull(),
                 'court_id' => $this->integer()->notNull()
-        ]);
+        ], $this->tableOptions);
 
         $this->createIndex(
             'court_bookmark-user_id',

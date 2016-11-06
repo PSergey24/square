@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use app\assets\AppAsset;
+use yii\helpers\Url;
 
 $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
@@ -14,7 +15,10 @@ $this->registerCssFile('/css/userProfile.css',[
         <div class="top-info">
             <div class="userPhoto"></div>
             <h1 class="h1-white">SuperBro</h1>
-            <p><a href="#" class="tag">Футбол</a><a href="#" class="tag">Баскетбол</a></p>
+            <p>
+                <?= Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), ['class' => 'tag']); ?>
+                <?= Html::a('Баскетбол', Url::to(['/court', 'sport_type' => 1], true), ['class' => 'tag']); ?>
+            </p>
             <p>Живет: <a class="live" href="#">Курляндская ул. 45</a></p>
         </div>
     </div>
