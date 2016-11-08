@@ -36,8 +36,14 @@ AppAsset::register($this);
             <?= $content ?>
 
             <!--Footer-->
-            <div class="helper"></div>
-            <div id="footer" class="container-fluid footer">
+            <div class="container-fluid footer helper">
+                    <a href="#">Обратная связь</a>
+                    <a href="#">О компании</a>
+                    <a href="#">Пользовательское соглашение</a>
+                    <p>Квадрат 2016</p>
+            </div>
+            </div>
+            <div class="container-fluid footer">
                 <a href="#">Обратная связь</a>
                 <a href="#">О компании</a>
                 <a href="#">Пользовательское соглашение</a>
