@@ -30,9 +30,7 @@ $this->registerJs("
 <div class="court-create">
 
     <h1 style="text-align: center">Добавление площадки</h1>
-
-    <?= $map->display() ?>
-
+    
     <?= $this->render('_form_create', [
         'model' => $model,
         'district_cities' => $district_cities,

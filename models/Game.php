@@ -29,7 +29,7 @@ class Game extends \yii\db\ActiveRecord
     }
 
     public function init()
-    {
+        {
         parent::init();
         $this->creator_id = Yii::$app->user->getId();
     }
@@ -40,8 +40,9 @@ class Game extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['time', 'need_ball', 'sport_type_id', 'court_id', 'creator_id'], 'required'],
+            [['time', 'sport_type_id', 'court_id', 'creator_id'], 'required'],
             [['time'], 'safe'],
+            ['need_ball', 'default', 'value' =>  0],
             [['need_ball', 'sport_type_id', 'court_id', 'creator_id'], 'integer'],
             [['court_id'], 'exist', 'skipOnError' => true, 'targetClass' => Court::className(), 'targetAttribute' => ['court_id' => 'id']],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['creator_id' => 'id']],
