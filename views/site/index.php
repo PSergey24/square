@@ -39,7 +39,7 @@ $this->registerJs("
 
 <div class="container-fluid bg">
     <div class="container">
-        <h2 class="h2-white">Присоединяйся к Квадрату прямо сейчас :)</h1>
+        <h2 class="h2-white">Присоединяйся к Квадрату прямо сейчас :)</h2>
         <a href="/login" class="big-green-btn shadow">Регистрация</a>
     </div>
 </div>

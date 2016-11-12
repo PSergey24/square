@@ -94,6 +94,7 @@ $this->registerJs("
         $('#description').toggle(300);
     });
 ");
+
 ?>
 
 <div class="container-fluid top">
@@ -116,10 +117,10 @@ $this->registerJs("
         </div>
         <div class="buttons">
             <a class="mid-green-btn shadow" id="bookmark">
-                <?= Html::img('@web/img/star.png', ['class' => 'img']) ?>
+                <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
                 <span class="hidden-xs">Добавить в избранные</span>
             </a>
-            <button class="mid-blue-btn shadow"><?= Html::img('@web/img/heart.png', ['class' => 'img']) ?><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
+            <button class="mid-blue-btn shadow"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
         </div>
 
     </div>
@@ -129,13 +130,13 @@ $this->registerJs("
 
 <div class="container">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat" id="map">
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow" id="map">
 
         </div>
     </div>
     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
         <h2 class="h2-box">Ближайшие игры</h2>
-        <div class="col-lg-12 col-xs-12 box games" id="game_list">
+        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
                      <?php
                         foreach ($games as $game) {
                             echo '<div class="game">
@@ -160,10 +161,28 @@ $this->registerJs("
         </div>
     </div>
 </div>
-
 <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create" class="create-game ">
+        <div class="modal-content game-create create-game">
+            <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
+            <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content game-create create-game">
+            <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>
+            <p id="warning">Игра успешно создана</p>
+        </div>
+    </div>
+</div>
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm ">
+        <div class="modal-content game-create create-game">
+            <i class="fa fa-times close fa-lg " data-dismiss="modal" aria-hidden="true" id="close"></i>
             <p class="h2-black">Создание игры</p>
         <?php
             $form = ActiveForm::begin([

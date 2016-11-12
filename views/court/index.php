@@ -103,9 +103,9 @@ $this->registerJs("
 <div class="container-fluid" id="center" >
     <div class="container">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <form class="shadow">
+            <form>
                 <select id="city_type" class="search">
-                    <option value="1" disabled selected style="display: none;">Санкт-Петербург</option>
+                    <option value="1" disabled selected>Санкт-Петербург</option>
                 </select>
                 <select id="district_type" class="search">
                     <option value="1" selected >Адмиралтейский</option>
@@ -122,10 +122,10 @@ $this->registerJs("
             <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="map"></div>
             </div>
-            <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><button class="mid-green-btn">Добавить площадку</button></div>
+            <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
             <div id="court_info" class="searchImgForm">
                 <div class="arrow_box forSmall">
-                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="close" onclick></div><span>Открыть площадку</span></div>
+                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="close"></div><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
                     <div class="sliderText center shadow" id="address">Измайловский пр. д.86</div></a>
                 </div>
             </div>
@@ -138,17 +138,17 @@ $this->registerJs("
         <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h1>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
             <a href="<?= '/court/view/' . $popular[0]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_22.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div style="background-image: url(../img/court_img_22.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[0]['address'] ?></div></a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
             <a href="<?= '/court/view/' . $popular[2]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_23.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div style="background-image: url(../img/court_img_23.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>21</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[2]['address'] ?></div></a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
             <a href="<?= '/court/view/' . $popular[1]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_24.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div style="background-image: url(../img/court_img_24.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[1]['address'] ?></div></a>
         </div>
     </div>
@@ -158,6 +158,6 @@ $this->registerJs("
     <div class="container">
         <h2 class="h2-white col-lg-12 col-md-12 col-sm-12 col-xs-12">Не нашли площадку?</h2>
         <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Хочешь организовать игру на спортивной площадке, а её нет на карте? Не беда! :) Тебе нужно всего лишь отправить нам заявку на её добавление и в ближайшее время она появится на карте.</p>
-        <div class="center col-xs-12"><input class="big-green-btn shadow" type="button" value="Добавить площадку"></div>
+        <div class="center col-xs-12"><a class="big-green-btn shadow" href="court/create">Добавить площадку</a></div>
     </div>
 </div>
