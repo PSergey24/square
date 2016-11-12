@@ -84,7 +84,9 @@ class GameController extends Controller
             $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
             $model->time = $datetime;
             $model->save();
-            return 'Игра успешно создана!';
+            return '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>
+            <p id="warning">Игра успешно создана</p>';
         }
         throw new NotFoundHttpException('The requested page does not exist.');
     }

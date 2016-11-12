@@ -2,7 +2,7 @@
 
 html,body{
 	font-family:'Roboto';
-	background-color: #f4f7f9;
+	background-color: #F0F0FA;
 	font-size:1rem;
 	font-weight: 300;
 		/* для footer*/
@@ -39,7 +39,7 @@ outline: none;
 .big-green-btn, .big-blue-btn{
 	padding: 0.9375rem 2.5rem;
 	font-size: 1.125rem;
-	font-weight: 500;
+	font-weight: 300;
 }
 .mid-green-btn, .mid-blue-btn{
 	padding: 0.625rem 2rem;
@@ -98,13 +98,14 @@ background:#00d12d;
 
 /*ЗАГОЛОВОК -------------------------------------*/
 .h1-black, .h1-white{
-font-size: 2.8rem;
+font-size: 2.6rem;
 margin: 1.5rem 0px;
 font-weight:700;
 line-height: 1.4;
+letter-spacing: 1px;
 }
 .h1-black, .h2-black{
-color:rgba(0,0,0,0.87);
+color:rgba(0,0,0,0.74);
 }
 .h1-white, .h2-white{
 color:rgba(255,255,255,1);
@@ -125,13 +126,9 @@ border:1px solid green;
 	height:65px;
 	background-color: #004CA3;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
-	position: fixed;
+	position: relative;
 	z-index: 1;
 	min-width: 100%;
-	margin-top: -65px;
-}
-body {
-	padding-top: 65px;
 }
 	#logo{
 		float: left;
@@ -278,7 +275,8 @@ body {
 	} 
 	.imgPolygon{ 
 	width:10px; 
-	height: 10px; 
+	height: 10px;
+	opacity: .7; 
 	} 
 	ul.dropdown > a { 
 	color:rgba(255,255,255,1); 
@@ -292,49 +290,46 @@ body {
 	} 
 	ul.dropdown:hover .dropdown-inside { 
 	display: block; 
-	left: -80px; 
-	} 
+	left: -100px; 
+	}
+	ul.dropdown:hover .imgPolygon{
+	opacity: 1;			
+	}
 	ul.dropdown .dropdown-inside { 
-	width:140px; 
+	width:160px; 
 	background: #005BC3; 
-	border-bottom-left-radius: 5px; 
-	border-bottom-right-radius: 5px; 
-	line-height: 40px; 
-	padding: 0 10px; 
+	border-bottom-left-radius: 3px; 
+	border-bottom-right-radius: 3px; 
+	line-height: 35px; 
+	padding: 5px 15px; 
 	} 
 	ul.dropdown .dropdown-inside a{ 
 	float: left; 
-	width:120px; 
-	/* color:rgba(255,255,255,0.7);*/ 
+	width:100%;
+	padding-left: 40px;
+	position: relative;
 	color:rgba(255,255,255,1); 
 	text-align: left; 
-	text-indent: 40px; 
-	background-position: left center;
 	opacity: 0.7; 
-	border-bottom:1px solid rgb(255,255,255); 
-	} 
-	ul.dropdown .dropdown-inside a:last-child{ 
-	border-bottom:none; 
-	} 
+	
+	}
+	.menu-icon{
+		position: absolute;
+		left: 0;
+		top: 35%;
+	}
+	.fa-bell{
+		left: -2px;
+	}
+	.divide{
+		width: 100%;
+		border: 1px solid #004CA3;
+		margin: 5px 0;
+		float: left;
+	}
 	ul.dropdown .dropdown-inside a:hover{ 
-	/* color:rgba(255,255,255,1);*/ 
 	opacity: 1; 
 	outline-bottom:1px solid rgba(255,255,255,0.7); 
-	} 
-	.setting{ 
-	background: url(../img/settings.png) no-repeat; 
-	background-size:20px 20px; 
-	background-position: center left; 
-	} 
-	.newLetters{ 
-	background: url(../img/email.png) no-repeat; 
-	background-size:20px 20px; 
-	background-position: center left; 
-	} 
-	.exit{ 
-	background: url(../img/exit.png) no-repeat; 
-	background-size:20px 20px; 
-	background-position: center left; 
 	} 
 	ul.dropdown .dropdown-inside a:visited{ 
 	text-decoration: none; 
@@ -349,6 +344,7 @@ body {
 
 	}
 	.tabs{
+		max-width: 365px;
 		width:90%;
 		padding:10px 20px;
 		background-color: white;
@@ -357,9 +353,7 @@ body {
 		margin: 30px auto;
 		margin-bottom: 100px;
 	}
-	.btn{
-		padding: 9px 16px !important;
-	}
+
 	.nav-tabs{
 		border-bottom: none;
 		margin-bottom: 20px;
@@ -440,10 +434,16 @@ body {
 				color:white;
 				background-color: #00a606;
 			}
+			.btn{
+				padding-top: 9px;
+				padding-bottom: 9px;
+				font-size: 1rem;
+				font-weight: 500;
+			}
 			input[type="text"]:focus,input[type="password"]:focus,input[type="button"]:focus { outline: none; }
 
 			.tab-content fieldset{
-				margin-top: 10px;
+				margin-top: 18px;
 				border-top:1px solid rgba(0,0,0,0.74);
 				color:rgba(0,0,0,0.74);
 			}
@@ -468,7 +468,7 @@ body {
 
 	/* для footer */
 .footer{
-    background-color: #E5EBEE;
+    background-color: #E2E8EB;
     text-align: center;
     padding: 0.9375rem 0;
     color:rgba(0,0,0,0.5);
@@ -503,11 +503,20 @@ position: relative;
 		}
 
 
-@media (max-width: 767px) { 
+@media (max-width: 767px) {
+	ul.dropdown {
+		font-size: 1rem;
+	}
+	.menu-icon{
+		top: 29%;
+	}
 	html{ font-size: 12px;}
 	.container{
 		padding: 0 5px;
 	}
+	.forSmall, .searchImgForm {
+    padding: 0;
+}
 	/* Шапка */
 	.tabs{
 		width: 100%;

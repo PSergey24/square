@@ -27,18 +27,18 @@ $this->registerCssFile('/css/userProfile.css',[
 <div class="container-fluid contentUser">
     <div class="container">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
-            <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2 class="h1-black">Площадки SuperBro <span><?= count($courts) ?></span></h2>
+            <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
+                <h2 class="h2-black">Площадки SuperBro <span><?= count($courts) ?></span></h2>
                 <?php
                     foreach ($courts as $court) {
-                        echo '<a href=/court/view/' . $court["id"] . '><div class="contentUserImg"><p>'. $court["address"] . '</p></div></a>';
+                        echo '<a href=/court/view/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg"><p>'. $court["address"] . '</p></div></div></a>';
                     }
                 ?>
             </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
-            <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12 soonGame" id="games">
-                <h2 class="h1-black">Ближайшие игры/тренировки</h2>
+            <div class="box col-lg-12 col-md-12 col-sm-12 col-xs-12 soonGame shadow" id="games">
+                <h2 class="h2-black">Ближайшие игры/тренировки</h2>
                 <?php
                     foreach ($games as $game){
                         if($game['need_ball'])

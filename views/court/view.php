@@ -77,6 +77,7 @@ $this->registerJs("
         $('#description').toggle(300);
     });
 ");
+
 //refresh games block after create new game
 $this->registerJs('$("#game-create").on("pjax:end", function() {
            $.pjax.reload({container: "#games"});
@@ -97,6 +98,7 @@ $this->registerJs("
         }
     }
 ");
+
 ?>
 
 <div class="container-fluid top">
@@ -126,15 +128,14 @@ $this->registerJs("
         <div class="buttons">
             <a class="mid-green-btn shadow" id="bookmark">
                 <?php if ($bookmarked) : ?>
-                    <?= Html::img('@web/img/star-active.png', ['class' => 'img']) ?>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                     <span class="hidden-xs">Удалить из избранного</span>
                 <?php else:?>
-                    <?= Html::img('@web/img/star.png', ['class' => 'img']) ?>
+                    <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
                     <span class="hidden-xs">Добавить в избранное</span>
                 <?php endif;?>
             </a>
-            <button class="mid-blue-btn shadow"><?= Html::img('@web/img/heart.png', ['class' => 'img']) ?><span
-                    class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
+            <button class="mid-blue-btn shadow"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
         </div>
 
     </div>
@@ -143,15 +144,16 @@ $this->registerJs("
 
 <div class="container">
     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat" id="map">
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow" id="map">
 
         </div>
     </div>
     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
         <h2 class="h2-box">Ближайшие игры</h2>
         <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
-        <div class="col-lg-12 col-xs-12 box games" id="game_list">
-            <?php
+        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
+
+        <?php
             foreach ($games as $game) {
                 echo '<div class="game">
                     <div class="time">';
@@ -168,7 +170,7 @@ $this->registerJs("
                     echo Html::img('@web/img/ball-ok.png');
                 else
                     echo Html::img('@web/img/ball-not.png');
-                echo '<button class="mid-blue-btn">+ <span class="players">1</span></button></div>';
+                echo '<button class="mid-blue-btn"> + <span class="players">1</span></button></div>';
             }
             ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
@@ -176,11 +178,17 @@ $this->registerJs("
         <?php Pjax::end(); ?>
         </div>
 </div>
+
 <?php if (Yii::$app->user->isGuest): ?>
     <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-sm ">
-            <h1>Для того чтобы создать игру необходимо <a>Войти</a></h1>
+            <div class="modal-content game-create create-game">
+                <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+                <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
+                <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
+            </div>
+
         </div>
     </div>
 <?php else: ?>

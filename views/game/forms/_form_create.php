@@ -10,10 +10,10 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
 ?>
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-     aria-hidden="true">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create" class="create-game ">
+        <div class="modal-content game-create create-game">
+            <i class="fa fa-times close fa-lg " data-dismiss="modal" aria-hidden="true" id="close"></i>
             <p class="h2-black">Создание игры</p>
 
             <?php 
