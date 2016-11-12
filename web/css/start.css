@@ -13,18 +13,18 @@ body{
 }
 .top{
 	max-height: 100%;
-	background-image: url(../../img/basketball.png);
+	background-image: url(../../img/basketball.jpg);
 	background-size: cover;
 	text-align: center !important;
+	box-shadow: 100px 450px 150px rgba(0,0,0,0.5) inset;
 }
 .big{
 	font-size: 3rem;
 	margin-bottom: 0;
-	margin-top: 5rem;
+	margin-top: 9rem;
 }
 .text{
 	font-size: 1.5rem;
-	margin: 2rem 0;
 	margin-top: 1rem;
 	color: rgb(255,255,255);
 	max-width: 800px;
@@ -34,23 +34,62 @@ body{
 
 }
 form{
-	margin-bottom: 6rem;
+	margin-bottom: 13rem;
+	text-align: center;
+	padding: 0 15%;
+	width: 100%;
+	float: left;
+	margin-top: -1rem;
 }
-.arrow{
-	margin-bottom: 3rem;
+.search{
+	width: 28% !important;
+	background: white;
+	margin-top: 2.5rem;
+	margin-bottom: 1.5rem;
 }
-.input{
-	background-color: rgb(255,255,255);
-	margin-right: 0.25rem;
-	width: 17%;
-	min-width: 140px;
-	margin-bottom: 1rem;
-	padding-top: 9px;
-	padding-bottom: 9px;
+.search:first-child{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+form select{
+	text-indent: 15px;
+	padding:15px 0;
+	float:left;
+	border: 1px solid rgba(0,0,0,0.1);
+}
+#district_type{
+	border-left: none !important;
+	border-right: none !important;
+}
+.top{
+	position: relative;
+}
+i{
+	color: white;
+	position: absolute;
+	left: 48%;
+	bottom: 2rem;
+	opacity: .7;
+}
+i:hover{
+	opacity: 1;
 }
 
 .mid-green-btn{
-	padding: 9px 33px;
+	background:#00d12d !important;
+	border-radius: 0;
+	padding: 15px 0 !important;
+	padding-bottom: 16px !important;
+	float:left;
+	width: 16% !important;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.mid-green-btn:hover{
+	background: #00C32A !important;
+}
+.mid-green-btn:active{
+	background: #00B427 !important;
 }
 
 
@@ -89,11 +128,39 @@ form{
 }
 
 @media (max-width: 767px) {
-.hello{
-	display: block;
-}
-.input, .mid-green-btn{
-	padding-top:12px;
-	padding-bottom:12px;
-}
+	.big{
+		margin-top: 4rem;
+	}
+	form{
+		margin-bottom: 6rem;
+	}
+	.hello{
+		display: block;
+	}
+	.search{
+		margin: 0 !important;
+		font-size: 14px;
+	}
+	#city_type{
+		border-radius: 0!important;
+	}
+	#city_type, #district_type{
+		width: 50% !important;
+	}
+	#sport_type{
+		width: 100% !important;
+		border-top: none !important;
+	}
+	form{
+		padding: 0 !important;
+		margin-top: 1.2rem !important;
+
+	}
+	.mid-green-btn{
+		width: 50% !important;
+		margin-top: 1.5rem !important;
+		border-radius: 5px !important;
+		float: initial;
+	}
+
 }
