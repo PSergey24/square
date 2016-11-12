@@ -19,7 +19,7 @@ $this->title = Yii::t('user', 'Регистрация/Авторизация');
     <div class="tabs">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-1" data-toggle="tab">Регистрация</a></li>
-            <li><a href="#tab-2" data-toggle="tab">Вход</a></li>
+            <li class=""><a href="#tab-2" data-toggle="tab">Вход</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab-1">
