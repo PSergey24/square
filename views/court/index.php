@@ -103,34 +103,30 @@ $this->registerJs("
 <div class="container-fluid" id="center" >
     <div class="container">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <div class="searchImgForm col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-                    <form class="box shadow">
-                        <input disabled type="text" placeholder="Санкт-Петербург">
-                        <select id="sport_type">
-                            <option value="" disabled selected style="display: none;">Вид спорта</option>
-                            <option value="1">Баскетбол</option>
-                            <option value="2">Футбол</option>
-                        </select>
-                        <input type="button" class="mid-green-btn" value="Поиск">
-                    </form>
-                </div>
-            </div>
+            <form class="shadow">
+                <select id="city_type" class="search">
+                    <option value="1" disabled selected style="display: none;">Санкт-Петербург</option>
+                </select>
+                <select id="district_type" class="search">
+                    <option value="1" selected >Адмиралтейский</option>
+                    <option value="2">Кировский</option>
+                    <option value="3">Центральный</option>
+                </select>
+                <select id="sport_type" class="search">
+                    <option value="0" selected>Вид спорта</option>
+                    <option value="1">Баскетбол</option>
+                    <option value="2">Футбол</option>
+                </select>
+            </form>
 
-            <div class="box shadow searchImgBox col-lg-7 col-md-7 col-sm-7 col-xs-12">
+            <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="map"></div>
-                <div class="Arena">
-                    <span class="chooseArena hidden-xs">Выберите площадку на карте</span>
-                    <span class="addArena">+Добавить площадку</span>
-                    <span class="nearArena">Близжайшие к вам</span>
-                </div>
             </div>
-            <div id="court_info" class="searchImgForm col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-                    <div style="background-image: url(img/arena.jpg);" class="image-right" id="court_photo">
-                        <a href="#" id="court_link"><div class="open"><span>Открыть</span></div></a>
-                    </div>
-                    <div class="underImg box shadow" id="address">Измайловский пр. д.86</div>
+            <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><button class="mid-green-btn">Добавить площадку</button></div>
+            <div id="court_info" class="searchImgForm">
+                <div class="arrow_box forSmall">
+                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="close" onclick></div><span>Открыть площадку</span></div>
+                    <div class="sliderText center shadow" id="address">Измайловский пр. д.86</div></a>
                 </div>
             </div>
         </div>
@@ -139,26 +135,29 @@ $this->registerJs("
 
 <div class="container-fluid" id="slider">
     <div class="container containerSlider">
-        <h1 class="h1-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h1>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall">
-            <div style="background-image: url(../img/court_img_22.jpg);" class="image"><a href="<?= '/court/view/' . $popular[0]['id'] ?>" id="court_link"><div class="open"><span>Открыть</span></div></a></div>
-            <div class="sliderText box shadow"><?= $popular[0]['address'] ?></div>
+        <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h1>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
+            <a href="<?= '/court/view/' . $popular[0]['id'] ?>" id="court_link">
+            <div style="background-image: url(../img/court_img_22.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div class="sliderText shadow"><?= $popular[0]['address'] ?></div></a>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall">
-            <div style="background-image: url(../img/court_img_23.jpg);" class="image"><a href="<?= '/court/view/' . $popular[2]['id'] ?>" id="court_link"><div class="open"><span>Открыть</span></div></a></div>
-            <div class="sliderText box shadow"><?= $popular[2]['address'] ?></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
+            <a href="<?= '/court/view/' . $popular[2]['id'] ?>" id="court_link">
+            <div style="background-image: url(../img/court_img_23.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div class="sliderText shadow"><?= $popular[2]['address'] ?></div></a>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall">
-            <div style="background-image: url(../img/court_img_24.jpg);" class="image"><a href="<?= '/court/view/' . $popular[1]['id'] ?>" id="court_link"><div class="open"><span>Открыть</span></div></a></div>
-            <div class="sliderText box shadow"><?= $popular[1]['address'] ?></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
+            <a href="<?= '/court/view/' . $popular[1]['id'] ?>" id="court_link">
+            <div style="background-image: url(../img/court_img_24.jpg);" class="image"><span>Открыть площадку</span></div>
+            <div class="sliderText shadow"><?= $popular[1]['address'] ?></div></a>
         </div>
     </div>
 </div>
 
 <div class="container-fluid" id="notArena">
     <div class="container">
-        <h2 class="h1-white col-lg-12 col-md-12 col-sm-12 col-xs-12">Не нашли площадку?</h2>
-        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Хочешь организовать игру на спортивной площадке, а её нет на карте? Не беда!:) Тебе нужно всего лишь отправить нам заявку на её добавление и в ближайшее время она появится на карте.</p>
-        <p><input class="big-green-btn shadow" type="button" value="Добавить площадку"></p>
+        <h2 class="h2-white col-lg-12 col-md-12 col-sm-12 col-xs-12">Не нашли площадку?</h2>
+        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Хочешь организовать игру на спортивной площадке, а её нет на карте? Не беда! :) Тебе нужно всего лишь отправить нам заявку на её добавление и в ближайшее время она появится на карте.</p>
+        <div class="center col-xs-12"><input class="big-green-btn shadow" type="button" value="Добавить площадку"></div>
     </div>
 </div>
