@@ -125,8 +125,8 @@ $this->registerJs("
             <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
             <div id="court_info" class="searchImgForm">
                 <div class="arrow_box forSmall">
-                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="close"></div><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
-                    <div class="sliderText center shadow" id="address">Измайловский пр. д.86</div></a>
+                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
+                    <div class="sliderText center" id="address">Измайловский пр. д.86</div></a>
                 </div>
             </div>
         </div>
