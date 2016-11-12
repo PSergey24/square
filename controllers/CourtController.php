@@ -92,18 +92,21 @@ class CourtController extends Controller
             ->from('court')
             ->where(['id' => $id]);
         $court = $query->one();
-        
+
         $query->select('time, need_ball')
             ->from('game')
             ->where(['court_id' => $id]);
         $games = $query->all();
-        
+
+        $bookmarked = $this->isBookmarked($id) ? true : false;
+
         return $this->render('view', [
             'model' => $this->findModel($id),
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
             'court' => $court,
-            'court_json' => json_encode($court)
+            'court_json' => json_encode($court),
+            'bookmarked' => $bookmarked
         ]);
     }
 
@@ -208,11 +211,26 @@ class CourtController extends Controller
     public function actionBookmark($court_id)
     {
         if (Yii::$app->request->isAjax) {
-            $bookmark = Yii::createObject(CourtBookmark::className());
-            $bookmark->court_id = $court_id;
-            $bookmark->user_id = Yii::$app->user->getId();
-            $bookmark->save();
-
+            //check if court already in current user bookmark's
+            $bookmark = $this->isBookmarked($court_id);
+            if ($bookmark)
+                $bookmark->delete();
+            else {
+                $bookmark = Yii::createObject(CourtBookmark::className());
+                $bookmark->court_id = $court_id;
+                $bookmark->user_id = Yii::$app->user->getId();
+                $bookmark->save();
+            }
         }
+    }
+
+    function isBookmarked($court_id) {
+        $user_id = Yii::$app->user->getId();
+        $bookmarks = Yii::createObject(CourtBookmark::className());
+        $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
+        if ($bookmark)
+            return $bookmark;
+        return false;
+
     }
 }

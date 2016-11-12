@@ -60,9 +60,15 @@ $this->registerJs("
                 url: '/court/bookmark',
                 data: {court_id: id},
                 success: function(success) {
-                    $('#bookmark img').attr('src', '/img/star-active.png');
-                    $('#bookmark span').text('Удалить из избранного');
-                    console.log(success);
+                    if ($('#bookmark span').text() == 'Удалить из избранного') {
+                        $('#bookmark img').attr('src', '/img/star.png');
+                        $('#bookmark span').text('Добавить в избранное');
+                    }else {
+                        console.log('2');
+                        $('#bookmark img').attr('src', '/img/star-active.png');
+                        $('#bookmark span').text('Удалить из избранного');  
+                    }
+                    
                 },
             });
         });
@@ -119,8 +125,13 @@ $this->registerJs("
         </div>
         <div class="buttons">
             <a class="mid-green-btn shadow" id="bookmark">
-                <?= Html::img('@web/img/star.png', ['class' => 'img']) ?>
-                <span class="hidden-xs">Добавить в избранные</span>
+                <?php if ($bookmarked) : ?>
+                    <?= Html::img('@web/img/star-active.png', ['class' => 'img']) ?>
+                    <span class="hidden-xs">Удалить из избранного</span>
+                <?php else:?>
+                    <?= Html::img('@web/img/star.png', ['class' => 'img']) ?>
+                    <span class="hidden-xs">Добавить в избранное</span>
+                <?php endif;?>
             </a>
             <button class="mid-blue-btn shadow"><?= Html::img('@web/img/heart.png', ['class' => 'img']) ?><span
                     class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>

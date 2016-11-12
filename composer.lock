@@ -4,9 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "97d770ffcbdb185f1ef9d35408affaa8",
-    "content-hash": "dce608310a96d1348cb1e0b11a2ec248",
->>>>>>> frontend/styles
+    "hash": "5a698086c78d80bd37196cee610c68b8",
+    "content-hash": "b0e8487274926c7534c8c1dbac280e03",
     "packages": [
         {
             "name": "bootstrap-select/bootstrap-select",
@@ -62,7 +61,7 @@
                 "shasum": ""
             },
             "require": {
-                "bower-asset/jquery": ">=1.9.1,<4.0"
+                "bower-asset/jquery": ">=1.9.1,<=3"
             },
             "type": "bower-asset-library",
             "extra": {
@@ -988,6 +987,7 @@
                 "codeception",
                 "yii2"
             ],
+            "abandoned": "codeception/codeception",
             "time": "2016-03-17 03:41:26"
         },
         {
