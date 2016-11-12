@@ -20,9 +20,12 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3
     ]
 );
 $this->registerJs("
-    var map;
+    var map, myloc_marker, myloc_infoWindow, infowindow, contentString;
     var markers = new Array();
+    var directionsDisplay, directionsService, map;
     function initMap() {
+        var directionsService = new google.maps.DirectionsService();
+        directionsDisplay = new google.maps.DirectionsRenderer();
         var latlng = new google.maps.LatLng(59.910326, 30.3185942);
         var options = {
             zoom: 11,
@@ -38,6 +41,32 @@ $this->registerJs("
         };
 
         map = new google.maps.Map(document.getElementById('map'), options);
+        directionsDisplay.setMap(map);
+        
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+
+            myloc_marker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                icon: '/img/my_location.png'
+            });
+            myloc_infoWindow = new google.maps.InfoWindow({
+                content: 'Вы находитесь здесь'
+            });
+            myloc_infoWindow.open(map, myloc_marker);
+            map.setCenter(pos);
+            map.setZoom(14);
+          }, function() {
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          alert('Ошибка: Ваш браузер не поддерживает геолокацию!');
+        }           
     }
 ", $this::POS_HEAD);
 
@@ -77,7 +106,7 @@ $this->registerJs("
                 icon: pinImgLink
             });
             google.maps.event.addListener(marker, 'click', function() {
-                $('#court_link').attr('href', '/court/view/' + this.id);
+                $('#court_link').attr('href', '/court/' + this.id);
                 $('#address').text(this.address);
                 $('#court_photo').css('background-image', 'url(/img/' + this.photo +')');
                 $('#court_info').css('display', 'block');
@@ -98,6 +127,53 @@ $this->registerJs("
         }
     });
 ");
+$this->registerJs("
+     $('#nearest_courts').click(function (e) {
+        console.log('nearest');
+         if (navigator.geolocation) {
+           navigator.geolocation.getCurrentPosition(function(position) {
+             var pos = {
+               lat: position.coords.latitude,
+               lng: position.coords.longitude
+             };
+             infowindow.close();
+             if(myloc_marker) {
+                 if(myloc_infoWindow) { 
+                    myloc_infoWindow.close(); 
+                    }
+                 myloc_marker.setPosition(pos);
+             } else {
+                 myloc_marker = new google.maps.Marker({
+                     position: pos,
+                     map: map,
+                     icon: '/img/my_location.png'
+                 });
+             }
+             myloc_infoWindow.open(map, myloc_marker);
+             map.setCenter(pos);
+             map.setZoom(14);
+           }, function() {
+               alert(\"Ошибка: в Вашем браузере данная функция недоступна!\");
+           });
+         } else {
+           // Browser doesn't support Geolocation
+           alert(\"Ошибка: Ваш браузер не поддерживает геолокацию!\");
+         }
+    });
+");
+$this->registerJs("
+     $('#district_type').change(function (e) {
+        $.ajax({url: 'адрес куда нужно', data: $('#district_type :selected').val(), success: function(result) {
+            var pos = {
+              lat: result['lat'],
+              lng: result['lon']
+            };
+            map.setCenter(pos);
+            map.setZoom(12);
+        }});
+    });
+");
+?>
 ?>
 
 <div class="container-fluid" id="center" >
@@ -122,7 +198,7 @@ $this->registerJs("
             <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div id="map"></div>
             </div>
-            <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
+            <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
             <div id="court_info" class="searchImgForm">
                 <div class="arrow_box forSmall">
                     <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
@@ -135,19 +211,19 @@ $this->registerJs("
 
 <div class="container-fluid" id="slider">
     <div class="container containerSlider">
-        <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h1>
+        <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h2>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[0]['id'] ?>" id="court_link">
+            <a href="<?= '/court/' . $popular[0]['id'] ?>" id="court_link">
             <div style="background-image: url(../img/court_img_22.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[0]['address'] ?></div></a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[2]['id'] ?>" id="court_link">
+            <a href="<?= '/court/' . $popular[2]['id'] ?>" id="court_link">
             <div style="background-image: url(../img/court_img_23.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>21</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[2]['address'] ?></div></a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[1]['id'] ?>" id="court_link">
+            <a href="<?= '/court/' . $popular[1]['id'] ?>" id="court_link">
             <div style="background-image: url(../img/court_img_24.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
             <div class="sliderText shadow"><?= $popular[1]['address'] ?></div></a>
         </div>

@@ -14,7 +14,7 @@ $this->registerCssFile('/css/userProfile.css',[
 
         <div class="top-info">
             <div class="userPhoto"></div>
-            <h1 class="h1-white">SuperBro</h1>
+            <h1 class="h1-white"><?= $username ?></h1>
             <p>
                 <?= Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), ['class' => 'tag']); ?>
                 <?= Html::a('Баскетбол', Url::to(['/court', 'sport_type' => 1], true), ['class' => 'tag']); ?>
@@ -28,7 +28,7 @@ $this->registerCssFile('/css/userProfile.css',[
     <div class="container">
         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
             <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
-                <h2 class="h2-black">Площадки SuperBro <span><?= count($courts) ?></span></h2>
+                <h2 class="h2-black">Площадки <?= $username ?> <span><?= count($courts) ?></span></h2>
                 <?php
                     foreach ($courts as $court) {
                         echo '<a href=/court/view/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg"><p>'. $court["address"] . '</p></div></div></a>';

@@ -8,9 +8,11 @@ use yii\db\Query;
 use yii\web\Controller;
 use app\models\Court;
 use DateTime;
+use app\models\User;
 
 class SiteController extends Controller
 {
+
     public function actions()
     {
         return [
@@ -29,6 +31,8 @@ class SiteController extends Controller
     }
     
     public function actionIndex() {
+        if (!Yii::$app->user->isGuest)
+            return $this->redirect('/court',302);
         return $this->render('index.php');
     }
 
@@ -60,9 +64,9 @@ class SiteController extends Controller
                 $current_datetime = date_format($current_datetime, 'Y-m-d');
                 $tm_current = strtotime($current_datetime);
                 if (date("d", $tm) == date("d", $tm_current))
-                    $row['time'] = 'Сегодня ' . date("H:m", $tm);
+                    $row['time'] = 'Сегодня ' . date("H:i", $tm);
                 else
-                    $row['time'] = 'Завтра ' . date("H:m", $tm);
+                    $row['time'] = 'Завтра ' . date("H:i", $tm);
                 $row['address'] = $court_addr['address'];
                 array_push($games, $row);
             }
@@ -73,7 +77,8 @@ class SiteController extends Controller
 
         return $this->render('profile.php', [
             'courts' => $courts,
-            'games' => $games
+            'games' => $games,
+            'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username
         ]);
     }
     

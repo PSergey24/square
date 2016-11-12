@@ -17,7 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('/css/squareProfile.css', [
     'depends' => [AppAsset::className()]
 ]);
-
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
+    [
+        'async' => true,
+    ]
+);
 $this->registerJs("
     var map;
     var court = " . $court_json . ";
@@ -61,11 +65,13 @@ $this->registerJs("
                 data: {court_id: id},
                 success: function(success) {
                     if ($('#bookmark span').text() == 'Удалить из избранного') {
-                        $('#bookmark img').attr('src', '/img/star.png');
+                        $('.mid-green-btn i').removeClass('fa-star');
+                        $('.mid-green-btn i').addClass('fa-star-o');
                         $('#bookmark span').text('Добавить в избранное');
                     }else {
-                        console.log('2');
-                        $('#bookmark img').attr('src', '/img/star-active.png');
+                    console.log('12');
+                        $('.mid-green-btn i').removeClass('fa-star-o');
+                        $('.mid-green-btn i').addClass('fa-star');
                         $('#bookmark span').text('Удалить из избранного');  
                     }
                     
