@@ -161,7 +161,7 @@ $this->registerJs("
                     <span class="hidden-xs">Удалить из избранного</span>
                 <?php else:?>
                     <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
-                    <span class="hidden-xs">Добавить в избранное</span>
+                    <span class="hidden-xs" data-toggle="modal" data-target=".needLogin"> Добавить в избранное</span>
                 <?php endif;?>
             </a>
             <button class="mid-blue-btn shadow" id="like"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">0</span></button>
@@ -209,7 +209,7 @@ $this->registerJs("
 </div>
 
 <?php if (Yii::$app->user->isGuest): ?>
-    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    <div class="modal fade bs-example-modal-lg needLogin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
          aria-hidden="true">
         <div class="modal-dialog modal-sm ">
             <div class="modal-content game-create create-game">

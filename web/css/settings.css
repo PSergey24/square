@@ -1,0 +1,15 @@
+body > .row{
+	margin: 0;
+}
+body > .container{
+	margin-top: 2rem;
+}
+.table{
+	margin-bottom: 0 !important;
+}
+.panel-body:last-child{
+	padding-bottom: 7px !important;
+}
+.form-group:last-child {
+	margin-bottom: 0;
+}
