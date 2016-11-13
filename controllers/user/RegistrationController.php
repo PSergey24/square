@@ -28,7 +28,7 @@ use dektrium\user\models\RegistrationForm;
                  'module' => $this->module,
              ]);
          }
-
+         \Yii::$app->session->setFlash('danger', "Пользователь с таким именем уже существует");
          return $this->render('@app/views/user/registration/register', [
              'model'  => $model,
              'module' => $this->module,

@@ -31,34 +31,19 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
     ]) ?>
 
     <?= $form->field($model, 'built_up_area')->textInput() ?>
+    <?= $form->field($model, 'district_city_id')
+                ->dropDownList($district_cities, [
+                    'class' => 'selectpicker',
+                    'title' => 'Выберите район'
+                ]);
+    ?>
 
-    <div class="form-group field-court-district_city_id required">
-        <label class="control-label col-sm-3" for="court-district_city_id">
-            <?= $model->getAttributeLabel('district_city_id') ?>
-        </label>
-        <div class="col-sm-6">
-            <?= Html::activeDropDownList($model, 'district_city_id', $district_cities, [
-                'class' => 'selectpicker',
-                'title' => 'Выберите район'
-            ]);
-            ?>
-            <div class="help-block help-block-error "></div>
-        </div>
-    </div>
-    <div class="form-group field-court-type_id required">
-        <label class="control-label col-sm-3" for="court-type_id">
-            <?= $model->getAttributeLabel('type_id') ?>
-        </label>
-        <div class="col-sm-6">
-            <?= Html::activeDropDownList($model, 'type_id', $types, [
+    <?= $form->field($model, 'type_id')
+            ->dropDownList($types, [
                 'class' => 'selectpicker',
                 'title' => 'Выберите тип'
             ]);
-            ?>
-            <div class="help-block help-block-error "></div>
-        </div>
-    </div>
-
+    ?>
     <?= Html::activeHiddenInput($model, 'lat') ?>
 
     <?= Html::activeHiddenInput($model, 'lon') ?>

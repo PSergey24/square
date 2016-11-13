@@ -20,7 +20,7 @@ use yii\helpers\Url;
                         <ul class="dropdown-inside">
                             <a class="setting" href="/profile"><i class="fa fa-user fa-lg menu-icon" aria-hidden="true"></i>Профиль</a>
                             <a class="newLetters" href="#"><i class="fa fa-bell fa-lg menu-icon" aria-hidden="true"></i>Оповещения</a>
-                            <a class="setting" href="/user/settings/profile"><i class="fa fa-cog fa-lg menu-icon" aria-hidden="true"></i>Настройки</a>
+                            <a class="setting" href="/settings/profile"><i class="fa fa-cog fa-lg menu-icon" aria-hidden="true"></i>Настройки</a>
                             <div class="divide"></div>
                             <a class="exit" href="/logout" data-method="POST"><i class="fa fa-sign-out fa-lg menu-icon" aria-hidden="true"></i>Выход</a>
                         </ul>

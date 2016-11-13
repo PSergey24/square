@@ -129,7 +129,6 @@ $this->registerJs("
 ");
 $this->registerJs("
      $('#nearest_courts').click(function (e) {
-        console.log('nearest');
          if (navigator.geolocation) {
            navigator.geolocation.getCurrentPosition(function(position) {
              var pos = {

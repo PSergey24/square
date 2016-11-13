@@ -32,7 +32,7 @@ class SiteController extends Controller
     
     public function actionIndex() {
         if (!Yii::$app->user->isGuest)
-            return $this->redirect('/court',302);
+            return $this->redirect('/profile',302);
         return $this->render('index.php');
     }
 
@@ -68,6 +68,7 @@ class SiteController extends Controller
                 else
                     $row['time'] = 'Завтра ' . date("H:i", $tm);
                 $row['address'] = $court_addr['address'];
+                $row['court_id'] = $court_addr['id'];
                 array_push($games, $row);
             }
 

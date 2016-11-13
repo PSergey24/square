@@ -46,7 +46,7 @@ $this->registerCssFile('/css/userProfile.css',[
                         else
                             $ballImg = '/img/ball-not.png';
                         echo '<div class="timeBox">
-                                <p class="timeGame">'.$game['time'].'</p><img class="timeBall" src="'.$ballImg.'"><a class="timeGameAddress" href="#">'.$game['address'].'</a>
+                                <p class="timeGame">'.$game['time'].'</p><img class="timeBall" src="'.$ballImg.'"><a class="timeGameAddress" href="/court/' . $game['court_id'] . '">'.$game['address'].'</a>
                             </div>';
                     }
                 ?>

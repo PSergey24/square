@@ -47,7 +47,12 @@ class Court extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['address', 'lat', 'lon', 'name', 'creator_id', 'district_city_id', 'type_id'], 'required'],
+            [['lat', 'lon', 'creator_id'], 'required'],
+            ['address', 'required', 'message' => 'Установите маркер на карте'],
+            ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
+            ['name', 'required', 'message' => 'Опишите площадку'],
+            ['type_id', 'required', 'message' => 'Не выбран тип площадки'],
+            ['district_city_id', 'required', 'message' => 'Не выбран район города'],
             [['lat', 'lon'], 'number'],
             [['built_up_area', 'creator_id', 'district_city_id', 'type_id'], 'integer'],
             [['address', 'name'], 'string', 'max' => 255],

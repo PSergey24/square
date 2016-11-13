@@ -42,7 +42,6 @@ AppAsset::register($this);
                     <a href="#">Пользовательское соглашение</a>
                     <p>Квадрат 2016</p>
             </div>
-            </div>
             <div class="container-fluid footer">
                 <a href="#">Обратная связь</a>
                 <a href="#">О компании</a>

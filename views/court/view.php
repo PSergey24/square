@@ -55,35 +55,35 @@ $this->registerJs("
         });
     }
 ", $this::POS_HEAD);
-$this->registerJs("
-    //Bookmark btn onclick change pic and text
-    $('#bookmark').click(function () {
-            var url = document.URL;
-            var id = url.substring(url.lastIndexOf('/') + 1);
-            $.ajax({
-                url: '/court/bookmark',
-                data: {court_id: id},
-                success: function(success) {
-                    if ($('#bookmark span').text() == 'Удалить из избранного') {
-                        $('.mid-green-btn i').removeClass('fa-star');
-                        $('.mid-green-btn i').addClass('fa-star-o');
-                        $('#bookmark span').text('Добавить в избранное');
-                    }else {
-                    console.log('12');
-                        $('.mid-green-btn i').removeClass('fa-star-o');
-                        $('.mid-green-btn i').addClass('fa-star');
-                        $('#bookmark span').text('Удалить из избранного');  
-                    }
-                    
-                },
+if (!Yii::$app->user->getIsGuest())
+    $this->registerJs("
+        //Bookmark btn onclick change pic and text
+        $('#bookmark').click(function () {
+                var url = document.URL;
+                var id = url.substring(url.lastIndexOf('/') + 1);
+                $.ajax({
+                    url: '/court/bookmark',
+                    data: {court_id: id},
+                    success: function(success) {
+                        if ($('#bookmark span').text() == 'Удалить из избранного') {
+                            $('.mid-green-btn i').removeClass('fa-star');
+                            $('.mid-green-btn i').addClass('fa-star-o');
+                            $('#bookmark span').text('Добавить в избранное');
+                        }else {
+                            $('.mid-green-btn i').removeClass('fa-star-o');
+                            $('.mid-green-btn i').addClass('fa-star');
+                            $('#bookmark span').text('Удалить из избранного');  
+                        }
+                        
+                    },
+                });
             });
-        });
-    //Description link on click smoothly fade in description block
-    $('#description_link').click(function () {
-        $('#description').toggle(300);
-    });
 ");
 
+//Description link on click smoothly fade in description block
+$this->registerJs("$('#description_link').click(function () {
+        $('#description').toggle(300);
+    });");
 //refresh games block after create new game
 $this->registerJs('$("#game-create").on("pjax:end", function() {
            $.pjax.reload({container: "#games"});
