@@ -79,7 +79,30 @@ if (!Yii::$app->user->getIsGuest())
                 });
             });
 ");
-
+$this->registerJs("
+    $('#like').click(function() {
+            if ($('#like i').hasClass('fa-heart-o')) {
+                $('#like i').removeClass('fa-heart-o');
+                $('#like i').addClass('fa-heart');
+                $('#like .players').text('1');
+            }else {
+                $('#like i').removeClass('fa-heart');
+                $('#like i').addClass('fa-heart-o');
+                $('#like .players').text('0');  
+            }      
+        }
+    );
+");
+$this->registerJs("
+    $('#join').click(function() {
+            if ($('#join span').text() == '1') {
+                $('#join span').text('2')
+            }else {
+                $('#join span').text('1')  
+            }      
+        }
+    );
+");
 //Description link on click smoothly fade in description block
 $this->registerJs("$('#description_link').click(function () {
         $('#description').toggle(300);
@@ -141,7 +164,7 @@ $this->registerJs("
                     <span class="hidden-xs">Добавить в избранное</span>
                 <?php endif;?>
             </a>
-            <button class="mid-blue-btn shadow"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
+            <button class="mid-blue-btn shadow" id="like"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">0</span></button>
         </div>
 
     </div>
@@ -176,7 +199,7 @@ $this->registerJs("
                     echo Html::img('@web/img/ball-ok.png');
                 else
                     echo Html::img('@web/img/ball-not.png');
-                echo '<button class="mid-blue-btn"> + <span class="players">1</span></button></div>';
+                echo '<button class="mid-blue-btn" id="join"> + <span class="players">1</span></button></div>';
             }
             ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>

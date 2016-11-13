@@ -143,9 +143,10 @@ label{
 	right: 8px;
 	color: rgba(0,0,0,0.64);
 }
-.fa-heart-o{
+.fa-heart-o, .fa-heart{
 	margin-right: 6px;
 }
+
 .login{
 	margin-top: 1.8rem;
 	margin-bottom: 0.3rem;

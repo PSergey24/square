@@ -203,8 +203,6 @@ class CourtController extends Controller
         $query->select('id, lat, lon, name, address, type_id')
             ->from('court');
         $rows = $query->all();
-
-
         return $rows;
     }
 
@@ -222,6 +220,16 @@ class CourtController extends Controller
                 $bookmark->save();
             }
         }
+    }
+    public function actionDistrict_coord($name){
+        if (Yii::$app->request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $district = DistrictCity::find()->where(['name' => $name])->one();
+            $coord['lat'] = $district['lat'];
+            $coord['lon'] = $district['lon'];
+            return $coord;
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 
     function isBookmarked($court_id) {

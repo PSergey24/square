@@ -31,7 +31,7 @@ $this->registerCssFile('/css/userProfile.css',[
                 <h2 class="h2-black">Площадки <?= $username ?> <span><?= count($courts) ?></span></h2>
                 <?php
                     foreach ($courts as $court) {
-                        echo '<a href=/court/view/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg"><p>'. $court["address"] . '</p></div></div></a>';
+                        echo '<a href=/court/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg"><p>'. $court["address"] . '</p></div></div></a>';
                     }
                 ?>
             </div>

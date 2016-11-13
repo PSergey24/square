@@ -82,6 +82,9 @@ $this->registerJs("
     $.ajax({url: '/court/get_points', success: function(result) {
         var sport_type = " . $sport_type . ";
         var visible_val;
+        infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
         $('#sport_type').val(sport_type);
         $.each(result, function (index, value) {
             var rnd = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
@@ -106,10 +109,21 @@ $this->registerJs("
                 icon: pinImgLink
             });
             google.maps.event.addListener(marker, 'click', function() {
-                $('#court_link').attr('href', '/court/' + this.id);
-                $('#address').text(this.address);
-                $('#court_photo').css('background-image', 'url(/img/' + this.photo +')');
-                $('#court_info').css('display', 'block');
+                infowindow.close();
+                if(myloc_infoWindow) { 
+                    myloc_infoWindow.close(); 
+                }
+                var contentString = '<div class=\"searchImgForm\">' +
+                                        '<div class=\"arrow_box forSmall\">' +
+                                            '<a href=\"/court/' + this.id + 
+                                            '\"><div style=\"background-image: url(/img/' + this.photo + ');\" class=\"image-right image\">' +
+                                            '<div class=\"close\"></div><div class=\"players\">' +
+                                                '<i class=\"fa fa - male\" aria-hidden=\"true\"></i>25</div><span>Открыть площадку</span></div>' +
+                                            '<div class=\"sliderText center shadow\">' + this.address + '</div></a>' +
+                                        '</div>' +
+                                    '</div>';
+                infowindow.setContent(contentString);
+                infowindow.open(map, marker);
             });
             markers.push(marker);
         })
@@ -162,14 +176,17 @@ $this->registerJs("
 ");
 $this->registerJs("
      $('#district_type').change(function (e) {
-        $.ajax({url: 'адрес куда нужно', data: $('#district_type :selected').val(), success: function(result) {
-            var pos = {
-              lat: result['lat'],
-              lng: result['lon']
-            };
-            map.setCenter(pos);
-            map.setZoom(12);
-        }});
+        $.ajax({
+            url: '/court/district_coord', 
+            data: {
+                name: $('#district_type :selected').text()
+            }, 
+            success: function(result) {
+                var pos = new google.maps.LatLng(result['lat'], result['lon']);
+                map.setCenter(pos);
+                map.setZoom(11);
+            }
+        });
     });
 ");
 ?>
@@ -182,9 +199,25 @@ $this->registerJs("
                     <option value="1" disabled selected>Санкт-Петербург</option>
                 </select>
                 <select id="district_type" class="search">
-                    <option value="1" selected >Адмиралтейский</option>
-                    <option value="2">Кировский</option>
-                    <option value="3">Центральный</option>
+                    <option value="" disabled selected>Выберите район</option>
+                    <option value="1">Кронштадтский</option>
+                    <option value="2">Адмиралтейский</option>
+                    <option value="3">Василеостровский</option>
+                    <option value="4">Выборгский</option>
+                    <option value="5">Калининский</option>
+                    <option value="6">Кировский</option>
+                    <option value="7">Колпинский</option>
+                    <option value="8">Красногвардейский</option>
+                    <option value="9">Красносельский</option>
+                    <option value="10">Курортный</option>
+                    <option value="11">Московский</option>
+                    <option value="12">Невский</option>
+                    <option value="13">Петроградский</option>
+                    <option value="14">Петродворцовый</option>
+                    <option value="15">Приморский</option>
+                    <option value="16">Пушкинский</option>
+                    <option value="17">Фрунзенский</option>
+                    <option value="18">Центральный</option>
                 </select>
                 <select id="sport_type" class="search">
                     <option value="0" selected>Вид спорта</option>
@@ -197,12 +230,6 @@ $this->registerJs("
                 <div id="map"></div>
             </div>
             <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
-            <div id="court_info" class="searchImgForm">
-                <div class="arrow_box forSmall">
-                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
-                    <div class="sliderText center" id="address">Измайловский пр. д.86</div></a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
