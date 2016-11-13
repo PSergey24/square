@@ -109,7 +109,7 @@ h1.h1-white{
 	-moz-transition:all 0.25s linear;
 	-webkit-transition:all 0.25s linear;
 	-o-transition:all 0.25s linear;
-	box-shadow: 0 10rem 0px rgba(0,0,0,0.25) inset;
+	box-shadow: 0 14rem 0px rgba(0,0,0,0.25) inset;
 	/*argin:5px;*/
 }
 .contentUserImg p{

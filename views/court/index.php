@@ -174,7 +174,6 @@ $this->registerJs("
     });
 ");
 ?>
-?>
 
 <div class="container-fluid" id="center" >
     <div class="container">

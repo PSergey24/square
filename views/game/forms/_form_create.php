@@ -40,26 +40,27 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
                     '2' => 'Футбол'
                 ],
                 [
-                    'class' => 'selectpicker input date',
+                    'class' => 'selectpicker .form-control date',
+                    'id' => '1'
                 ]
             );
             ?>
             </p>
             <p class="little">Выберите время игры</p>
-            <p class="align-right">
+            <p class="align-right" id="align-right">
                 <?= Html::activeDropDownList($model, 'day',
                     [
                         '0' => 'Сегодня',
                         '1' => 'Завтра'
                     ],
                     [
-                        'class' => 'selectpicker input date',
+                        'class' => 'selectpicker .form-control date-2',
                         'required' => true
                     ]
                 );
                 ?>
                 <?= $form->field($model, 'time_digit')->input('time', [
-                        'class' => 'input date',
+                        'class' => 'input date-2',
                         'id' => 'time'
                     ])
                     ->label(false)

@@ -29,9 +29,9 @@ $this->registerJs("
 ?>
 
 <div class="court-create container">
+    <p class="h2-black">Перетащите метку на место новой площадки</p>
+    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box shadow" id="map"></div>
     <div class="col-lg-8 col-lg-offset-2 col-md-12 col-sm-12 col-xs-12 features">
-        <p class="h2-black">Перетащите метку на место новой площадки</p>
-        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box shadow" id="map">
         <p class="h2-black">Описание площадки</p>
         <div class="col-lg-12 col-xs-12 box options shadow">
             <?= $this->render('_form_create', [
@@ -42,4 +42,5 @@ $this->registerJs("
         </div>
     </div>
 </div>
+
 

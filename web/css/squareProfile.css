@@ -66,14 +66,14 @@
 	margin-right: 5px;
 }
 .chat{
-	height: 250px;
+	height: 300px;
 	z-index: 2;
 	padding: 0 !important;
 }
 
 
 .h2-box{
-	margin-top:2.4rem;
+	margin-top:2.9rem;
 	font-size: 1.5625rem;
 	font-weight: 500;
 	margin-bottom: -1.25rem; 
@@ -91,7 +91,7 @@
 }
 .box{
 	padding: 1.25rem 1.5625rem;
-	margin: 2.5rem 0;
+	margin: 3rem 0;
 }
 .games .game:nth-child(1){
 	margin-top: 0px;
@@ -177,9 +177,7 @@ label{
 	color: rgba(0,0,0,0.37);
 	margin-bottom: 0.35rem;
 	margin-top: 0.85rem;
-}
-.input:first-child{
-	padding: 0 0;
+	text-align: left;
 }
 .btn{
 	width: 100%;
@@ -187,8 +185,10 @@ label{
 	padding-bottom: 13px;
 	background: #eeeeee;
 }
+
 .input{
 	font-size: 1rem;
+	padding: 11px 20px !important;
 }
 .sport{
 	width: 100%;
@@ -196,16 +196,25 @@ label{
 .align-right{
 	text-align: right;
 }
+#align-right{
+	margin: 0 !important;
+}
 .align-right .input:last-child{
 	padding: 9px 20px;
 }
 .date{
-	width: 48% !important;
+	width: 100% !important;
 	text-align: center;
 }
-.date:first-child{
+.date-2{
+	width: 45% !important;
+	text-align: center;
+}
+
+.date-2:first-child{
 	margin-left: 0 !important;
 	float: left !important;
+	margin-right: 5%;
 }
 .ball{
 	color: rgba(0,0,0,0.74);
@@ -216,6 +225,18 @@ label{
 }
 .need{
 	margin-right: 0.5rem;
+}
+#game-create-form{
+	text-align: center;
+}
+.form-control {
+    height: auto !important;
+    padding: 12px 20px !important;
+    color: rgba(0,0,0,0.74) !important;
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.1) inset !important;
+    background: #eeeeee !important;
+    border-radius: 5px !important;
+    border: none !important;
 }
 input[type="checkbox"] {
 background: url(../../img/checkbox.png); /* Переключатель выключен */
@@ -270,5 +291,8 @@ input[type="checkbox"]:checked {
 	}
 	.img{
 	margin-right: 0px;
-}
+	}
+	.chat{
+		height: 270px;
+	}
 }

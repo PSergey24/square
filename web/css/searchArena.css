@@ -195,7 +195,7 @@
 	line-height: 8rem;
 }
 #court_info a:hover .image{
-	box-shadow: 0 8rem 0px rgba(0,0,0,0.3) inset;
+	box-shadow: 0 8rem 0px rgba(0,0,0,0.4) inset;
 }
 #court_info a:hover span{
 	opacity: 1;
@@ -206,7 +206,7 @@
 	padding-bottom: 3rem;
 }
 #slider a:hover .image{
-	box-shadow: 0 10rem 0px rgba(0,0,0,0.3) inset;
+	box-shadow: 0 10rem 0px rgba(0,0,0,0.4) inset;
 }
 #slider a:hover span{
 	opacity: 1;
