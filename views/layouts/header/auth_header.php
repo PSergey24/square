@@ -15,7 +15,7 @@ use yii\helpers\Url;
                 <a href="#"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
                 <div id="responsive-menu2">
                     <ul class="dropdown">
-                        <?= Html::img('@web/img/man.jpg', ['class' => 'imgProfile']) ?>
+                        <img class="imgProfile" src="<?= $this->params['picture_href'] ?>">
                         <!-- <a href="#" class="dropdown-top hidden-xs">SuperBro</a> -->
                         <ul class="dropdown-inside">
                             <a class="setting" href="/profile"><i class="fa fa-user fa-lg menu-icon" aria-hidden="true"></i>Профиль</a>

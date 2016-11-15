@@ -7,13 +7,17 @@ use yii\helpers\Url;
 $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
+
+$this->params['picture_href'] = $picture_href;
+
 ?>
 
 <div class="container-fluid top">
     <div class="container s">
 
         <div class="top-info">
-            <div class="userPhoto"></div>
+            <img class="userPhoto" src="<?= $picture_href ?>">
+
             <h1 class="h1-white"><?= $username ?></h1>
             <p>
                 <?= Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), ['class' => 'tag']); ?>
