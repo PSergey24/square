@@ -78,6 +78,19 @@ h1.h1-white{
 .contentUserBox{
 	margin-bottom: 2.5rem;
 }
+.noinfo{
+	margin: 0px 8px;
+	text-align: center;
+	margin-bottom: 1.3rem;
+}
+.find{
+	margin-bottom: 1rem;
+}
+.divider{
+	border-bottom: 1px solid rgba(0,0,0,.1);
+	margin: 1rem 7px;
+	margin-top: 10px;
+}
 .soonGame{
 	margin-bottom: 2.5rem;
 }
@@ -89,8 +102,8 @@ h1.h1-white{
 .h2-black{
 	text-align: left;
 	margin: 1rem 0;
-	margin-left: 8px;
-	margin-bottom: 1rem;
+	margin-left: 5px;
+	margin-bottom: 0;
 }
 	.h2-black span{
 		color:rgba(0,0,0,0.38);
@@ -140,10 +153,9 @@ h1.h1-white{
 		margin:0;
 		float: left;
 	}
-	.timeBall{
+	.fa-futbol-o{
 		float: left;
-		width:5%;
-		margin-top:3px;
+		margin-top:4px;
 		margin-right:5%;
 	}
 	.timeGameAddress{

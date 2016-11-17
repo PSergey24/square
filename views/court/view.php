@@ -181,7 +181,7 @@ $this->registerJs("
         <h2 class="h2-box">Ближайшие игры</h2>
         <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
         <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
-
+        <p class="nogames">В ближайшее время игр не будет ಥ_ಥ</p>
         <?php
             foreach ($games as $game) {
                 echo '<div class="game">
@@ -196,9 +196,9 @@ $this->registerJs("
                     echo 'Завтра ' . date("H:i", $tm);
                 echo '</div>';
                 if ($game['need_ball'] == 1)
-                    echo Html::img('@web/img/ball-ok.png');
+                    echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
                 else
-                    echo Html::img('@web/img/ball-not.png');
+                    echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
                 echo '<button class="mid-blue-btn" id="join"> + <span class="players">1</span></button></div>';
             }
             ?>

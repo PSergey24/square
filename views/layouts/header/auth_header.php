@@ -12,7 +12,7 @@ use yii\helpers\Url;
             <a href="/court" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?>
             <ul class="main-menu">
                 <a href="/court"><li><?= Html::img('@web/img/field2.png', ['class' => 'visible-xs']) ?><span>Площадки</span></li></a>
-                <a href="#"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
+                <a href="/game"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
                 <div id="responsive-menu2">
                     <ul class="dropdown">
                         <a href="/profile"><?= Html::img('@web/img/man.jpg', ['class' => 'imgProfile']) ?></a>

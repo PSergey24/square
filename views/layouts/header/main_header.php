@@ -26,7 +26,7 @@ $this->registerJs("
                 <a href="/" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?></a>
                 <ul class="main-menu">
                     <a href="/court"><li><?= Html::img('@web/img/field2.png', ['class' => 'visible-xs']) ?><span>Площадки</span></li></a>
-                    <a href="#"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
+                    <a href="/game"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
                 </ul>
                 <div class="collapse" id="responsive-menu">
                     <a href="/login" id="registration" class="blue-big-button">Регистрация</a>

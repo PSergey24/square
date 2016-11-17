@@ -17,6 +17,9 @@ html{
 	min-height: 100%;
 	position: relative;
 }
+p {
+	line-height: 1.54;
+}
 #test{
 	height: 400px;
 	width: 100%;

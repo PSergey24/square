@@ -7,28 +7,11 @@ use yii\widgets\Pjax;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Games';
+$this->registerCssFile('/css/games.css');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="game-index">
-
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Game', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-<?php Pjax::begin(); ?>    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'time',
-            'need_ball',
-            'sport_type_id',
-            'court_id',
-            // 'creator_id',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); ?>
-<?php Pjax::end(); ?></div>
+    <i class="fa fa-cog fa-spin fa-5x fa-fw"></i><i class="fa fa-cog fa-spin fa-5x fa-fw"></i>
+    <h1 class="h2-black">Данная страница<br>находится в процессе разработки :(</h1>
+    <a href="#" onclick="history.back();" class="button">Назад</a>
+</div>
