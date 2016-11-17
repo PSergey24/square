@@ -10,11 +10,11 @@
  */
 
 use yii\helpers\Html;
-
+use yii\widgets\ActiveForm;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var dektrium\user\models\Profile $profile
+ * @var dektrium\user\models\SettingsForm $model_account
  */
 
 $this->title = Yii::t('user', 'Profile settings');
@@ -35,7 +35,7 @@ $this->registerCssFile('/css/settings.css');
                         <?= Html::encode($this->title) ?>
                     </div>
                     <div class="panel-body">
-                        <?php $form = \yii\widgets\ActiveForm::begin([
+                        <?php $form = ActiveForm::begin([
                             'id' => 'profile-form',
                             'options' => ['class' => 'form-horizontal'],
                             'fieldConfig' => [
@@ -47,28 +47,7 @@ $this->registerCssFile('/css/settings.css');
                             'validateOnBlur'         => false,
                         ]); ?>
 
-                        <?= $form->field($model, 'name') ?>
-
-                        <?= $form->field($model, 'public_email') ?>
-
-                        <?= $form->field($model, 'website') ?>
-
-                        <?= $form->field($model, 'location') ?>
-
-                        <?= $form
-                            ->field($model, 'timezone')
-                            ->dropDownList(
-                                \yii\helpers\ArrayHelper::map(
-                                    \dektrium\user\helpers\Timezone::getAll(),
-                                    'timezone',
-                                    'name'
-                                )
-                            ); ?>
-
-                        <?= $form->field($model, 'picture')->fileInput() ?>
-
-                        <?= $form->field($model, 'bio')->textarea() ?>
-
+                        <?= $form->field($model, 'picture')->fileInput()->label('Фото профиля') ?>
                         <div class="form-group">
                             <div class="col-lg-offset-3 col-lg-9">
                                 <?= \yii\helpers\Html::submitButton(
@@ -77,11 +56,37 @@ $this->registerCssFile('/css/settings.css');
                                 ) ?><br>
                             </div>
                         </div>
-
                         <?php \yii\widgets\ActiveForm::end(); ?>
+                        <?php $form_account = ActiveForm::begin([
+                            'id'          => 'account-form',
+                            'options'     => ['class' => 'form-horizontal'],
+                            'fieldConfig' => [
+                                'template'     => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
+                                'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            ],
+                            'enableAjaxValidation'   => true,
+                            'enableClientValidation' => false,
+                        ]); ?>
+
+                        <?= $form_account->field($model_account, 'username') ?>
+
+                        <?= $form_account->field($model_account, 'new_password')->passwordInput() ?>
+
+                        <?= $form_account->field($model_account, 'current_password')->passwordInput() ?>
+                        <?php \yii\widgets\ActiveForm::end(); ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <?= \yii\helpers\Html::submitButton(
+                                    Yii::t('user', 'Save'),
+                                    ['class' => 'btn btn-block btn-success']
+                                ) ?><br>
+                            </div>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </div>
+

@@ -75,18 +75,11 @@ class SiteController extends Controller
 //            $all_games = array_merge($game_rows, $games);
             array_push($courts, $court_addr);
         }
-        //get user profile picture
-        $profile = Yii::createObject(Profile::className())->find()->where(['user_id' => $user_id])->one();
-
-        $picture_href = filter_var($profile->picture, FILTER_VALIDATE_URL) ?
-            $picture_href = $profile->picture :
-            $picture_href = 'img/uploads/' . $profile->picture;
-        
+             
         return $this->render('profile.php', [
             'courts' => $courts,
             'games' => $games,
             'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
-            'picture_href' => $picture_href
         ]);
     }
     

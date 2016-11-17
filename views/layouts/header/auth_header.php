@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\models\Profile;
 
+$this->params['picture_href'] = Profile::getAvatar();
 ?>
 
 <div id="menu" class="container-fluid">

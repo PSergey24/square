@@ -3,12 +3,13 @@
 use yii\helpers\Html;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use app\models\Profile;
 
 $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
 
-$this->params['picture_href'] = $picture_href;
+$this->params['picture_href'] = Profile::getAvatar();
 
 ?>
 
@@ -16,7 +17,7 @@ $this->params['picture_href'] = $picture_href;
     <div class="container s">
 
         <div class="top-info">
-            <img class="userPhoto" src="<?= $picture_href ?>">
+            <img class="userPhoto" src="<?= $this->params['picture_href']  ?>">
 
             <h1 class="h1-white"><?= $username ?></h1>
             <p>
