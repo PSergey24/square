@@ -3,10 +3,10 @@
 namespace app\controllers;
 
 use app\models\LoginForm;
+use app\models\Profile;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
-use app\models\Court;
 use DateTime;
 use app\models\User;
 
@@ -75,11 +75,11 @@ class SiteController extends Controller
 //            $all_games = array_merge($game_rows, $games);
             array_push($courts, $court_addr);
         }
-
+             
         return $this->render('profile.php', [
             'courts' => $courts,
             'games' => $games,
-            'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username
+            'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
         ]);
     }
     

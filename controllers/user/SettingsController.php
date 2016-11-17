@@ -5,6 +5,7 @@ namespace app\controllers\user;
 use dektrium\user\controllers\SettingsController as BaseSettings;
 use app\models\Profile;
 use yii\web\UploadedFile;
+use dektrium\user\models\SettingsForm;
 
 class SettingsController extends BaseSettings {
 
@@ -59,9 +60,10 @@ class SettingsController extends BaseSettings {
                 }
             }
         }
-        
+        $model_account = \Yii::createObject(SettingsForm::className());
         return $this->render('profile', [
             'model' => $model,
+            'model_account' => $model_account
         ]);
     }
 }
