@@ -441,7 +441,23 @@ border:1px solid green;
 				font-weight: 500;
 			}
 			input[type="text"]:focus,input[type="password"]:focus,input[type="button"]:focus { outline: none; }
-
+			.tabs i{
+				color: white;
+				opacity: 0.54;
+				background-color: #004CA3;
+				width: 2.65rem;
+				border-radius: 5px;
+				margin-bottom: 10px;
+				vertical-align: middle;
+				height: 2.6rem;
+		
+			}
+			.tabs .fa-facebook, .fa-vk{
+				line-height: 2.6rem !important;
+			}
+			.tabs i:hover{
+				opacity: 1;
+			}
 			.tab-content fieldset{
 				margin-top: 18px;
 				border-top:1px solid rgba(0,0,0,0.74);
@@ -456,13 +472,7 @@ border:1px solid green;
 				width:60%;
 			}
 			.tab-content fieldset a{
-				margin:0 7px;
-			}
-			.tab-content fieldset img{
-				margin-bottom: 10px;
-				width:40px;
-				height: 40px;
-				border-radius: 5px;
+				margin:0 8px;
 			}
 
 

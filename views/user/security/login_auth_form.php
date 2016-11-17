@@ -36,6 +36,6 @@ use yii\helpers\Html;
 <?php ActiveForm::end(); ?>
 <fieldset>
     <legend>Через социальные сети</legend>
-    <a href="/user/security/auth?authclient=vkontakte"><img src="../img/vk.png"></a>
-    <a href="/user/security/auth?authclient=facebook"><img src="../img/facebook.png"></a>
+    <a href="/user/security/auth?authclient=vkontakte"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
+    <a href="/user/security/auth?authclient=facebook"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
 </fieldset>
