@@ -181,26 +181,29 @@ $this->registerJs("
         <h2 class="h2-box">Ближайшие игры</h2>
         <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
         <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
-        <p class="nogames">В ближайшее время игр не будет ಥ_ಥ</p>
+            
         <?php
-            foreach ($games as $game) {
-                echo '<div class="game">
-                    <div class="time">';
-                $tm = strtotime($game['time']);
-                $current_datetime = new DateTime();
-                $current_datetime = date_format($current_datetime, 'Y-m-d');
-                $tm_current = strtotime($current_datetime);
-                if (date("d", $tm) == date("d", $tm_current))
-                    echo 'Сегодня ' . date("H:i", $tm);
-                else
-                    echo 'Завтра ' . date("H:i", $tm);
-                echo '</div>';
-                if ($game['need_ball'] == 1)
-                    echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                else
-                    echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
-                echo '<button class="mid-blue-btn" id="join"> + <span class="players">1</span></button></div>';
+            if($games){
+                foreach ($games as $game) {
+                    echo '<div class="game">
+                        <div class="time">';
+                    $tm = strtotime($game['time']);
+                    $current_datetime = new DateTime();
+                    $current_datetime = date_format($current_datetime, 'Y-m-d');
+                    $tm_current = strtotime($current_datetime);
+                    if (date("d", $tm) == date("d", $tm_current))
+                        echo 'Сегодня ' . date("H:i", $tm);
+                    else
+                        echo 'Завтра ' . date("H:i", $tm);
+                    echo '</div>';
+                    if ($game['need_ball'] == 1)
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
+                    else
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
+                    echo '<button class="mid-blue-btn" id="join"> + <span class="players">1</span></button></div>';
+                }
             }
+            else echo '<p class="nogames">В ближайшее время игр нет :(</p>';
             ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>

@@ -1,7 +1,10 @@
-#court_info{
-	display: none;
-	width: 16rem;
+#court{
+	background-color: #004491 !important;
+	color: #ffffff !important;
+	opacity: 1 !important;
 }
+
+
 .border{
 	border:1px solid red;
 }
@@ -40,6 +43,7 @@
 }
 .searchImgForm{
 	padding: 0;
+	width: 14rem;
 }
 
 
@@ -97,44 +101,6 @@
 	border-top-right-radius:5px;
 	border-bottom-right-radius:0;
 }
-
-.arrow_box {
-	position: relative;
-}
-.arrow_box:after, .arrow_box:before {
-	top: 100%;
-	left: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-
-}
-
-/*.arrow_box:after { Треугольник и крестик
-	border-color: rgba(255, 255, 255, 0);
-	border-top-color: #ffffff;
-	border-width: 10px;
-	margin-left: -10px;
-}
-.arrow_box:before {
-	border-color: rgba(163, 163, 163, 0);
-	border-width: 11px;
-	margin-left: -11px;
-	border-top-color: rgba(0,0,0,0.2);
-}
-.close{
-	height: 20px;
-	width: 20px;
-	margin-right: 5px;
-	margin-top: 7px;
-	background-image: url(../img/close.png);
-	background-size: cover;
-	cursor: pointer;
-	opacity: .8
-}*/
 .close:hover{
 	opacity: 1;
 }
@@ -194,10 +160,10 @@
 .image-right span{
 	line-height: 8rem;
 }
-#court_info a:hover .image{
+.court_info a:hover .image{
 	box-shadow: 0 8rem 0px rgba(0,0,0,0.4) inset;
 }
-#court_info a:hover span{
+.court_info a:hover span{
 	opacity: 1;
 }
 #slider{
@@ -264,9 +230,6 @@
 	}
 	#address{
 		padding: 1.5rem !important;
-	}
-	#court_info{
-		width: 15rem;
 	}
 	.search {
 		width: 50% !important;

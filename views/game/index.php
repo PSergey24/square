@@ -12,6 +12,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="game-index">
     <i class="fa fa-cog fa-spin fa-5x fa-fw"></i><i class="fa fa-cog fa-spin fa-5x fa-fw"></i>
-    <h1 class="h2-black">Данная страница<br>находится в процессе разработки :(</h1>
+    <h1 class="h2-black">Данная страница<br>находится в процессе разработки</h1>
     <a href="#" onclick="history.back();" class="button">Назад</a>
 </div>

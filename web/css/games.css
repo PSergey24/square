@@ -1,8 +1,13 @@
+#game{
+	background-color: #004491 !important;
+	color: #ffffff !important;
+	opacity: 1 !important;
+}
 
 .game-index{
 	display: block;
 	text-align: center;
-	margin-top: 7rem;
+	margin-top: 6rem;
 	padding: 0 1rem;
 }
 .fa-spin{

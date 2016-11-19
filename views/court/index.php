@@ -113,13 +113,13 @@ $this->registerJs("
                 if(myloc_infoWindow) { 
                     myloc_infoWindow.close(); 
                 }
-                var contentString = '<div class=\"searchImgForm\">' +
-                                        '<div class=\"arrow_box forSmall\">' +
+                var contentString = '<div class=\"searchImgForm court_info\">' +
+                                        '<div class=\"forSmall\">' +
                                             '<a href=\"/court/' + this.id + 
                                             '\"><div style=\"background-image: url(/img/' + this.photo + ');\" class=\"image-right image\">' +
                                             '<div class=\"close\"></div><div class=\"players\">' +
-                                                '<i class=\"fa fa - male\" aria-hidden=\"true\"></i>25</div><span>Открыть площадку</span></div>' +
-                                            '<div class=\"sliderText center shadow\">' + this.address + '</div></a>' +
+                                                '<i class=\"fa fa-male\" aria-hidden=\"true\"></i>25</div><span>Открыть площадку</span></div>' +
+                                            '<div class=\"sliderText center \">' + this.address + '</div></a>' +
                                         '</div>' +
                                     '</div>';
                 infowindow.setContent(contentString);

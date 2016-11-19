@@ -150,7 +150,6 @@ border:1px solid green;
 	#menu ul.main-menu{
 		text-align: center;
 		margin:0;
-		margin-left: 13px;
 	}
 		#menu ul.main-menu a li{
 			display:block;
@@ -162,12 +161,14 @@ border:1px solid green;
 				height:100%;
 				color:rgba(255,255,255,0.7);
 				font-size: 0.8125rem;  /* 13px на большом */
-				margin-left: 15px;
 				text-align: center;
 				text-transform: uppercase;
 				line-height: 65px;
-				padding: 0px 5px;
+				padding: 0px 15px;
 				cursor: pointer;
+			}
+			#logo{
+				margin-right: 15px;
 			}
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
@@ -304,7 +305,7 @@ border:1px solid green;
 	border-bottom-left-radius: 3px; 
 	border-bottom-right-radius: 3px; 
 	line-height: 35px; 
-	padding: 5px 15px; 
+	padding: 7px 15px; 
 	} 
 	ul.dropdown .dropdown-inside a{ 
 	float: left; 
@@ -326,8 +327,8 @@ border:1px solid green;
 	}
 	.divide{
 		width: 100%;
-		border: 1px solid #004CA3;
-		margin: 5px 0;
+		border-bottom: 1px solid rgba(0,0,0,.15);
+		margin: 7px 0;
 		float: left;
 	}
 	ul.dropdown .dropdown-inside a:hover{ 
@@ -481,7 +482,6 @@ border:1px solid green;
 
 	/* для footer */
 .footer{
-    background-color: #E2E8EB;
     text-align: center;
     padding: 0.9375rem 0;
     color:rgba(0,0,0,0.5);
@@ -489,8 +489,6 @@ border:1px solid green;
     position: absolute;
     bottom: 0;
     left: 0;
-
-    /* bottom: -4.5674rem; */
 }
 .helper {
 visibility:hidden;
@@ -543,6 +541,10 @@ position: relative;
 	}
 	#logo{
 		margin-top:14px;
+		margin-right: 0px;
+	}
+	.navbar-toggle{
+		margin-right: 0 !important;
 	}
 	#registration{
 		margin:0 20px 0 0;
@@ -565,14 +567,13 @@ position: relative;
 				color:rgba(255,255,255,1);
 			}
 
-		#menu ul.main-menu a{
+		#court, #game {
 			opacity:0.7;
 		}
-		#menu ul.main-menu a:hover{
+		#court:hover, #game:hover{
 			opacity:1;
 		}
 		#menu ul.main-menu a li{
-			/*padding: 0 20px;*/
 			display: inline-block;
   			float: none;
   			width: 70px;
@@ -588,7 +589,6 @@ position: relative;
 				
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
-				background:  #005BC3;
 			}
 				#menu ul.main-menu a li img{
 					width: 30px;
