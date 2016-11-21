@@ -53,9 +53,9 @@ $this->params['picture_href'] = Profile::getAvatar();
                     if($games){
                         foreach ($games as $game){
                             if($game['need_ball'])
-                                $ballImg = '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                            else
                                 $ballImg = '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
+                            else
+                                $ballImg = '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
                             echo '<div class="timeBox">
                                     <p class="timeGame">'.$game['time'].'</p>'.$ballImg.'<a class="timeGameAddress" href="/court/' . $game['court_id'] . '">'.$game['address'].'</a>
                                 </div>';
