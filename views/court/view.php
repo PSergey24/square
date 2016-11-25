@@ -81,17 +81,27 @@ if (!Yii::$app->user->getIsGuest())
 ");
 $this->registerJs("
     $('#like').click(function() {
-            if ($('#like i').hasClass('fa-heart-o')) {
-                $('#like i').removeClass('fa-heart-o');
-                $('#like i').addClass('fa-heart');
-                $('#like .players').text('1');
-            }else {
-                $('#like i').removeClass('fa-heart');
-                $('#like i').addClass('fa-heart-o');
-                $('#like .players').text('0');  
-            }      
-        }
-    );
+        //get current like count in 10 mathematical numeral system
+        current_like_count = parseInt($('#like .players').text(), 10);
+        
+        if ($('#like i').hasClass('fa-heart-o')) {
+            $('#like i').removeClass('fa-heart-o');
+            $('#like i').addClass('fa-heart');
+            $('#like .players').text(current_like_count + 1);
+            $.ajax({
+                    url: '/like/add',
+                    method: 'POST',
+                    data: {court_id: " . $court["id"]. ", user_id:" . Yii::$app->user->getId()  . "},
+                    success: function(success) {
+                        console.log(success);
+                    },
+                });
+        }else {
+            $('#like i').removeClass('fa-heart');
+            $('#like i').addClass('fa-heart-o');
+            $('#like .players').text(current_like_count - 1);  
+        }      
+    });
 ");
 $this->registerJs("
     $('#join').click(function() {
@@ -164,7 +174,11 @@ $this->registerJs("
                     <span class="hidden-xs" data-toggle="modal" data-target=".needLogin"> Добавить в избранное</span>
                 <?php endif;?>
             </a>
-            <button class="mid-blue-btn shadow" id="like"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">0</span></button>
+            <button class="mid-blue-btn shadow" id="like">
+                <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i>
+                <span class="hidden-xs">Мне нравится</span> 
+                <span class="players"><?= $likes_count ?></span>
+            </button>
         </div>
 
     </div>
