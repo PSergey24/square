@@ -2,7 +2,7 @@
 
 html,body{
 	font-family:'Roboto';
-	background-color: #F0F0FA;
+	background-color: #EBEBF5;
 	font-size:1rem;
 	font-weight: 300;
 		/* для footer*/
@@ -384,7 +384,7 @@ border:1px solid green;
 			border-top:none;
 			border-left:none;
 			border-right:none;
-			background-color: white;
+			background: none;
 
 		}
 		.nav-tabs li.active a:hover,.nav-tabs li.active a:focus{
@@ -398,7 +398,7 @@ border:1px solid green;
 		.nav-tabs li a:hover{
 			border-bottom:3px solid rgba(0,0,0,0.38);
 			color:rgba(0,0,0,0.38);
-			background-color: white;
+			background: none;
 			border-top:none;
 			border-left:none;
 			border-right:none;
