@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\CourtLikes;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -99,14 +100,19 @@ class CourtController extends Controller
         $games = $query->all();
 
         $bookmarked = $this->isBookmarked($id) ? true : false;
-
+        $likes_count = count(Yii::createObject(CourtLikes::className())
+            ->find()
+            ->where(['court_id' => $id])
+            ->all())
+        ;
         return $this->render('view', [
             'model' => $this->findModel($id),
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
             'court' => $court,
             'court_json' => json_encode($court),
-            'bookmarked' => $bookmarked
+            'bookmarked' => $bookmarked,
+            'likes_count' => $likes_count
         ]);
     }
 
@@ -221,7 +227,8 @@ class CourtController extends Controller
             }
         }
     }
-    public function actionDistrict_coord($name){
+    public function actionDistrict_coord($name)
+    {
         if (Yii::$app->request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             $district = DistrictCity::find()->where(['name' => $name])->one();
@@ -232,13 +239,15 @@ class CourtController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-    function isBookmarked($court_id) {
-        $user_id = Yii::$app->user->getId();
-        $bookmarks = Yii::createObject(CourtBookmark::className());
-        $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
-        if ($bookmark)
-            return $bookmark;
-        return false;
+        function isBookmarked($court_id)
+        {
 
-    }
+            $user_id = Yii::$app->user->getId();
+            $bookmarks = Yii::createObject(CourtBookmark::className());
+            $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
+            if ($bookmark)
+                return $bookmark;
+            return false;
+
+        }
 }
