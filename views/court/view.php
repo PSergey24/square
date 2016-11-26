@@ -55,7 +55,7 @@ $this->registerJs("
         });
     }
 ", $this::POS_HEAD);
-if (!Yii::$app->user->getIsGuest())
+if (!Yii::$app->user->getIsGuest()) {
     $this->registerJs("
         //Bookmark btn onclick change pic and text
         $('#bookmark').click(function () {
@@ -78,31 +78,67 @@ if (!Yii::$app->user->getIsGuest())
                     },
                 });
             });
-");
-$this->registerJs("
-    $('#like').click(function() {
-        //get current like count in 10 mathematical numeral system
-        current_like_count = parseInt($('#like .players').text(), 10);
-        
-        if ($('#like i').hasClass('fa-heart-o')) {
-            $('#like i').removeClass('fa-heart-o');
-            $('#like i').addClass('fa-heart');
-            $('#like .players').text(current_like_count + 1);
-            $.ajax({
-                    url: '/like/add',
+    ");
+
+    $this->registerJs("
+        $('#like').click(function() {
+            //get current like count in 10 mathematical numeral system
+            current_like_count = parseInt($('#like .players').text(), 10);
+            
+            if ($('#like i').hasClass('fa-heart-o')) {
+                $.ajax({
+                    url: '/like/create',
                     method: 'POST',
-                    data: {court_id: " . $court["id"]. ", user_id:" . Yii::$app->user->getId()  . "},
-                    success: function(success) {
-                        console.log(success);
+                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    success: function(isAdd) {
+                        if (isAdd) {
+                            $('#like i').removeClass('fa-heart-o');
+                            $('#like i').addClass('fa-heart');
+                            $('#like .players').text(current_like_count + 1);
+                        }
                     },
                 });
-        }else {
-            $('#like i').removeClass('fa-heart');
-            $('#like i').addClass('fa-heart-o');
-            $('#like .players').text(current_like_count - 1);  
-        }      
-    });
-");
+            }else {
+                $.ajax({
+                    url: '/like/delete',
+                    method: 'DELETE',
+                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    success: function(isRemoved) {
+                        if (isRemoved) {
+                            $('#like i').removeClass('fa-heart');
+                            $('#like i').addClass('fa-heart-o');
+                            $('#like .players').text(current_like_count - 1);
+                        }
+                    },
+                });              
+            }      
+        });
+    ");
+    $this->registerJs("
+        $.ajax({
+            url: '/like/has-like',
+            method: 'POST',
+            data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+            success: function(hasLike) {
+                if (hasLike) {
+                    $('#like i').removeClass('fa-heart-o');
+                    $('#like i').addClass('fa-heart');
+                }
+            },
+        });
+    ");
+} else {
+    $this->registerJs("
+        $('#like, #bookmark').click(function() {
+          $('.needLogin').modal({
+               show: true, 
+               backdrop: 'static',
+               keyboard: true
+           })
+        });
+    ");
+}
+
 $this->registerJs("
     $('#join').click(function() {
             if ($('#join span').text() == '1') {
@@ -171,12 +207,12 @@ $this->registerJs("
                     <span class="hidden-xs">Удалить из избранного</span>
                 <?php else:?>
                     <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
-                    <span class="hidden-xs" data-toggle="modal" data-target=".needLogin"> Добавить в избранное</span>
+                    <span class="hidden-xs">Добавить в избранное</span>
                 <?php endif;?>
             </a>
             <button class="mid-blue-btn shadow" id="like">
                 <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i>
-                <span class="hidden-xs">Мне нравится</span> 
+                <span class="hidden-xs">Мне нравится</span>
                 <span class="players"><?= $likes_count ?></span>
             </button>
         </div>
@@ -197,7 +233,7 @@ $this->registerJs("
         <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
             
         <?php
-            if($games){
+            if($games) {
                 foreach ($games as $game) {
                     echo '<div class="game">
                         <div class="time">';

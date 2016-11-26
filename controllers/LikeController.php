@@ -4,43 +4,79 @@ namespace app\controllers;
 
 use Yii;
 use app\models\CourtLikes;
-use yii\web\Response;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
+use yii\rest\ActiveController;
 
-class LikeController extends Controller
+class LikeController extends ActiveController
 {
-    /**
-     * Displays a single Court model.
-     *
-     * @param int $id
-     *
-     * @return mixed
-     */
+    public $modelClass = "app\models\CourtLikes";
+    public $court_like;
+
+    public function init()
+    {
+        parent::init();
+        $this->court_like = Yii::createObject(CourtLikes::className());
+        $this->court_like->court_id = Yii::$app->getRequest()->getBodyParam("court_id");
+        $this->court_like->user_id = Yii::$app->getRequest()->getBodyParam("user_id");
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        unset($actions['create']);
+        unset($actions['update']);
+        unset($actions['view']);
+        unset($actions['index']);
+        unset($actions['delete']);
+
+        return $actions;
+    }
+
+    protected function verbs()
+    {
+        return [
+            'index'=> ['GET'],
+            'create' => ['POST'],
+            'delete' => ['DELETE'],
+        ];
+    }
+
     public function actionIndex($id)
     {
-        if (Yii::$app->request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            $court_likes = Yii::createObject(CourtLikes::className());
-            return count($court_likes->find()->where(['court_id' => $id])->All());
-        }else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
+        return count($this->court_like->find()->where(['court_id' => $id])->All());
     }
 
-    public function actionAdd()
+    public function actionCreate()
     {
-//        if (Yii::$app->request->isAjax) {
-            $court_id = Yii::$app->getRequest()->getBodyParam("court_id");
-            $user_id = Yii::$app->getRequest()->getBodyParam("user_id");
-            $court_like = Yii::createObject(CourtLikes::className());
-            $court_like->user_id = $user_id;
-            $court_like->court_id= $court_id;
-
-            return $court_like->save();
-//        }else {
-//            throw new NotFoundHttpException('The requested page does not exist.');
-//        }
+        //check if like of specific user already exist
+        if ($this->actionHasLike())
+            return 'Like already exist';
+        else
+            return $this->court_like->save();
     }
 
+    public function actionHasLike()
+    {
+        //check if like of specific user already exist
+        if (
+            $this->court_like->find()
+                ->where(
+                    [
+                        'court_id' => $this->court_like->court_id,
+                        'user_id' => $this->court_like->user_id
+                    ])
+                ->exists()
+        )
+            return true;
+        else
+            return false;
+    }
+
+    public function actionDelete() {
+
+        $like = $this->court_like->findOne([
+            'court_id' => $this->court_like->court_id,
+            'user_id' => $this->court_like->user_id
+        ]);
+        return $like->delete() ? true : false;
+    }
 }
