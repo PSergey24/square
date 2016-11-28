@@ -31,7 +31,7 @@ $this->registerJs("
                     <a href="/game"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
                 </ul>
                 <div class="collapse" id="responsive-menu">
-                    <?= Html::a('Регистрация', Url::to(['/login', 'action' => 'register']),[
+                    <?= Html::a('Регистрация', Url::to(['/login']),[
                             'class' => 'blue-big-button',
                             'id' => 'registration',
                         ])

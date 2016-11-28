@@ -17,6 +17,13 @@ use DateInterval;
  */
 class GameController extends Controller
 {
+    const SUCCESS_CREATE_BOX =
+        '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>';
+    const ERROR_CREATE_BOX =
+        '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-times fa-4x" aria-hidden="true"></i>';
+
     /**
      * @inheritdoc
      */
@@ -71,7 +78,7 @@ class GameController extends Controller
             $model = Yii::createObject(GameCreateForm::className());
 
             $model->load(Yii::$app->request->post());
-            
+
             if (!$model->creator_id)
                 throw new UserException('Для того чтобы создать игру необходимо авторизоваться');
 
@@ -83,10 +90,15 @@ class GameController extends Controller
             $time = $model->time_digit;
             $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
             $model->time = $datetime;
+
+            //check if game already exist
+            if (Game::findOne(['court_id' => $model->court_id,'time' => $model->time]))
+                return self::ERROR_CREATE_BOX . '<p id="warning">Игра уже существует</p>';
+
             $model->save();
-            return '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
-            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>
-            <p id="warning">Игра успешно создана</p>';
+
+            return self::SUCCESS_CREATE_BOX  . '<p id="warning">Игра успешно создана</p>';
+
         }
         throw new NotFoundHttpException('The requested page does not exist.');
     }
