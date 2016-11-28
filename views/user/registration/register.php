@@ -13,8 +13,6 @@ $this->title = Yii::t('user', 'Регистрация');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
-    <p>Присоединяйся к нам, чтобы быть в курсе всех последних игр на любых площадках</p>
     <?php $form = ActiveForm::begin([
         'id' => 'registration-form',
     ]); ?>

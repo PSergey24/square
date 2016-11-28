@@ -29,7 +29,27 @@ p {
 	text-align: center;
 	display: block;
 }
-
+/* СКРОЛЛ ----------------------------------------*/
+::-webkit-scrollbar{
+    width:8px;
+}
+::-webkit-scrollbar-thumb{
+    border-width:1px 1px 1px 2px;
+    border-color: green;
+    background-color: #BCBCD2;
+}
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 2px;
+    border-color: #555;
+    background-color: #AAAABE;
+}
+::-webkit-scrollbar-track{
+    border-width:0;
+    background-color: #D8D8E1;
+}
+::-webkit-scrollbar-track:hover{
+    background-color: #D8D8E1;
+}
 /* КНОПКИ ----------------------------------------*/
 .big-green-btn, .big-blue-btn, .mid-green-btn, .mid-blue-btn,.big-green-btn:visited, .big-blue-btn:visited, .mid-green-btn:visited, .mid-blue-btn:visited{
 border: none;
@@ -74,9 +94,9 @@ background:#00d12d;
 }
 
 
-/* ТЕНЬ ----------------------------------------*/
+/* ТЕНЬ ---------------------------------------- box-shadow: 0 3px 9px rgba(0,0,0,.2); hover*/
 .shadow{
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 3px rgba(0,0,0,.28);
 }
 
 /* БОКСЫ ----------------------------------------*/
@@ -392,6 +412,7 @@ border:1px solid green;
 			border-left:none;
 			border-right:none;
 			border-bottom:3px solid rgba(0,0,0,0.87);
+			background: none;
 		}
 
 
