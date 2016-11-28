@@ -2,7 +2,7 @@
 
 namespace app\migrations;
 
-use yii\db\Migration;
+use app\migrations\Migration;
 
 
 class m161112_111027_add_lat_lot_district_sity extends Migration

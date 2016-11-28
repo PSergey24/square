@@ -42,31 +42,6 @@ $this->registerJs("
 
         map = new google.maps.Map(document.getElementById('map'), options);
         directionsDisplay.setMap(map);
-        
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-
-            myloc_marker = new google.maps.Marker({
-                position: pos,
-                map: map,
-                icon: '/img/my_location.png'
-            });
-            myloc_infoWindow = new google.maps.InfoWindow({
-                content: 'Вы находитесь здесь'
-            });
-            myloc_infoWindow.open(map, myloc_marker);
-            map.setCenter(pos);
-            map.setZoom(14);
-          }, function() {
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          alert('Ошибка: Ваш браузер не поддерживает геолокацию!');
-        }           
     }
 ", $this::POS_HEAD);
 
@@ -164,7 +139,7 @@ $this->registerJs("
              }
              myloc_infoWindow.open(map, myloc_marker);
              map.setCenter(pos);
-             map.setZoom(14);
+             map.setZoom(15);
            }, function() {
                alert(\"Ошибка: в Вашем браузере данная функция недоступна!\");
            });

@@ -1,5 +1,7 @@
 <?php
+
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->registerJs("
 
@@ -29,8 +31,15 @@ $this->registerJs("
                     <a href="/game"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
                 </ul>
                 <div class="collapse" id="responsive-menu">
-                    <a href="/login" id="registration" class="blue-big-button">Регистрация</a>
-                    <a href="/login" id="enter">Вход</a>
+                    <?= Html::a('Регистрация', Url::to(['/login', 'action' => 'register']),[
+                            'class' => 'blue-big-button',
+                            'id' => 'registration',
+                        ])
+                    ?>
+                    <?= Html::a('Вход', Url::to(['/login', 'action' => 'login']),[
+                        'id' => 'enter',
+                    ])
+                    ?>
                 </div>
             </div>
         </div>
@@ -45,10 +54,25 @@ $this->registerJs("
                 </select>
                 <select id="district_type" class="search">
                     <option value="0" selected style="display:none;">Выберите район</option>
-                    <option value="1">Выбрать все районы</option>
+                    <option value="19">Выбрать все районы</option>
+                    <option value="1">Кронштадтский</option>
                     <option value="2">Адмиралтейский</option>
-                    <option value="3">Кировский</option>
-                    <option value="4">Центральный</option>
+                    <option value="3">Василеостровский</option>
+                    <option value="4">Выборгский</option>
+                    <option value="5">Калининский</option>
+                    <option value="6">Кировский</option>
+                    <option value="7">Колпинский</option>
+                    <option value="8">Красногвардейский</option>
+                    <option value="9">Красносельский</option>
+                    <option value="10">Курортный</option>
+                    <option value="11">Московский</option>
+                    <option value="12">Невский</option>
+                    <option value="13">Петроградский</option>
+                    <option value="14">Петродворцовый</option>
+                    <option value="15">Приморский</option>
+                    <option value="16">Пушкинский</option>
+                    <option value="17">Фрунзенский</option>
+                    <option value="18">Центральный</option>
                 </select>
                 <select id="sport_type" class="search">
                     <option value="0" selected style="display:none;">Вид спорта</option>
