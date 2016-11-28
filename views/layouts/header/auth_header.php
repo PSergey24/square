@@ -8,7 +8,6 @@ $this->params['picture_href'] = Profile::getAvatar();
 ?>
 
 <div id="menu" class="container-fluid">
-    <div class="container">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
             <a href="/court" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?></a>
             <a href="/court" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?>
@@ -31,5 +30,4 @@ $this->params['picture_href'] = Profile::getAvatar();
                 </div>
             </ul>
         </div>
-    </div>
 </div>

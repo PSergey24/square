@@ -1,0 +1,25 @@
+body, html{
+	height: 100%;
+}
+body{
+	background-image: url(/img/sign1.jpg);
+}
+#menu{
+	display: none;
+}
+.tabs{
+	width: 95% !important;
+	background-color: rgba(255,255,255,.9) !important;
+}
+input{
+	background: none;
+}
+.footer a {
+    color: rgba(255,255,255,0.5) !important;
+}
+.footer {
+	color: rgba(255,255,255,0.5) !important;
+}
+.footer a:hover {
+	    color: rgba(255,255,255,1) !important;
+}

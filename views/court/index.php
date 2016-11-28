@@ -167,7 +167,7 @@ $this->registerJs("
 ?>
 
 <div class="container-fluid" id="center" >
-    <div class="container">
+
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
             <form>
                 <select id="city_type" class="search">
@@ -206,7 +206,7 @@ $this->registerJs("
             </div>
             <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
         </div>
-    </div>
+
 </div>
 
 <div class="container-fluid" id="slider">

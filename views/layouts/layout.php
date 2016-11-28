@@ -46,7 +46,7 @@ AppAsset::register($this);
                 <a href="#">Обратная связь</a>
                 <a href="#">О компании</a>
                 <a href="#">Пользовательское соглашение</a>
-                <p>Квадрат 2016</p>
+                <p><a href="/">Квадрат 2016</a></p>
             </div>
             <!--Footer END-->
         <?php $this->endBody() ?>
