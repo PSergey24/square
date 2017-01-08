@@ -13,6 +13,17 @@ use yii\widgets\ActiveForm;
  */
 
 $this->title = Yii::t('user', 'Регистрация/Авторизация');
+
+
+//set active tab base on GET param "action"
+if ($active_form == 'login')
+    $this->registerJs("
+        $('.nav-tabs li:first-child').removeClass('active');
+        $('.nav-tabs li:nth-child(2)').addClass('active');
+        $('#tab-1').removeClass('active')
+        $('#tab-2').addClass('active');
+    ");
+
 $this->registerCssFile('/css/reg.css');
 ?>
 

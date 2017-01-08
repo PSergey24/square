@@ -15,7 +15,6 @@ class SecurityController extends BaseSecurityController {
         if (!\Yii::$app->user->isGuest) {
             $this->goHome();
         }
-
         if (\Yii::$app->request->post()) {
             //check which one form we get request from
             $body_params = \Yii::$app->request->getBodyParams();
@@ -52,7 +51,14 @@ class SecurityController extends BaseSecurityController {
         return $this->render('login', [
             'model_login'  => $model_login,
             'model_register'  => $model_register,
-            'module' => $this->module
+            'module' => $this->module,
+            'active_form' => $this->detectActiveForm()
         ]);
+    }
+
+    //which of 2 form's must be active
+    public function detectActiveForm()
+    {
+        return \Yii::$app->request->get('action') == 'login' ? 'login' : 'register';
     }
 }

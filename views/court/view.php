@@ -245,7 +245,7 @@ $this->registerJs("
                     else
                         echo 'Завтра ' . date("H:i", $tm);
                     echo '</div>';
-                    if ($game['need_ball'] == 1)
+                    if (!$game['need_ball'] == 1)
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
                     else
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';

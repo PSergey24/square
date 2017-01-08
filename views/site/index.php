@@ -17,7 +17,7 @@ $this->registerJs("
 ?>
 
 <div class="container mid" id="mid">
-    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12"><h1 class="h1-black">Что такое Квадрат?</h1></div>
+    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12"><h1 class="h1-black"   >Что такое Квадрат?</h1></div>
     <div class="kv-is col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <img src="img/4th.png">
         <p>Приложение,<br>позволяющее создавать и находить игры</p>
