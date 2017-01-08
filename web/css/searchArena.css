@@ -131,6 +131,7 @@
 	box-shadow: 0 10rem 0px rgba(0,0,0,0.15) inset;
 	text-align: center;
 	position: relative;
+	max-width: 300px;
 }
 .image span, .images span{
 	color: rgb(255,255,255);
@@ -198,6 +199,7 @@
     color: rgba(0,0,0,0.74);
     text-decoration: underline;
 	text-align: center;
+	max-width: 300px;
 }
 #notArena{
 	background:#03a9f4;
