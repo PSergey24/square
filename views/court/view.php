@@ -178,9 +178,8 @@ $this->registerJs("
 
 <div class="container-fluid top">
     <div class="container s">
-
-        <h2 class="h2-white"><?= $court['address'] ?></h2>
-        <p>
+        <h2 class="h2-white" style="position:relative;"><?= $court['address'] ?></h2>
+        <div >
             <?php
             if ($court['type_id'] != 1)
                 echo Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), [
@@ -191,7 +190,7 @@ $this->registerJs("
                     'class' => 'tag'
                 ]);;
             ?>
-        </p>
+        </div>
         <div class="description ">
             <a id="description_link" href="javascript:void(0)" title="" rel="nofollow" class="link">Описание
                 площадки</a><?= Html::img('@web/img/down.png', ['class' => 'arrow', 'id' => '1']) ?>
@@ -257,9 +256,14 @@ $this->registerJs("
             ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
-        <?php Pjax::end(); ?>
+        <div class="social">
+            <span>ПОЗВОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
+            <a href="#"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
         </div>
-</div>
+        <?php Pjax::end(); ?>
+
+    </div>
 
 <?php if (Yii::$app->user->isGuest): ?>
     <div class="modal fade bs-example-modal-lg needLogin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"

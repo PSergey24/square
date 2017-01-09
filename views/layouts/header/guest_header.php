@@ -6,9 +6,7 @@ use yii\helpers\Url;
 ?>
 
 <div id="menu" class="container-fluid">
-    <div class="row">
-        <div class="container">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -42,5 +40,3 @@ use yii\helpers\Url;
                 </div>
             </div>
         </div>
-    </div>
-</div>
