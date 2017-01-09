@@ -2,13 +2,16 @@
 
 namespace app\controllers;
 
+use app\custom\HTMLSelectData;
+use app\models\DistrictCity;
 use app\models\LoginForm;
-use app\models\Profile;
+use app\models\SportType;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
 use DateTime;
 use app\models\User;
+use app\models\MapFilters;
 
 class SiteController extends Controller
 {
@@ -31,9 +34,20 @@ class SiteController extends Controller
     }
     
     public function actionIndex() {
+
         if (!Yii::$app->user->isGuest)
             return $this->redirect('/profile',302);
-        return $this->render('index.php');
+
+        $filters = Yii::createObject(MapFilters::className());
+
+        $districts = HTMLSelectData::get_list_for_select(new DistrictCity());
+        $sport_types = HTMLSelectData::get_list_for_select(new SportType());
+
+        return $this->render('index.php', [
+            'model'  => $filters,
+            'districts' => $districts,
+            'sport_types' => $sport_types
+        ]);
     }
 
     public function actionProfile() {

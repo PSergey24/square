@@ -4,13 +4,14 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 use app\assets\CustomBootstrapAsset;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CourtSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Courts';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Площадки';
 $this->registerCssFile('/css/searchArena.css',[
         'depends' => [CustomBootstrapAsset::className()]
 ]);
@@ -55,7 +56,7 @@ $this->registerJs("
     ];
     
     $.ajax({url: '/court/get_points', success: function(result) {
-        var sport_type = " . $sport_type . ";
+        var sport_type = " . $filters['sport_type'] . ";
         var visible_val;
         infowindow = new google.maps.InfoWindow({
             content: contentString
@@ -117,32 +118,41 @@ $this->registerJs("
     });
 ");
 $this->registerJs("
-     $('#nearest_courts').click(function (e) {
-         if (navigator.geolocation) {
-           navigator.geolocation.getCurrentPosition(function(position) {
-             var pos = {
-               lat: position.coords.latitude,
-               lng: position.coords.longitude
-             };
-             infowindow.close();
-             if(myloc_marker) {
-                 if(myloc_infoWindow) { 
-                    myloc_infoWindow.close(); 
+    $('#nearest_courts').click(function (e) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                infowindow.close();
+                myloc_marker = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    icon: '/img/my_location.png'
+                });
+                myloc_infoWindow = new google.maps.InfoWindow({
+                    content: 'Вы находитесь здесь'
+                });
+                if(myloc_marker) {
+                    if(myloc_infoWindow) { 
+                        myloc_infoWindow.close(); 
                     }
-                 myloc_marker.setPosition(pos);
-             } else {
-                 myloc_marker = new google.maps.Marker({
-                     position: pos,
-                     map: map,
-                     icon: '/img/my_location.png'
-                 });
-             }
-             myloc_infoWindow.open(map, myloc_marker);
-             map.setCenter(pos);
-             map.setZoom(15);
-           }, function() {
-               alert(\"Ошибка: в Вашем браузере данная функция недоступна!\");
-           });
+                    myloc_marker.setPosition(pos);
+                }else {
+                    myloc_marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        icon: '/img/my_location.png'
+                    });
+                }
+                myloc_infoWindow.open(map, myloc_marker);
+                map.setCenter(pos);
+                map.setZoom(15);
+            }, function() {
+                    alert(\"Ошибка: в Вашем браузере данная функция недоступна!\");
+                }
+            );
          } else {
            // Browser doesn't support Geolocation
            alert(\"Ошибка: Ваш браузер не поддерживает геолокацию!\");
@@ -159,54 +169,84 @@ $this->registerJs("
             success: function(result) {
                 var pos = new google.maps.LatLng(result['lat'], result['lon']);
                 map.setCenter(pos);
-                map.setZoom(11);
+                map.setZoom(17);
             }
         });
     });
 ");
 ?>
 
-<div class="container-fluid" id="center" >
+<div class="container-fluid" id="center">
 
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <form>
-                <select id="city_type" class="search">
-                    <option value="1" disabled selected>Санкт-Петербург</option>
-                </select>
-                <select id="district_type" class="search">
-                    <option value="" disabled selected>Выберите район</option>
-                    <option value="1">Кронштадтский</option>
-                    <option value="2">Адмиралтейский</option>
-                    <option value="3">Василеостровский</option>
-                    <option value="4">Выборгский</option>
-                    <option value="5">Калининский</option>
-                    <option value="6">Кировский</option>
-                    <option value="7">Колпинский</option>
-                    <option value="8">Красногвардейский</option>
-                    <option value="9">Красносельский</option>
-                    <option value="10">Курортный</option>
-                    <option value="11">Московский</option>
-                    <option value="12">Невский</option>
-                    <option value="13">Петроградский</option>
-                    <option value="14">Петродворцовый</option>
-                    <option value="15">Приморский</option>
-                    <option value="16">Пушкинский</option>
-                    <option value="17">Фрунзенский</option>
-                    <option value="18">Центральный</option>
-                </select>
-                <select id="sport_type" class="search">
-                    <option value="0" selected>Вид спорта</option>
-                    <option value="1">Баскетбол</option>
-                    <option value="2">Футбол</option>
-                </select>
-            </form>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
+        <?php $form = ActiveForm::begin([
+            'layout' => 'inline',
+            'action' => Url::to(['/court']),
+        ]);
+        ?>
 
-            <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div id="map"></div>
-            </div>
-            <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
+        <?= $form->field($filters, 'city')
+            ->dropDownList(['Санкт-Петербург'], [
+                'class' => 'search selectpicker',
+                'id' => 'city_type'
+            ])->label(false);
+        ?>
+
+        <?= $form->field($filters, 'district_sity')
+            ->dropDownList($districts, [
+                'id' => 'district_type',
+                'class' => 'search selectpicker',
+                'prompt' => 'Выберите район'
+            ])
+            ->label(false);
+        ?>
+
+        <?= $form->field($filters, 'sport_type')
+            ->dropDownList(['Футбол', 'Баскетбол'], [
+                'class' => 'search selectpicker',
+                'prompt' => 'Вид спорта'
+            ])
+            ->label(false);
+        ?>
+
+
+        <form>
+            <select id="city_type" class="search">
+                <option value="1" disabled selected>Санкт-Петербург</option>
+            </select>
+            <select id="district_type" class="search">
+                <option value="" disabled selected>Выберите район</option>
+                <option value="1">Кронштадтский</option>
+                <option value="2">Адмиралтейский</option>
+                <option value="3">Василеостровский</option>
+                <option value="4">Выборгский</option>
+                <option value="5">Калининский</option>
+                <option value="6">Кировский</option>
+                <option value="7">Колпинский</option>
+                <option value="8">Красногвардейский</option>
+                <option value="9">Красносельский</option>
+                <option value="10">Курортный</option>
+                <option value="11">Московский</option>
+                <option value="12">Невский</option>
+                <option value="13">Петроградский</option>
+                <option value="14">Петродворцовый</option>
+                <option value="15">Приморский</option>
+                <option value="16">Пушкинский</option>
+                <option value="17">Фрунзенский</option>
+                <option value="18">Центральный</option>
+            </select>
+            <select id="sport_type" class="search">
+                <option value="0" selected>Вид спорта</option>
+                <option value="1">Баскетбол</option>
+                <option value="2">Футбол</option>
+            </select>
+        </form>
+
+        <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div id="map"></div>
         </div>
-
+        <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
+    </div>
 </div>
 
 <div class="container-fluid" id="slider">

@@ -1,6 +1,5 @@
 <?php
 
-use yii\helpers\Html;
 use app\assets\AppAsset;
 
 /* @var $this yii\web\View */
@@ -9,11 +8,11 @@ $this->registerCssFile('/css/start.css',[
     'depends' => [AppAsset::className()]
 ]);
 
-$this->registerJs("
-    $('#submit').click(function(){
-        location.href = document.URL + 'court?sport_type=' + $('#sport_type').val();
-    });
-");
+$this->title = 'Квадрат';
+$this->params['model'] = $model;
+$this->params['districts'] = $districts;
+$this->params['sport_types'] = $sport_types;
+
 ?>
 
 <div class="container mid" id="mid">

@@ -2,9 +2,13 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
+
+$model = $this->params['model'];
+$districts = $this->params['districts'];
+$sport_types = $this->params['sport_types'];
 
 $this->registerJs("
-
     $('#form').on('click','a', function (event) {
         event.preventDefault();
         var id  = $(this).attr('href'),
@@ -46,8 +50,48 @@ $this->registerJs("
     </div>
     <h1 class="h1-white big"><span class="hello">Привет!</span> Я - Квадрат :)</h1>
     <p class="text">С моей помощью ты можешь организовать<br>игру или тренировкуна любой площадке своего города</p>
+
     <div class="container">
+
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  forSmall">
+
+            <?php $form = ActiveForm::begin([
+                'layout' => 'inline',
+                'action' => Url::to(['/court']),
+            ]);
+            ?>
+
+            <?= $form->field($model, 'city')
+                ->dropDownList(['Санкт-Петербург'], [
+                    'class' => 'search selectpicker',
+                    'id' => 'city_type'
+                ])->label(false);
+            ?>
+
+            <?= $form->field($model, 'district_sity')
+                ->dropDownList($districts, [
+                    'id' => 'district_type',
+                    'class' => 'search selectpicker',
+                    'prompt' => 'Выберите район'
+                ])
+                ->label(false);
+            ?>
+
+            <?= $form->field($model, 'sport_type')
+                ->dropDownList($sport_types, [
+                    'class' => 'search selectpicker',
+                    'prompt' => 'Вид спорта'
+                ])
+                ->label(false);
+            ?>
+
+            <?= Html::submitButton('Поиск', [
+                    'class' => 'mid-green-btn search',
+                    'id' => 'submit',
+                ]) ?>
+
+        <?php ActiveForm::end(); ?>
+
             <form id="form">
                 <select id="city_type" class="search">
                     <option selected>Санкт-Петербург</option>
@@ -81,9 +125,9 @@ $this->registerJs("
                     <option value="2">Футбол</option>
                 </select>
 
-                <input id="submit" type="button" value="Поиск" class="mid-green-btn search">
+                <input id="submit" type="submit" value="Поиск" class="mid-green-btn search">
                 <a href="#mid" class="hidden-xs"><i class="fa fa-angle-down fa-3x" aria-hidden="true"></i></a>
             </form>
         </div>
-        </div>
+    </div>
 </div>
