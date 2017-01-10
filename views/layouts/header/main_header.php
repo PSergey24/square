@@ -2,7 +2,7 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
+use yii\widgets\ActiveForm;
 
 $model = $this->params['model'];
 $districts = $this->params['districts'];
@@ -56,8 +56,14 @@ $this->registerJs("
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  forSmall">
 
             <?php $form = ActiveForm::begin([
-                'layout' => 'inline',
                 'action' => Url::to(['/court']),
+                'fieldConfig' => [
+                    'options' => [
+                        'tag' => false
+                    ],
+                    'errorOptions' => ['tag' => false]
+                ],
+                'enableClientValidation' => false
             ]);
             ?>
 
@@ -65,20 +71,23 @@ $this->registerJs("
                 ->dropDownList(['Санкт-Петербург'], [
                     'class' => 'search selectpicker',
                     'id' => 'city_type'
-                ])->label(false);
+                ])
+                ->label(false);
             ?>
 
             <?= $form->field($model, 'district_sity')
                 ->dropDownList($districts, [
                     'id' => 'district_type',
                     'class' => 'search selectpicker',
-                    'prompt' => 'Выберите район'
+                    'prompt' => 'Выберите район',
+
                 ])
                 ->label(false);
             ?>
 
             <?= $form->field($model, 'sport_type')
                 ->dropDownList($sport_types, [
+                    'id' => 'sport_type',
                     'class' => 'search selectpicker',
                     'prompt' => 'Вид спорта'
                 ])
@@ -90,44 +99,10 @@ $this->registerJs("
                     'id' => 'submit',
                 ]) ?>
 
+            <a href="#mid" class="hidden-xs"><i class="fa fa-angle-down fa-3x" aria-hidden="true"></i></a>
+
         <?php ActiveForm::end(); ?>
-
-            <form id="form">
-                <select id="city_type" class="search">
-                    <option selected>Санкт-Петербург</option>
-                </select>
-                <select id="district_type" class="search">
-                    <option value="0" selected style="display:none;">Выберите район</option>
-                    <option value="19">Выбрать все районы</option>
-                    <option value="1">Кронштадтский</option>
-                    <option value="2">Адмиралтейский</option>
-                    <option value="3">Василеостровский</option>
-                    <option value="4">Выборгский</option>
-                    <option value="5">Калининский</option>
-                    <option value="6">Кировский</option>
-                    <option value="7">Колпинский</option>
-                    <option value="8">Красногвардейский</option>
-                    <option value="9">Красносельский</option>
-                    <option value="10">Курортный</option>
-                    <option value="11">Московский</option>
-                    <option value="12">Невский</option>
-                    <option value="13">Петроградский</option>
-                    <option value="14">Петродворцовый</option>
-                    <option value="15">Приморский</option>
-                    <option value="16">Пушкинский</option>
-                    <option value="17">Фрунзенский</option>
-                    <option value="18">Центральный</option>
-                </select>
-                <select id="sport_type" class="search">
-                    <option value="0" selected style="display:none;">Вид спорта</option>
-                    <option value="3">Выбрать все виды спорта</option>
-                    <option value="1">Баскетбол</option>
-                    <option value="2">Футбол</option>
-                </select>
-
-                <input id="submit" type="submit" value="Поиск" class="mid-green-btn search">
-                <a href="#mid" class="hidden-xs"><i class="fa fa-angle-down fa-3x" aria-hidden="true"></i></a>
-            </form>
+            
         </div>
     </div>
 </div>

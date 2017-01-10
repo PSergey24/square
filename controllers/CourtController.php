@@ -254,7 +254,7 @@ class CourtController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $district = DistrictCity::find()->where(['name' => $name])->one();
             $coord['lat'] = $district['lat'];
-            $coord['lon'] = $district['lon'];
+            $coord['lng'] = $district['lon'];
             return $coord;
         }
         throw new NotFoundHttpException('The requested page does not exist.');

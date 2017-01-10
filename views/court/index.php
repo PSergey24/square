@@ -18,16 +18,19 @@ $this->registerCssFile('/css/searchArena.css',[
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
     [
         'async' => true,
+        'defer' => true
     ]
 );
 $this->registerJs("
     var map, myloc_marker, myloc_infoWindow, infowindow, contentString;
     var markers = new Array();
+    var SPB_lat = 59.910326;
+    var SPB_lng = 30.3185942;
     var directionsDisplay, directionsService, map;
     function initMap() {
         var directionsService = new google.maps.DirectionsService();
         directionsDisplay = new google.maps.DirectionsRenderer();
-        var latlng = new google.maps.LatLng(59.910326, 30.3185942);
+        var latlng = new google.maps.LatLng(SPB_lat, SPB_lng);
         var options = {
             zoom: 11,
             center: latlng,
@@ -45,7 +48,6 @@ $this->registerJs("
         directionsDisplay.setMap(map);
     }
 ", $this::POS_HEAD);
-
 $this->registerJs("
     // sport_type select
     var court_images = [
@@ -56,12 +58,12 @@ $this->registerJs("
     ];
     
     $.ajax({url: '/court/get_points', success: function(result) {
-        var sport_type = " . $filters['sport_type'] . ";
+        var sport_type = " . (($filters['sport_type'] != null) ? $filters['sport_type'] : 0) . ";
         var visible_val;
         infowindow = new google.maps.InfoWindow({
             content: contentString
         });
-        $('#sport_type').val(sport_type);
+        
         $.each(result, function (index, value) {
             var rnd = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
             if(value['type_id'] == sport_type || sport_type == 0)
@@ -108,11 +110,16 @@ $this->registerJs("
 
 $this->registerJs("
      $('#sport_type').change(function (e) {
+        var selectedValue = $('#sport_type').val() != '' ? $('#sport_type').val() : 0;
         for (var i = 0; i < markers.length; i++) {
-            if (markers[i].type_id !== $('#sport_type').val()) {
-                markers[i].setVisible(false);
-            }else {
+            if (selectedValue == 0)
                 markers[i].setVisible(true);
+            else {
+                if (markers[i].type_id != selectedValue) {
+                    markers[i].setVisible(false);
+                }else {
+                    markers[i].setVisible(true);
+                }
             }
         }
     });
@@ -160,28 +167,45 @@ $this->registerJs("
     });
 ");
 $this->registerJs("
-     $('#district_type').change(function (e) {
-        $.ajax({
+     changeDistrict();
+     $('#district_type').change(changeDistrict);
+
+     function changeDistrict() {
+        if ($('#district_type :selected').val() != '') {
+            $.ajax({
             url: '/court/district_coord', 
             data: {
                 name: $('#district_type :selected').text()
             }, 
             success: function(result) {
-                var pos = new google.maps.LatLng(result['lat'], result['lon']);
-                map.setCenter(pos);
-                map.setZoom(17);
+                setMapCenter(result['lat'], result['lng']);
             }
         });
-    });
-");
+        }else {
+            setMapCenter(SPB_lat, SPB_lng, 11);          
+        }      
+    }
+    
+    function setMapCenter(lat, lng, zoom = 13) {
+        var pos = new google.maps.LatLng(lat, lng);
+            map.setCenter(pos);
+            map.setZoom(zoom);
+    }
+", $this::POS_LOAD);
 ?>
 
 <div class="container-fluid" id="center">
 
     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
         <?php $form = ActiveForm::begin([
-            'layout' => 'inline',
             'action' => Url::to(['/court']),
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ],
+                'errorOptions' => ['tag' => false]
+            ],
+            'enableClientValidation' => false
         ]);
         ?>
 
@@ -202,45 +226,15 @@ $this->registerJs("
         ?>
 
         <?= $form->field($filters, 'sport_type')
-            ->dropDownList(['Футбол', 'Баскетбол'], [
+            ->dropDownList($sport_types, [
+                'id' => 'sport_type',
                 'class' => 'search selectpicker',
                 'prompt' => 'Вид спорта'
             ])
             ->label(false);
         ?>
 
-
-        <form>
-            <select id="city_type" class="search">
-                <option value="1" disabled selected>Санкт-Петербург</option>
-            </select>
-            <select id="district_type" class="search">
-                <option value="" disabled selected>Выберите район</option>
-                <option value="1">Кронштадтский</option>
-                <option value="2">Адмиралтейский</option>
-                <option value="3">Василеостровский</option>
-                <option value="4">Выборгский</option>
-                <option value="5">Калининский</option>
-                <option value="6">Кировский</option>
-                <option value="7">Колпинский</option>
-                <option value="8">Красногвардейский</option>
-                <option value="9">Красносельский</option>
-                <option value="10">Курортный</option>
-                <option value="11">Московский</option>
-                <option value="12">Невский</option>
-                <option value="13">Петроградский</option>
-                <option value="14">Петродворцовый</option>
-                <option value="15">Приморский</option>
-                <option value="16">Пушкинский</option>
-                <option value="17">Фрунзенский</option>
-                <option value="18">Центральный</option>
-            </select>
-            <select id="sport_type" class="search">
-                <option value="0" selected>Вид спорта</option>
-                <option value="1">Баскетбол</option>
-                <option value="2">Футбол</option>
-            </select>
-        </form>
+        <?php ActiveForm::end(); ?>
 
         <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div id="map"></div>

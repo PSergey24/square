@@ -10,14 +10,13 @@ class MapFilters extends Model
 
     public $district_sity;
 
-    public $sport_type = 0;
+    public $sport_type;
 
 
     public function rules()
     {
         return [
-            [['city', 'district_sity'], 'required'],
-            [['city', 'district_sity'], 'integer']
+            [['city', 'district_sity', 'sport_type'], 'integer']
         ];
     }
 }
