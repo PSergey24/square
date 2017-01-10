@@ -137,8 +137,8 @@ $this->registerJs("
                                 </select>
                             </div>
                             <div class="col-lg-6 col-lg-offset-1 col-xs-6 col-sm-6" id="players">
-                                <span class="amount">Игроков</span><input type="number" min="0" max="2" >
-                                <span class="">-</span><input type="number" min="0" max="2" >
+                                <span class="amount">Игроков</span><input id="min" type="number" min="0" max="2" >
+                                <span class="">-</span><input id="max" type="number" min="0" max="2" size="2" >
                             </div>
                         </div>
                         <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply">Применить</button></div>
@@ -147,6 +147,7 @@ $this->registerJs("
                 <div class="game-list">
                     <?php $i = 0;
                     foreach ($listGame as $listGame) { ?>
+
                         <div class="col-xs-12 col-lg-6 first">
                             <div class=<?php if($listGame['sport_type_id'] == 1) echo '"shadow box game-new basketball"'; elseif($listGame['sport_type_id'] == 2) echo '"shadow box game-new football"'; else echo '"shadow box game-new"'; ?> >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -159,18 +160,21 @@ $this->registerJs("
                                     </div>
                                     <div class="divider"></div>
                                     <div class="people">
-                                        <p>Игроков: <span class="count">7</span></p>
+                                        <p>Игроков: <span class="count"><?php echo $countUsersArr[$i]; ?></span></p>
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
                 
                                                 <div class="plus man"><span>+</span></div>
-                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                                <?php
+                                                    for($j=0;$j<$countUsersArr[$i];$j++)
+                                                    {
+                                                        // коммент не удаляем. в этой переменной id пользователя для ссылки
+                                                        // echo '<a href="#">'.$idUsersArr[$i][$j]['user_id'].'</a>';
+                                                        echo '<a href="#"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
+                                                    }
+
+                                                ?>
                                             </div>
                                         </div>
                                     </div>
@@ -201,7 +205,7 @@ $this->registerJs("
                     <?php $i++; }  ?>
                     
         		</div>
-                <button class="mid-blue-btn" id="more" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
+                <button class="mid-blue-btn" id="more" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>

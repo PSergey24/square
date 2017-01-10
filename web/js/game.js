@@ -2,11 +2,15 @@ $( document ).ready(function() {
 	$('#toApply').click(function(){
 		var typeSport = $('#kind select').val();
 		var timeFilter = $('[data-time]').attr('data-time');
+		var min = $('#min').val();
+		var max = $('#max').val();
+
+		$('[data-people]').attr("data-people", min+'-'+max);
 		$('[data-sport]').attr("data-sport", typeSport);
 		$.ajax({
           type: "POST",
           url: "/game/apply",
-          data: "typeSport="+typeSport+"&&timeFilter="+timeFilter,
+          data: "typeSport="+typeSport+"&&timeFilter="+timeFilter+"&&min="+min+"&&max="+max,
           success: function(data){     
           	var result = data.split(' | ');
           	$('.game-list').html(result[1]);
@@ -40,6 +44,7 @@ $( document ).ready(function() {
     $('.reset').click(function(){
     	$('[data-time]').attr("data-time", 'no');
     	$('[data-sport]').attr('data-sport', 'no');
+    	$('[data-people]').attr('data-people', 'no');
     	$('.gameTime').removeClass('timeSelected');
     	$('#sportList option:selected').removeAttr('selected');
 

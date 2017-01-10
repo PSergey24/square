@@ -50,6 +50,9 @@ class GameController extends Controller
     {
         $nameSportArr = array();
         $nameAreaArr = array();
+        $idUsersArr = array();
+        $countUsersArr = array();
+        $pictureUsersArr = array();
         $dataProvider = new ActiveDataProvider([
             'query' => Game::find(),
         ]);
@@ -57,6 +60,7 @@ class GameController extends Controller
         $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
         $numGame = sizeof($listGame);
         foreach ($listGame as $itemGame) {
+            $pictureUserArr = array();
             $nameArea = Court::find()
                         ->where(['id' => $itemGame['court_id']])
                         ->one();
@@ -65,6 +69,20 @@ class GameController extends Controller
             $nameSport = SportType::find()
                         ->where(['id' => $itemGame['sport_type_id']])
                         ->one();
+
+            $query = new Query;
+            $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->all();
+            foreach($idUser as $id){
+                $queryPicture = new Query;
+                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                array_push($pictureUserArr,$pictureUser);
+            }
+            
+
+            $countUser = count($idUser);
+            array_push($pictureUsersArr,$pictureUserArr);
+            array_push($countUsersArr,$countUser);
+            array_push($idUsersArr,$idUser);
             array_push($nameSportArr,$nameSport['name']);
         }
 
@@ -74,6 +92,9 @@ class GameController extends Controller
             'nameSportArr' => $nameSportArr,
             'nameAreaArr' => $nameAreaArr,
             'numGame' => $numGame,
+            'countUsersArr' => $countUsersArr,
+            'idUsersArr' => $idUsersArr,
+            'pictureUsersArr' => $pictureUsersArr,
         ]);
     }
 
@@ -123,6 +144,8 @@ class GameController extends Controller
         $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
 
         $string = '';
+
+
         foreach ($listGame as $thisGame) {
             $area = Court::find()
                         ->where(['id' => $thisGame['court_id']])
@@ -150,6 +173,17 @@ class GameController extends Controller
             else
                 $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
 
+
+            $queryPeoples = new Query;
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['id']])->all();
+            $countUser2 = count($idUser);
+            $str = '';
+            foreach($idUser as $id){
+                $queryPicture = new Query;
+                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+            }
+            
             $string = $string.'
                 <div class="col-xs-12 col-lg-6 first">
                             <div class="shadow box game-new '.$classSport.'" >
@@ -163,18 +197,11 @@ class GameController extends Controller
                                     </div>
                                     <div class="divider"></div>
                                     <div class="people">
-                                        <p>Игроков: <span class="count">7</span></p>
+                                        <p>Игроков: <span class="count">'.$countUser2.'</span></p>
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
-                
-                                                <div class="plus man"><span>+</span></div>
-                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                                <div class="plus man"><span>+</span></div>'.$str.'
                                             </div>
                                         </div>
                                     </div>
@@ -286,10 +313,14 @@ class GameController extends Controller
     {
         $typeSport = Yii::$app->getRequest()->getBodyParam("typeSport");
         $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
+        $min = Yii::$app->getRequest()->getBodyParam("min");
+        $max = Yii::$app->getRequest()->getBodyParam("max");
+
+        // $subQuery = (new Query())->select('COUNT(*)')->from('game_user')->where;
 
         $query = new Query;
         $query->select('*')
-            ->from('game');
+            ->from(['game','game_user']);
 
         if($timeFilter == 'no')
             $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
