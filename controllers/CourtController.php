@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\CourtLikes;
+use app\models\MapFilters;
+use app\models\SportType;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
@@ -15,6 +17,7 @@ use app\models\CourtType;
 use app\models\Court;
 use app\models\DistrictCity;
 use app\models\forms\GameCreateForm;
+use app\custom\HTMLSelectData;
 
 /**
  * CourtController implements the CRUD actions for Court model.
@@ -63,21 +66,39 @@ class CourtController extends Controller
      */
     public function actionIndex()
     {
-        $query = new Query;
-        $query->select('*')
-            ->from('court')
-            ->limit(3);
-        $popular = $query->all();
-        $sport_type = 0;
-        if (isset(Yii::$app->getRequest()->queryParams['sport_type']))
-            $sport_type = Yii::$app->getRequest()->queryParams['sport_type'];
+        $popular = Court::find()->limit(3)->all();
+        $filters = Yii::createObject(MapFilters::className());
+
+        if (Yii::$app->request->getIsPost())
+        {
+            $filters->load(Yii::$app->request->post());
+        }
+
+        $districts = HTMLSelectData::get_list_for_select(new DistrictCity());
+        $sport_types = HTMLSelectData::get_list_for_select(new SportType());
 
         return $this->render('index', [
             'popular' => $popular,
-            'sport_type' => $sport_type
+            'filters' => $filters,
+            'districts' => $districts,
+            'sport_types' => $sport_types
         ]);
+//        $filters = $this->get_map_filter_params();
+
+
+
     }
 
+    public function get_map_filter_params()
+    {
+        $sport_type = Yii::$app->request->getBodyParam('sport_type', 0);
+        $district_sity = Yii::$app->request->getBodyParam('district_sity', 0);
+
+        return [
+            'sport_type' => $sport_type,
+            'district_sity' => $district_sity
+        ];
+    }
     /**
      * Displays a single Court model.
      *
@@ -233,7 +254,7 @@ class CourtController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             $district = DistrictCity::find()->where(['name' => $name])->one();
             $coord['lat'] = $district['lat'];
-            $coord['lon'] = $district['lon'];
+            $coord['lng'] = $district['lon'];
             return $coord;
         }
         throw new NotFoundHttpException('The requested page does not exist.');
