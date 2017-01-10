@@ -4,6 +4,9 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Game;
+use app\models\Court;
+use app\models\SportType;
+use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -45,12 +48,32 @@ class GameController extends Controller
      */
     public function actionIndex()
     {
+        $nameSportArr = array();
+        $nameAreaArr = array();
         $dataProvider = new ActiveDataProvider([
             'query' => Game::find(),
         ]);
 
+        $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
+        $numGame = sizeof($listGame);
+        foreach ($listGame as $itemGame) {
+            $nameArea = Court::find()
+                        ->where(['id' => $itemGame['court_id']])
+                        ->one();
+            array_push($nameAreaArr,$nameArea['name']);
+
+            $nameSport = SportType::find()
+                        ->where(['id' => $itemGame['sport_type_id']])
+                        ->one();
+            array_push($nameSportArr,$nameSport['name']);
+        }
+
         return $this->render('index', [
             'dataProvider' => $dataProvider,
+            'listGame' => $listGame,
+            'nameSportArr' => $nameSportArr,
+            'nameAreaArr' => $nameAreaArr,
+            'numGame' => $numGame,
         ]);
     }
 
@@ -64,6 +87,305 @@ class GameController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
         ]);
+    }
+
+    public function actionMore()
+    {
+        $numGame = Yii::$app->getRequest()->getBodyParam("numGame");
+        $dataSport = Yii::$app->getRequest()->getBodyParam("dataSport");
+        $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
+
+
+
+
+
+        $query = new Query;
+        $query->select('*')
+            ->from('game');
+
+        if($timeFilter == 'no')
+            $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+        elseif($timeFilter == 'Сегодня'){
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+            $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+        }
+        elseif($timeFilter == 'Завтра')
+        {
+            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+            $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+            $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+        }
+
+        if($dataSport != 0)
+            $query->andWhere(['sport_type_id' => $dataSport]);
+
+        $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
+
+        $string = '';
+        foreach ($listGame as $thisGame) {
+            $area = Court::find()
+                        ->where(['id' => $thisGame['court_id']])
+                        ->one();
+
+            $sport = SportType::find()
+                        ->where(['id' => $thisGame['sport_type_id']])
+                        ->one();
+
+            if($thisGame['need_ball'] == 1)
+                $ball = 'Есть';
+            else
+                $ball = 'Нет';
+
+            $classSport = '';
+            if($thisGame['sport_type_id'] == 1)
+                $classSport = 'basketball';
+            elseif($thisGame['sport_type_id'] == 2)
+                $classSport = 'football';
+
+            if(date_format(date_create($thisGame['time']), 'd') == (date("d")+1))
+                $timeGame =  'завтра '.date_format(date_create($thisGame['time']), 'H:i');
+            elseif(date_format(date_create($thisGame['time']), 'd') == (date("d")))
+                $timeGame =  'сегодня '.date_format(date_create($thisGame['time']), 'H:i');
+            else
+                $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
+
+            $string = $string.'
+                <div class="col-xs-12 col-lg-6 first">
+                            <div class="shadow box game-new '.$classSport.'" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="top">
+                                        <div class="square">'. $area['name'] .'</div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                        
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="people">
+                                        <p>Игроков: <span class="count">7</span></p>
+                                        <div class="scroll">
+                                            <div class="right"></div>
+                                            <div class="circle">
+                
+                                                <div class="plus man"><span>+</span></div>
+                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="type">
+                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                        <span class="big">'. $sport['name'] .'</span>
+                                    </div>
+                                    <div class="time">
+                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                        <span class="big">'. $timeGame .'</span>
+                                    </div>
+                                    <div class="ball">
+                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                        <span class="big">'. $ball .'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+        }  
+        $count = count($listGame);
+        return $count." | ".$string;
+    }
+
+    public function actionReset()
+    {
+        $gameList = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
+
+        $string = '';
+        foreach ($gameList as $game) {
+            $area = Court::find()
+                        ->where(['id' => $game['court_id']])
+                        ->one();
+
+            $sport = SportType::find()
+                        ->where(['id' => $game['sport_type_id']])
+                        ->one();
+
+            if($game['need_ball'] == 1)
+                $ball = 'Есть';
+            else
+                $ball = 'Нет';
+
+            $classSport = '';
+            if($game['sport_type_id'] == 1)
+                $classSport = 'basketball';
+            elseif($game['sport_type_id'] == 2)
+                $classSport = 'football';
+
+            if(date_format(date_create($game['time']), 'd') == (date("d")+1))
+                $timeGame =  'завтра '.date_format(date_create($game['time']), 'H:i');
+            elseif(date_format(date_create($game['time']), 'd') == (date("d")))
+                $timeGame =  'сегодня '.date_format(date_create($game['time']), 'H:i');
+            else
+                $timeGame =  date_format(date_create($game['time']), 'd-m H:i');
+
+            $string = $string.'
+                <div class="col-xs-12 col-lg-6 first">
+                            <div class="shadow box game-new '.$classSport.'" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="top">
+                                        <div class="square">'. $area['name'] .'</div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                        
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="people">
+                                        <p>Игроков: <span class="count">7</span></p>
+                                        <div class="scroll">
+                                            <div class="right"></div>
+                                            <div class="circle">
+                
+                                                <div class="plus man"><span>+</span></div>
+                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="type">
+                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                        <span class="big">'. $sport['name'] .'</span>
+                                    </div>
+                                    <div class="time">
+                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                        <span class="big">'. $timeGame .'</span>
+                                    </div>
+                                    <div class="ball">
+                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                        <span class="big">'. $ball .'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+        }  
+        $count = count($gameList);
+        return $count." | ".$string;
+    }
+
+    public function actionApply()
+    {
+        $typeSport = Yii::$app->getRequest()->getBodyParam("typeSport");
+        $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
+
+        $query = new Query;
+        $query->select('*')
+            ->from('game');
+
+        if($timeFilter == 'no')
+            $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+        elseif($timeFilter == 'Сегодня'){
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+            $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+        }
+        elseif($timeFilter == 'Завтра')
+        {
+            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+            $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+            $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+        }
+
+        if ($typeSport != 0) 
+            $query->andWhere(['sport_type_id' => $typeSport]);
+ 
+        $listGame = $query->limit(6)->orderBy('time')->all();
+
+        $string = '';
+        foreach ($listGame as $thisGame) {
+            $area = Court::find()
+                        ->where(['id' => $thisGame['court_id']])
+                        ->one();
+
+                $sport = SportType::find()
+                            ->where(['id' => $thisGame['sport_type_id']])
+                            ->one();
+
+            if($thisGame['need_ball'] == 1)
+                $ball = 'Есть';
+            else
+                $ball = 'Нет';
+
+            $classSport = '';
+                if($thisGame['sport_type_id'] == 1)
+                    $classSport = 'basketball';
+                elseif($thisGame['sport_type_id'] == 2)
+                    $classSport = 'football';
+
+            if(date_format(date_create($thisGame['time']), 'd') == (date("d")+1))
+                $timeGame =  'завтра '.date_format(date_create($thisGame['time']), 'H:i');
+            elseif(date_format(date_create($thisGame['time']), 'd') == (date("d")))
+                $timeGame =  'сегодня '.date_format(date_create($thisGame['time']), 'H:i');
+            else
+                $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
+
+            $string = $string.'
+                <div class="col-xs-12 col-lg-6 first">
+                            <div class="shadow box game-new '.$classSport.'" >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="top">
+                                        <div class="square">'. $area['name'] .'</div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                        
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="people">
+                                        <p>Игроков: <span class="count">7</span></p>
+                                        <div class="scroll">
+                                            <div class="right"></div>
+                                            <div class="circle">
+                
+                                                <div class="plus man"><span>+</span></div>
+                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="type">
+                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                        <span class="big">'. $sport['name'] .'</span>
+                                    </div>
+                                    <div class="time">
+                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                        <span class="big">'. $timeGame .'</span>
+                                    </div>
+                                    <div class="ball">
+                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                        <span class="big">'. $ball .'</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>';
+        }  
+        $count = count($listGame);
+        return $count." | ".$string;
     }
 
     /**
