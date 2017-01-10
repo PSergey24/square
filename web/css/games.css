@@ -80,7 +80,10 @@ body{
 	font-size: 1rem;
 	margin-bottom: 0;
 }
-
+.timeSelected{
+	font-weight: 500;
+	color:#00d12d !important;
+}
 .align{
 	margin-top: 5px;
 }

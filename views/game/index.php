@@ -14,6 +14,10 @@ $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3
         'async' => true,
     ]
 );
+$this->registerJsFile(
+    '@web/js/game.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 $this->registerJs("
     var map, myloc_marker, myloc_infoWindow, infowindow, contentString;
     var markers = new Array();
@@ -121,15 +125,15 @@ $this->registerJs("
                             <div class="pre col-lg-2 col-xs-12 col-sm-12">Время</div>
                             <div class="col-lg-2 col-xs-4 col-sm-4 gameTime">Сегодня</div>
                             <div class="col-lg-1 col-xs-4 col-sm-4 gameTime">Завтра</div>
-                            <div class="col-lg-2 col-lg-offset-1 col-xs-4 col-sm-4 gameTime">Ближайшие</div>
                         </div>
                         <div class="stroke col-lg-12">
                             <div class="pre col-lg-2 col-xs-12 col-sm-12 align">Игра</div>
                             <div class="col-lg-3 col-xs-6 col-sm-6" id="kind">
-                                <select>
-                                    <option>Вид спорта</option>
-                                    <option>Футбол</option>
-                                    <option>Баскетбол</option>
+                                <select id="sportList">
+                                    <option value="0" id="default">Вид спорта</option>
+                                    <option value="2">Футбол</option>
+                                    <option value="1">Баскетбол</option>
+                                    <option value="3">Волейбол</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-lg-offset-1 col-xs-6 col-sm-6" id="players">
@@ -137,188 +141,67 @@ $this->registerJs("
                                 <span class="">-</span><input type="number" min="0" max="2" >
                             </div>
                         </div>
-                        <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn">Применить</button></div>
+                        <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply">Применить</button></div>
                     </div>
                 </div>
                 <div class="game-list">
-                    <div class="col-xs-12 col-lg-6 first">
-                        <div class="shadow box game-new basketball">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="top">
-                                    <div class="square">наб. реки Пряжки д. 4 Литер А</div>
-                                    <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
-                                </div>
-                                <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                    
-                                </div>
-                                <div class="divider"></div>
-                                <div class="people">
-                                    <p>Игроков: <span class="count">7</span></p>
-                                    <div class="scroll">
-                                        <div class="right"></div>
-                                        <div class="circle">
-            
-                                            <div class="plus man"><span>+</span></div>
-                                            <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                    <?php $i = 0;
+                    foreach ($listGame as $listGame) { ?>
+                        <div class="col-xs-12 col-lg-6 first">
+                            <div class=<?php if($listGame['sport_type_id'] == 1) echo '"shadow box game-new basketball"'; elseif($listGame['sport_type_id'] == 2) echo '"shadow box game-new football"'; else echo '"shadow box game-new"'; ?> >
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="top">
+                                        <div class="square"><?php echo $nameAreaArr[$i]; ?></div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                    </div>
+                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                        
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="people">
+                                        <p>Игроков: <span class="count">7</span></p>
+                                        <div class="scroll">
+                                            <div class="right"></div>
+                                            <div class="circle">
+                
+                                                <div class="plus man"><span>+</span></div>
+                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
+                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="type">
-                                    <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                    <span class="big">басктебол</span>
-                                </div>
-                                <div class="time">
-                                    <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                    <span class="big">завтра 18:45</span>
-                                </div>
-                                <div class="ball">
-                                    <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                    <span class="big">есть</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-lg-6 first">
-                        <div class="shadow box game-new basketball">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="top">
-                                    <div class="square">наб. реки Пряжки д. 4 Литер А</div>
-                                    <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
-                                </div>
-                                <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                    
-                                </div>
-                                <div class="divider"></div>
-                                <div class="people">
-                                    <p>Игроков: <span class="count">7</span></p>
-                                    <div class="scroll">
-                                        <div class="right"></div>
-                                        <div class="circle">
-            
-                                            <div class="plus man"><span>+</span></div>
-                                            <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
-                                        </div>
+                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <div class="type">
+                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                        <span class="big"><?php echo $nameSportArr[$i]; ?></span>
+                                    </div>
+                                    <div class="time">
+                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                        <span class="big"><?php 
+                                        if(date_format(date_create($listGame['time']), 'd') == (date("d")+1))
+                                            echo 'завтра '.date_format(date_create($listGame['time']), 'H:i');
+                                        elseif(date_format(date_create($listGame['time']), 'd') == (date("d")))
+                                            echo 'сегодня '.date_format(date_create($listGame['time']), 'H:i');
+                                        else
+                                            echo date_format(date_create($listGame['time']), 'd-m H:i');
+  ?></span>
+                                    </div>
+                                    <div class="ball">
+                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                        <span class="big"><?php if($listGame['need_ball'] == 1) echo 'есть'; else echo 'нет'; ?></span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="type">
-                                    <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                    <span class="big">басктебол</span>
-                                </div>
-                                <div class="time">
-                                    <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                    <span class="big">завтра 18:45</span>
-                                </div>
-                                <div class="ball">
-                                    <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                    <span class="big">есть</span>
-                                </div>
-                            </div>
                         </div>
-                    </div>
-                    <div class="col-xs-12    col-lg-6 first">
-                        <div class="shadow box game-new football">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="top">
-                                    <div class="square">наб. реки Пряжки д. 4 Литер А</div>
-                                    <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
-                                </div>
-                                <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                    
-                                </div>
-                                <div class="divider"></div>
-                                <div class="people">
-                                    <p>Игроков: <span class="count">7</span></p>
-                                    <div class="scroll">
-                                        <div class="right"></div>
-                                        <div class="circle">
-            
-                                            <div class="plus man"><span>+</span></div>
-                                            <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="type">
-                                    <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                    <span class="big">футбол</span>
-                                </div>
-                                <div class="time">
-                                    <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                    <span class="big">завтра 18:45</span>
-                                </div>
-                                <div class="ball">
-                                    <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                    <span class="big">есть</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-12    col-lg-6 first">
-                        <div class="shadow box game-new">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="top">
-                                    <div class="square">наб. реки Пряжки д. 4 Литер А</div>
-                                    <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
-                                </div>
-                                <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                    
-                                </div>
-                                <div class="divider"></div>
-                                <div class="people">
-                                    <p>Игроков: <span class="count">7</span></p>
-                                    <div class="scroll">
-                                        <div class="right"></div>
-                                        <div class="circle">
-            
-                                            <div class="plus man"><span>+</span></div>
-                                            <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                            <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="type">
-                                    <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                    <span class="big">футбол</span>
-                                </div>
-                                <div class="time">
-                                    <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                    <span class="big">завтра 18:45</span>
-                                </div>
-                                <div class="ball">
-                                    <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                    <span class="big">есть</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button class="mid-blue-btn">Еще</button>
+                    <?php $i++; }  ?>
+                    
         		</div>
+                <button class="mid-blue-btn" id="more" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>
