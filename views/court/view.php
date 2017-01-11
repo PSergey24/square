@@ -63,7 +63,7 @@ if (!Yii::$app->user->getIsGuest()) {
                 var id = url.substring(url.lastIndexOf('/') + 1);
                 $.ajax({
                     url: '/court/bookmark',
-                    data: {court_id: id},
+                    data: {court_id: id_court},
                     success: function(success) {
                         if ($('#bookmark span').text() == 'Удалить из избранного') {
                             $('.mid-green-btn i').removeClass('fa-star');
@@ -89,7 +89,7 @@ if (!Yii::$app->user->getIsGuest()) {
                 $.ajax({
                     url: '/like/create',
                     method: 'POST',
-                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    data: {court_id: " . $court["id_court"] . ", user_id:" . Yii::$app->user->getId() . "},
                     success: function(isAdd) {
                         if (isAdd) {
                             $('#like i').removeClass('fa-heart-o');
@@ -102,7 +102,7 @@ if (!Yii::$app->user->getIsGuest()) {
                 $.ajax({
                     url: '/like/delete',
                     method: 'DELETE',
-                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    data: {court_id: " . $court["id_court"] . ", user_id:" . Yii::$app->user->getId() . "},
                     success: function(isRemoved) {
                         if (isRemoved) {
                             $('#like i').removeClass('fa-heart');
@@ -118,7 +118,7 @@ if (!Yii::$app->user->getIsGuest()) {
         $.ajax({
             url: '/like/has-like',
             method: 'POST',
-            data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+            data: {court_id: " . $court["id_court"] . ", user_id:" . Yii::$app->user->getId() . "},
             success: function(hasLike) {
                 if (hasLike) {
                     $('#like i').removeClass('fa-heart-o');

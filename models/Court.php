@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "court".
  *
- * @property integer $id
+ * @property integer $id_court
  * @property string $address
  * @property string $lat
  * @property string $lon
@@ -20,6 +20,8 @@ use Yii;
  * @property User $creator
  * @property DistrictCity $districtCity
  * @property CourtType $type
+ * @property CourtBookmark[] $courtBookmarks
+ * @property CourtLikes[] $courtLikes
  * @property CourtPhoto[] $courtPhotos
  * @property CourtSportType[] $courtSportTypes
  * @property Game[] $games
@@ -34,11 +36,6 @@ class Court extends \yii\db\ActiveRecord
         return 'court';
     }
 
-    public function init()
-    {
-        parent::init();
-        $this->creator_id = Yii::$app->user->getId();
-    }
 
 
     /**
@@ -47,16 +44,11 @@ class Court extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lat', 'lon', 'creator_id'], 'required'],
-            ['address', 'required', 'message' => 'Установите маркер на карте'],
-            ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
-            ['name', 'required', 'message' => 'Опишите площадку'],
-            ['type_id', 'required', 'message' => 'Не выбран тип площадки'],
-            ['district_city_id', 'required', 'message' => 'Не выбран район города'],
+            [['address', 'lat', 'lon', 'name', 'creator_id', 'district_city_id', 'type_id'], 'required'],
             [['lat', 'lon'], 'number'],
             [['built_up_area', 'creator_id', 'district_city_id', 'type_id'], 'integer'],
             [['address', 'name'], 'string', 'max' => 255],
-            [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(),'targetAttribute' => ['creator_id' => 'id']],
+            [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['creator_id' => 'id']],
             [['district_city_id'], 'exist', 'skipOnError' => true, 'targetClass' => DistrictCity::className(), 'targetAttribute' => ['district_city_id' => 'id']],
             [['type_id'], 'exist', 'skipOnError' => true, 'targetClass' => CourtType::className(), 'targetAttribute' => ['type_id' => 'id']],
         ];
@@ -68,15 +60,15 @@ class Court extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idCourt' => 'ID',
-            'address' => 'Адрес',
-            'lat' => 'Широта',
-            'lon' => 'Долгота',
-            'name' => 'Описание',
-            'built_up_area' => 'Площадь ~м.кв.',
-            'creator_id' => 'Создатель',
-            'district_city_id' => 'Район',
-            'type_id' => 'Тип площадки',
+            'id_court' => 'Id Court',
+            'address' => 'Address',
+            'lat' => 'Lat',
+            'lon' => 'Lon',
+            'name' => 'Name',
+            'built_up_area' => 'Built Up Area',
+            'creator_id' => 'Creator ID',
+            'district_city_id' => 'District City ID',
+            'type_id' => 'Type ID',
         ];
     }
 
@@ -85,7 +77,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCreator()
     {
-        return $this->hasOne(User::className(), ['idCourt' => 'creator_id']);
+        return $this->hasOne(User::className(), ['id' => 'creator_id']);
     }
 
     /**
@@ -93,7 +85,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getDistrictCity()
     {
-        return $this->hasOne(DistrictCity::className(), ['idCourt' => 'district_city_id']);
+        return $this->hasOne(DistrictCity::className(), ['id' => 'district_city_id']);
     }
 
     /**
@@ -101,7 +93,23 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getType()
     {
-        return $this->hasOne(CourtType::className(), ['idCourt' => 'type_id']);
+        return $this->hasOne(CourtType::className(), ['id' => 'type_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourtBookmarks()
+    {
+        return $this->hasMany(CourtBookmark::className(), ['court_id' => 'id_court']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCourtLikes()
+    {
+        return $this->hasMany(CourtLikes::className(), ['court_id' => 'id_court']);
     }
 
     /**
@@ -109,7 +117,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCourtPhotos()
     {
-        return $this->hasMany(CourtPhoto::className(), ['court_id' => 'idCourt']);
+        return $this->hasMany(CourtPhoto::className(), ['court_id' => 'id_court']);
     }
 
     /**
@@ -117,7 +125,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCourtSportTypes()
     {
-        return $this->hasMany(CourtSportType::className(), ['court_id' => 'idCourt']);
+        return $this->hasMany(CourtSportType::className(), ['court_id' => 'id_court']);
     }
 
     /**
@@ -125,15 +133,6 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getGames()
     {
-        return $this->hasMany(Game::className(), ['court_id' => 'idCourt']);
-    }
-
-    /**
-     * @inheritdoc
-     * @return \app\models\query\CourtQuery the active query used by this AR class.
-     */
-    public static function find()
-    {
-        return new \app\models\query\CourtQuery(get_called_class());
+        return $this->hasMany(Game::className(), ['court_id' => 'id_court']);
     }
 }

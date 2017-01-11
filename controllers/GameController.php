@@ -62,7 +62,7 @@ class GameController extends Controller
         foreach ($listGame as $itemGame) {
             $pictureUserArr = array();
             $nameArea = Court::find()
-                        ->where(['idCourt' => $itemGame['court_id']])
+                        ->where(['id_court' => $itemGame['court_id']])
                         ->one();
             array_push($nameAreaArr,$nameArea['name']);
 
@@ -131,7 +131,7 @@ class GameController extends Controller
 
                 if($districtFilter != 0){
                     $query->from('game,court,game_user')
-                          ->andWhere('court.idCourt = game.court_id')
+                          ->andWhere('court.id_court = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
                 }else{
@@ -177,7 +177,7 @@ class GameController extends Controller
 
                 if($districtFilter != 0){
                     $query->from('game,court')
-                          ->andWhere('court.idCourt = game.court_id')
+                          ->andWhere('court.id_court = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter]);
                 }else{
                     $query->from('game');
@@ -209,7 +209,7 @@ class GameController extends Controller
 
         foreach ($listGame as $thisGame) {
             $area = Court::find()
-                        ->where(['idCourt' => $thisGame['court_id']])
+                        ->where(['id_court' => $thisGame['court_id']])
                         ->one();
 
             $sport = SportType::find()
@@ -295,7 +295,7 @@ class GameController extends Controller
         $string = '';
         foreach ($gameList as $game) {
             $area = Court::find()
-                        ->where(['idCourt' => $game['court_id']])
+                        ->where(['id_court' => $game['court_id']])
                         ->one();
 
             $sport = SportType::find()
@@ -393,7 +393,7 @@ class GameController extends Controller
 
                 if($districtFilter != 0){
                     $query->from('game,court,game_user')
-                          ->andWhere('court.idCourt = game.court_id')
+                          ->andWhere('court.id_court = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
                 }else{
@@ -439,7 +439,7 @@ class GameController extends Controller
 
                 if($districtFilter != 0){
                     $query->from('game,court')
-                          ->andWhere('court.idCourt = game.court_id')
+                          ->andWhere('court.id_court = game.court_id')
                           ->andWhere(['district_city_id' => $districtFilter]);
                 }else{
                     $query->from('game');
@@ -470,7 +470,7 @@ class GameController extends Controller
         $string = '';
         foreach ($listGame as $thisGame) {
             $area = Court::find()
-                        ->where(['idCourt' => $thisGame['court_id']])
+                        ->where(['id_court' => $thisGame['court_id']])
                         ->one();
 
                 $sport = SportType::find()

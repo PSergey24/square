@@ -110,9 +110,9 @@ class CourtController extends Controller
     {
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
         $query = new Query;
-        $query->select('id, address, type_id, name, lat, lon')
+        $query->select('id_court, address, type_id, name, lat, lon')
             ->from('court')
-            ->where(['id' => $id]);
+            ->where(['id_court' => $id]);
         $court = $query->one();
 
         $query->select('time, need_ball')
@@ -148,7 +148,7 @@ class CourtController extends Controller
         $model = new Court();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id_court' => $model->id]);
         } else {
 
             $district_cities = ArrayHelper::map(DistrictCity::find()
@@ -181,7 +181,7 @@ class CourtController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['view', 'id_court' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -227,7 +227,7 @@ class CourtController extends Controller
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
         $query = new Query;
-        $query->select('id, lat, lon, name, address, type_id')
+        $query->select('id_court, lat, lon, name, address, type_id')
             ->from('court');
         $rows = $query->all();
         return $rows;
