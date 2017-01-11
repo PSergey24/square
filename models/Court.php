@@ -68,7 +68,7 @@ class Court extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
+            'idCourt' => 'ID',
             'address' => 'Адрес',
             'lat' => 'Широта',
             'lon' => 'Долгота',
@@ -85,7 +85,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCreator()
     {
-        return $this->hasOne(User::className(), ['id' => 'creator_id']);
+        return $this->hasOne(User::className(), ['idCourt' => 'creator_id']);
     }
 
     /**
@@ -93,7 +93,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getDistrictCity()
     {
-        return $this->hasOne(DistrictCity::className(), ['id' => 'district_city_id']);
+        return $this->hasOne(DistrictCity::className(), ['idCourt' => 'district_city_id']);
     }
 
     /**
@@ -101,7 +101,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getType()
     {
-        return $this->hasOne(CourtType::className(), ['id' => 'type_id']);
+        return $this->hasOne(CourtType::className(), ['idCourt' => 'type_id']);
     }
 
     /**
@@ -109,7 +109,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCourtPhotos()
     {
-        return $this->hasMany(CourtPhoto::className(), ['court_id' => 'id']);
+        return $this->hasMany(CourtPhoto::className(), ['court_id' => 'idCourt']);
     }
 
     /**
@@ -117,7 +117,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getCourtSportTypes()
     {
-        return $this->hasMany(CourtSportType::className(), ['court_id' => 'id']);
+        return $this->hasMany(CourtSportType::className(), ['court_id' => 'idCourt']);
     }
 
     /**
@@ -125,7 +125,7 @@ class Court extends \yii\db\ActiveRecord
      */
     public function getGames()
     {
-        return $this->hasMany(Game::className(), ['court_id' => 'id']);
+        return $this->hasMany(Game::className(), ['court_id' => 'idCourt']);
     }
 
     /**

@@ -99,7 +99,7 @@ $this->registerJs("
                             </div>
                             <div class="col-lg-3 col-lg-offset-1 col-xs-6" id="district">
                                 <select>
-                                    <option>Все районы</option>
+                                    <option value="0">Все районы</option>
                                     <option value="1">Кронштадтский</option>
                                     <option value="2">Адмиралтейский</option>
                                     <option value="3">Василеостровский</option>
@@ -206,7 +206,7 @@ $this->registerJs("
                     <?php $i++; }  ?>
                     
         		</div>
-                <button class="mid-blue-btn" id="more" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
+                <button class="mid-blue-btn" id="more" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>

@@ -2,6 +2,8 @@ $( document ).ready(function() {
 	$('#toApply').click(function(){
 		var typeSport = $('#kind select').val();
 		var timeFilter = $('[data-time]').attr('data-time');
+		var districtFilter = $('#district select').val();
+		$('[data-district]').attr("data-district", districtFilter);
 		var min = $('#min').val();
 		var max = $('#max').val();
 
@@ -22,15 +24,14 @@ $( document ).ready(function() {
 				$('[data-people]').attr("data-people", min+'-'+max);
 			}
 			
-
-			
 			var peopleFilter = $('[data-people]').attr('data-people');
 			$('[data-sport]').attr("data-sport", typeSport);
 			$.ajax({
 	          type: "POST",
 	          url: "/game/apply",
-	          data: "typeSport="+typeSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter,
-	          success: function(data){     
+	          data: "typeSport="+typeSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter,
+	          success: function(data){  
+	          // alert(data);   
 	          	var result = data.split(' | ');
 	          	$('.game-list').html(result[1]);
 	          	num = Number(result[0]);
@@ -47,6 +48,7 @@ $( document ).ready(function() {
 		var timeFilter = $('[data-time]').attr('data-time');
 		var min = $('#min').val();
 		var max = $('#max').val();
+		var districtFilter = $('[data-district]').attr('data-district');
 
 		if((max<min)&&(max != ''))
 			$('#errorPeople').html('Не правильно');
@@ -71,7 +73,7 @@ $( document ).ready(function() {
 			$.ajax({
 	          type: "POST",
 	          url: "/game/more",
-	          data: "numGame="+numGame+"&&dataSport="+dataSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter,
+	          data: "numGame="+numGame+"&&dataSport="+dataSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter,
 	          success: function(data){
 	          	var result = data.split(' | ');
 	          	$('.game-list').append(result[1]);
@@ -89,6 +91,7 @@ $( document ).ready(function() {
     	$('[data-people]').attr('data-people', 'no');
     	$('.gameTime').removeClass('timeSelected');
     	$('#sportList option:selected').removeAttr('selected');
+    	$('#district option:selected').removeAttr('selected');
     	$('#errorPeople').html('');
     	$('#min').val('');
     	$('#max').val('');
