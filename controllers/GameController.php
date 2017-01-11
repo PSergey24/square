@@ -115,33 +115,76 @@ class GameController extends Controller
         $numGame = Yii::$app->getRequest()->getBodyParam("numGame");
         $dataSport = Yii::$app->getRequest()->getBodyParam("dataSport");
         $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
+        $peopleFilter = Yii::$app->getRequest()->getBodyParam("peopleFilter");
 
 
 
-
-
-        $query = new Query;
-        $query->select('*')
-            ->from('game');
-
-        if($timeFilter == 'no')
-            $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
-        elseif($timeFilter == 'Сегодня'){
-            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
-            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-            $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
-        }
-        elseif($timeFilter == 'Завтра')
+        if($peopleFilter != 'no')
         {
-            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-            $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
-            $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+            $pieces = explode("-", $peopleFilter);
+            $min = $pieces[0];
+            $max = $pieces[1];
+
+            $query = new Query;
+                $query->select('id,time,need_ball,sport_type_id,court_id,COUNT(game_id)')
+                ->from('game,game_user')
+                ->where('game.id = game_user.game_id');
+                
+            if($dataSport != 0)
+                $query->andWhere(['sport_type_id' => $dataSport]);
+
+                if($timeFilter == 'no')
+                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+                elseif($timeFilter == 'Сегодня'){
+                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+                    $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                    $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+                }
+                elseif($timeFilter == 'Завтра')
+                {
+                    $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                    $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+                    $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+                }
+
+                $query->groupBy('id');
+
+                if($min != 0)
+                    $query->having(['>=','COUNT(game_id)',$min]);
+                else{
+                    if($max != 0)
+                        $query->having(['<=','COUNT(game_id)',$max]);
+                }
+
+                if($max != 0)
+                    $query->andHaving(['<=','COUNT(game_id)',$max]);
+
+            $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
+        }else{
+            $query = new Query;
+            $query->select('*')
+                ->from('game');
+
+            if($timeFilter == 'no')
+                $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+            elseif($timeFilter == 'Сегодня'){
+                $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+            }
+            elseif($timeFilter == 'Завтра')
+            {
+                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+                $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+            }
+
+            if($dataSport != 0)
+                $query->andWhere(['sport_type_id' => $dataSport]);
+
+            $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
         }
 
-        if($dataSport != 0)
-            $query->andWhere(['sport_type_id' => $dataSport]);
-
-        $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
 
         $string = '';
 
@@ -259,6 +302,17 @@ class GameController extends Controller
             else
                 $timeGame =  date_format(date_create($game['time']), 'd-m H:i');
 
+            $queryPeoples = new Query;
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $game['id']])->all();
+            $countUser2 = count($idUser);
+            $str = '';
+
+            foreach($idUser as $id){
+                $queryPicture = new Query;
+                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+            }
+
             $string = $string.'
                 <div class="col-xs-12 col-lg-6 first">
                             <div class="shadow box game-new '.$classSport.'" >
@@ -272,18 +326,11 @@ class GameController extends Controller
                                     </div>
                                     <div class="divider"></div>
                                     <div class="people">
-                                        <p>Игроков: <span class="count">7</span></p>
+                                        <p>Игроков: <span class="count">'.$countUser2.'</span></p>
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
-                
-                                                <div class="plus man"><span>+</span></div>
-                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                                <div class="plus man"><span>+</span></div>'.$str.'
                                             </div>
                                         </div>
                                     </div>
@@ -313,34 +360,84 @@ class GameController extends Controller
     {
         $typeSport = Yii::$app->getRequest()->getBodyParam("typeSport");
         $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
-        $min = Yii::$app->getRequest()->getBodyParam("min");
-        $max = Yii::$app->getRequest()->getBodyParam("max");
+        $peopleFilter = Yii::$app->getRequest()->getBodyParam("peopleFilter");
 
-        // $subQuery = (new Query())->select('COUNT(*)')->from('game_user')->where;
 
-        $query = new Query;
-        $query->select('*')
-            ->from(['game','game_user']);
+        // $subQuery = new Query;
+        //     $res = $subQuery->select('count(*)')->from('game_user')->one();
+        // echo($res);
+// var_dump($peopleFilter);
 
-        if($timeFilter == 'no')
-            $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
-        elseif($timeFilter == 'Сегодня'){
-            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
-            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-            $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
-        }
-        elseif($timeFilter == 'Завтра')
+        if($peopleFilter != 'no')
         {
-            $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-            $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
-            $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+            $pieces = explode("-", $peopleFilter);
+            $min = $pieces[0];
+            $max = $pieces[1];
+
+
+                $query = new Query;
+                    $query->select('id,time,need_ball,sport_type_id,court_id,COUNT(game_id)')
+                    ->from('game,game_user')
+                    ->where('game.id = game_user.game_id');
+
+                if ($typeSport != 0) 
+                    $query->andWhere(['sport_type_id' => $typeSport]);
+
+                if($timeFilter == 'no')
+                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+                elseif($timeFilter == 'Сегодня'){
+                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+                    $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                    $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+                }
+                elseif($timeFilter == 'Завтра')
+                {
+                    $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                    $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+                    $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+                }
+
+                $query->groupBy('id');
+
+                if($min != 0)
+                    $query->having(['>=','COUNT(game_id)',$min]);
+                else{
+                    if($max != 0)
+                        $query->having(['<=','COUNT(game_id)',$max]);
+                }
+
+                if($max != 0)
+                    $query->andHaving(['<=','COUNT(game_id)',$max]);
+
+            $listGame = $query->limit(6)->orderBy('time')->all();
+        }else
+        {
+            $query = new Query;
+            $query->select('*')
+                ->from('game');
+
+            if($timeFilter == 'no')
+                $query->where(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+            elseif($timeFilter == 'Сегодня'){
+                $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                $query->where(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+            }
+            elseif($timeFilter == 'Завтра')
+            {
+                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+                $query->where(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+            }
+
+            if ($typeSport != 0) 
+                $query->andWhere(['sport_type_id' => $typeSport]);
+     
+            $listGame = $query->limit(6)->orderBy('time')->all();
         }
 
-        if ($typeSport != 0) 
-            $query->andWhere(['sport_type_id' => $typeSport]);
- 
-        $listGame = $query->limit(6)->orderBy('time')->all();
-
+        // var_dump($listGame);
+       
         $string = '';
         foreach ($listGame as $thisGame) {
             $area = Court::find()
@@ -369,6 +466,18 @@ class GameController extends Controller
             else
                 $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
 
+
+            $queryPeoples = new Query;
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['id']])->all();
+            $countUser2 = count($idUser);
+            $str = '';
+
+            foreach($idUser as $id){
+                $queryPicture = new Query;
+                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+            }
+
             $string = $string.'
                 <div class="col-xs-12 col-lg-6 first">
                             <div class="shadow box game-new '.$classSport.'" >
@@ -382,18 +491,11 @@ class GameController extends Controller
                                     </div>
                                     <div class="divider"></div>
                                     <div class="people">
-                                        <p>Игроков: <span class="count">7</span></p>
+                                        <p>Игроков: <span class="count">'.$countUser2.'</span></p>
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
-                
-                                                <div class="plus man"><span>+</span></div>
-                                                <a href="#"><img src="/img/court_img_8.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_5.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_4.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_2.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_1.jpg" class="man"></a>
-                                                <a href="#"><img src="/img/court_img_9.jpg" class="man"></a>
+                                                <div class="plus man"><span>+</span></div>'.$str.'
                                             </div>
                                         </div>
                                     </div>

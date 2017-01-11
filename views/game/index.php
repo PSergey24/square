@@ -139,6 +139,7 @@ $this->registerJs("
                             <div class="col-lg-6 col-lg-offset-1 col-xs-6 col-sm-6" id="players">
                                 <span class="amount">Игроков</span><input id="min" type="number" min="0" max="2" >
                                 <span class="">-</span><input id="max" type="number" min="0" max="2" size="2" >
+                                <span id="errorPeople"></span>
                             </div>
                         </div>
                         <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply">Применить</button></div>

@@ -189,6 +189,11 @@ input{
 	color: rgba(0,0,0,.54) !important;
 }
 
+#errorPeople{
+	font-weight: 500;
+	color:#D01919;
+}
+
 .buttons{
 	padding: 20px 0px;
 	text-align: center;
