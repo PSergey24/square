@@ -62,7 +62,7 @@ class GameController extends Controller
         foreach ($listGame as $itemGame) {
             $pictureUserArr = array();
             $nameArea = Court::find()
-                        ->where(['idCourt' => $itemGame['court_id']])
+                        ->where(['id' => $itemGame['court_id']])
                         ->one();
             array_push($nameAreaArr,$nameArea['name']);
 
@@ -127,15 +127,17 @@ class GameController extends Controller
 
 
             $query = new Query;
-                    $query->select('*,COUNT(game_id)');
+                    
 
                 if($districtFilter != 0){
-                    $query->from('game,court,game_user')
-                          ->andWhere('court.idCourt = game.court_id')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
+                          ->from('game,court,game_user')
+                          ->andWhere('court.id = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
                 }else{
-                    $query->from('game,game_user')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id,COUNT(game_id)')
+                          ->from('game,game_user')
                           ->andWhere('game.id = game_user.game_id');
                 }
                 
@@ -156,7 +158,7 @@ class GameController extends Controller
                     $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
                 }
 
-                $query->groupBy('id');
+                $query->groupBy('game.id');
 
                 if($min != 0)
                     $query->having(['>=','COUNT(game_id)',$min]);
@@ -173,14 +175,16 @@ class GameController extends Controller
 
 
             $query = new Query;
-            $query->select('*');
+            
 
                 if($districtFilter != 0){
-                    $query->from('game,court')
-                          ->andWhere('court.idCourt = game.court_id')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, name, district_city_id')
+                          ->from('game,court')
+                          ->andWhere('court.id = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter]);
                 }else{
-                    $query->from('game');
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id')
+                          ->from('game');
                 }
        
             if($timeFilter == 'no')
@@ -209,7 +213,7 @@ class GameController extends Controller
 
         foreach ($listGame as $thisGame) {
             $area = Court::find()
-                        ->where(['idCourt' => $thisGame['court_id']])
+                        ->where(['id' => $thisGame['court_id']])
                         ->one();
 
             $sport = SportType::find()
@@ -236,7 +240,7 @@ class GameController extends Controller
 
 
             $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['id']])->all();
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
             $countUser2 = count($idUser);
             $str = '';
             foreach($idUser as $id){
@@ -295,7 +299,7 @@ class GameController extends Controller
         $string = '';
         foreach ($gameList as $game) {
             $area = Court::find()
-                        ->where(['idCourt' => $game['court_id']])
+                        ->where(['id' => $game['court_id']])
                         ->one();
 
             $sport = SportType::find()
@@ -389,19 +393,20 @@ class GameController extends Controller
 
 
                 $query = new Query;
-                    $query->select('*,COUNT(game_id)');
 
                 if($districtFilter != 0){
-                    $query->from('game,court,game_user')
-                          ->andWhere('court.idCourt = game.court_id')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
+                          ->from('game,game_user,court')
+                          ->andWhere('court.id = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
+                    
                 }else{
-                    $query->from('game,game_user')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id,COUNT(game_id)')
+                          ->from('game,game_user')
                           ->andWhere('game.id = game_user.game_id');
                 }
                     
-
                 if ($typeSport != 0) 
                     $query->andWhere(['sport_type_id' => $typeSport]);
 
@@ -419,7 +424,7 @@ class GameController extends Controller
                     $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
                 }
 
-                $query->groupBy('id');
+                $query->groupBy('game.id');
 
                 if($min != 0)
                     $query->having(['>=','COUNT(game_id)',$min]);
@@ -432,18 +437,21 @@ class GameController extends Controller
                     $query->andHaving(['<=','COUNT(game_id)',$max]);
 
             $listGame = $query->limit(6)->orderBy('time')->all();
+
         }else
         {
             $query = new Query;
-            $query->select('*');
 
                 if($districtFilter != 0){
-                    $query->from('game,court')
-                          ->andWhere('court.idCourt = game.court_id')
-                          ->andWhere(['district_city_id' => $districtFilter]);
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, name, district_city_id')
+                          ->from('game,court')
+                          ->andWhere('court.id = game.court_id')
+                          ->andWhere(['court.district_city_id' => $districtFilter]);
                 }else{
-                    $query->from('game');
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id')
+                          ->from('game');
                 }
+
        
             if($timeFilter == 'no')
                 $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
@@ -464,18 +472,17 @@ class GameController extends Controller
      
             $listGame = $query->limit(6)->orderBy('time')->all();
         }
-
-        // var_dump($listGame);
        
         $string = '';
         foreach ($listGame as $thisGame) {
             $area = Court::find()
-                        ->where(['idCourt' => $thisGame['court_id']])
+                        ->where(['id' => $thisGame['court_id']])
                         ->one();
 
                 $sport = SportType::find()
                             ->where(['id' => $thisGame['sport_type_id']])
                             ->one();
+
 
             if($thisGame['need_ball'] == 1)
                 $ball = 'Есть';
@@ -495,9 +502,10 @@ class GameController extends Controller
             else
                 $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
 
-
+            // return $thisGame['id'];
             $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['id']])->all();
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
+            // var_dump($idUser);
             $countUser2 = count($idUser);
             $str = '';
 
