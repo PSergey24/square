@@ -77,7 +77,7 @@ $this->registerJs("
                     <div class="show col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="title show col-lg-2 col-md-2 col-sm-3 col-xs-4">Поиск игр</div>
                         <div class="closest hidden-xs">
-                            <span class="word">Ближайшие к вам</span>
+                            <span class="word" id="near">Ближайшие к вам</span>
                             <i class="fa fa-location-arrow" aria-hidden="true"></i>
                         </div>
                         <div class="openFilters">
@@ -206,7 +206,7 @@ $this->registerJs("
                     <?php $i++; }  ?>
                     
         		</div>
-                <button class="mid-blue-btn" id="more" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
+                <button class="mid-blue-btn" id="more" data-near="no" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>

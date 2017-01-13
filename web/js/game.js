@@ -2,6 +2,7 @@ $( document ).ready(function() {
 	$('#toApply').click(function(){
 		var typeSport = $('#kind select').val();
 		var timeFilter = $('[data-time]').attr('data-time');
+		$('[data-near]').attr('data-near', 'no');
 		var districtFilter = $('#district select').val();
 		$('[data-district]').attr("data-district", districtFilter);
 		var min = $('#min').val();
@@ -46,6 +47,7 @@ $( document ).ready(function() {
 		var numGame = $('[data-num-game]').attr('data-num-game');
 		var dataSport = $('[data-sport]').attr('data-sport');
 		var timeFilter = $('[data-time]').attr('data-time');
+		var nearFilter = $('[data-near]').attr('data-near');
 		var min = $('#min').val();
 		var max = $('#max').val();
 		var districtFilter = $('[data-district]').attr('data-district');
@@ -73,7 +75,7 @@ $( document ).ready(function() {
 			$.ajax({
 	          type: "POST",
 	          url: "/game/more",
-	          data: "numGame="+numGame+"&&dataSport="+dataSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter,
+	          data: "numGame="+numGame+"&&dataSport="+dataSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter+"&&nearFilter="+nearFilter,
 	          success: function(data){
 	          	var result = data.split(' | ');
 	          	$('.game-list').append(result[1]);
@@ -85,10 +87,40 @@ $( document ).ready(function() {
 		}
     });
 
+    $('#near').click(function(){
+    	if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+            	var lat = position.coords.latitude;
+            	var lon = position.coords.longitude;
+
+            	// alert('Широта: '+lat+'; Долгота: '+lon);
+
+            	$('[data-near]').attr('data-near', 'yes');
+				$.ajax({
+					type: "POST",
+		          	url: "/game/near",
+		          	data: "lat="+lat+"&&lon="+lon,
+			          success: function(data){
+			          	$('.game-list').html(data);
+			          }
+		        });
+
+            }, function() {
+                    alert("Ошибка: в Вашем браузере данная функция недоступна!");
+                }
+            );
+         }else{
+           // Browser doesn't support Geolocation
+           alert("Ошибка: Ваш браузер не поддерживает геолокацию!");
+         }
+    	
+    });
+
     $('.reset').click(function(){
     	$('[data-time]').attr("data-time", 'no');
     	$('[data-sport]').attr('data-sport', 'no');
     	$('[data-people]').attr('data-people', 'no');
+    	$('[data-near]').attr('data-near', 'no');
     	$('.gameTime').removeClass('timeSelected');
     	$('#sportList option:selected').removeAttr('selected');
     	$('#district option:selected').removeAttr('selected');
@@ -120,6 +152,8 @@ $( document ).ready(function() {
     	}
     	
     });
+
+
 
 
 });

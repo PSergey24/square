@@ -116,35 +116,80 @@ class GameController extends Controller
         $numGame = Yii::$app->getRequest()->getBodyParam("numGame");
         $dataSport = Yii::$app->getRequest()->getBodyParam("dataSport");
         $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
+        $nearFilter = Yii::$app->getRequest()->getBodyParam("nearFilter");
         $peopleFilter = Yii::$app->getRequest()->getBodyParam("peopleFilter");
         $districtFilter = Yii::$app->getRequest()->getBodyParam("districtFilter");
 
+        if($nearFilter == 'no'){
 
-        if($peopleFilter != 'no')
-        {
-            $pieces = explode("-", $peopleFilter);
-            $min = $pieces[0];
-            $max = $pieces[1];
+            if($peopleFilter != 'no')
+            {
+                $pieces = explode("-", $peopleFilter);
+                $min = $pieces[0];
+                $max = $pieces[1];
 
 
-            $query = new Query;
+                $query = new Query;
+                        
+
+                    if($districtFilter != 0){
+                        $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
+                              ->from('game,court,game_user')
+                              ->andWhere('court.id = game.court_id')
+                              ->andWhere(['court.district_city_id' => $districtFilter])
+                              ->andWhere('game.id = game_user.game_id');
+                    }else{
+                        $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id,COUNT(game_id)')
+                              ->from('game,game_user')
+                              ->andWhere('game.id = game_user.game_id');
+                    }
                     
+                if($dataSport != 0)
+                    $query->andWhere(['sport_type_id' => $dataSport]);
 
-                if($districtFilter != 0){
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
-                          ->from('game,court,game_user')
-                          ->andWhere('court.id = game.court_id')
-                          ->andWhere(['court.district_city_id' => $districtFilter])
-                          ->andWhere('game.id = game_user.game_id');
-                }else{
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id,COUNT(game_id)')
-                          ->from('game,game_user')
-                          ->andWhere('game.id = game_user.game_id');
-                }
+                    if($timeFilter == 'no')
+                        $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+                    elseif($timeFilter == 'Сегодня'){
+                        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+                        $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                        $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
+                    }
+                    elseif($timeFilter == 'Завтра')
+                    {
+                        $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
+                        $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
+                        $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
+                    }
+
+                    $query->groupBy('game.id');
+
+                    if($min != 0)
+                        $query->having(['>=','COUNT(game_id)',$min]);
+                    else{
+                        if($max != 0)
+                            $query->having(['<=','COUNT(game_id)',$max]);
+                    }
+
+                    if($max != 0)
+                        $query->andHaving(['<=','COUNT(game_id)',$max]);
+
+                $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
+            }else{
+
+
+                $query = new Query;
                 
-            if($dataSport != 0)
-                $query->andWhere(['sport_type_id' => $dataSport]);
 
+                    if($districtFilter != 0){
+                        $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, name, district_city_id')
+                              ->from('game,court')
+                              ->andWhere('court.id = game.court_id')
+                              ->andWhere(['court.district_city_id' => $districtFilter]);
+                    }else{
+                        $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id')
+                              ->from('game');
+                    }
+           
                 if($timeFilter == 'no')
                     $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
                 elseif($timeFilter == 'Сегодня'){
@@ -159,138 +204,96 @@ class GameController extends Controller
                     $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
                 }
 
-                $query->groupBy('game.id');
+                if($dataSport != 0) 
+                    $query->andWhere(['sport_type_id' => $dataSport]);
+         
+                $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
+            }
 
-                if($min != 0)
-                    $query->having(['>=','COUNT(game_id)',$min]);
-                else{
-                    if($max != 0)
-                        $query->having(['<=','COUNT(game_id)',$max]);
+
+            $string = '';
+
+
+            foreach ($listGame as $thisGame) {
+                $area = Court::find()
+                            ->where(['id' => $thisGame['court_id']])
+                            ->one();
+
+                $sport = SportType::find()
+                            ->where(['id' => $thisGame['sport_type_id']])
+                            ->one();
+
+                if($thisGame['need_ball'] == 1)
+                    $ball = 'Есть';
+                else
+                    $ball = 'Нет';
+
+                $classSport = '';
+                if($thisGame['sport_type_id'] == 1)
+                    $classSport = 'basketball';
+                elseif($thisGame['sport_type_id'] == 2)
+                    $classSport = 'football';
+
+                if(date_format(date_create($thisGame['time']), 'd') == (date("d")+1))
+                    $timeGame =  'завтра '.date_format(date_create($thisGame['time']), 'H:i');
+                elseif(date_format(date_create($thisGame['time']), 'd') == (date("d")))
+                    $timeGame =  'сегодня '.date_format(date_create($thisGame['time']), 'H:i');
+                else
+                    $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
+
+
+                $queryPeoples = new Query;
+                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
+                $countUser2 = count($idUser);
+                $str = '';
+                foreach($idUser as $id){
+                    $queryPicture = new Query;
+                    $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                    $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                 }
-
-                if($max != 0)
-                    $query->andHaving(['<=','COUNT(game_id)',$max]);
-
-            $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
-        }else{
-
-
-            $query = new Query;
-            
-
-                if($districtFilter != 0){
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, name, district_city_id')
-                          ->from('game,court')
-                          ->andWhere('court.id = game.court_id')
-                          ->andWhere(['court.district_city_id' => $districtFilter]);
-                }else{
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id')
-                          ->from('game');
-                }
-       
-            if($timeFilter == 'no')
-                $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
-            elseif($timeFilter == 'Сегодня'){
-                $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
-                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-                $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
-            }
-            elseif($timeFilter == 'Завтра')
-            {
-                $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
-                $afterTomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+2, date("Y")));
-                $query->andWhere(['>=','time',$tomorrow])->andWhere(['<','time',$afterTomorrow]);
-            }
-
-            if($dataSport != 0) 
-                $query->andWhere(['sport_type_id' => $dataSport]);
-     
-            $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
-        }
-
-
-        $string = '';
-
-
-        foreach ($listGame as $thisGame) {
-            $area = Court::find()
-                        ->where(['id' => $thisGame['court_id']])
-                        ->one();
-
-            $sport = SportType::find()
-                        ->where(['id' => $thisGame['sport_type_id']])
-                        ->one();
-
-            if($thisGame['need_ball'] == 1)
-                $ball = 'Есть';
-            else
-                $ball = 'Нет';
-
-            $classSport = '';
-            if($thisGame['sport_type_id'] == 1)
-                $classSport = 'basketball';
-            elseif($thisGame['sport_type_id'] == 2)
-                $classSport = 'football';
-
-            if(date_format(date_create($thisGame['time']), 'd') == (date("d")+1))
-                $timeGame =  'завтра '.date_format(date_create($thisGame['time']), 'H:i');
-            elseif(date_format(date_create($thisGame['time']), 'd') == (date("d")))
-                $timeGame =  'сегодня '.date_format(date_create($thisGame['time']), 'H:i');
-            else
-                $timeGame =  date_format(date_create($thisGame['time']), 'd-m H:i');
-
-
-            $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
-            $countUser2 = count($idUser);
-            $str = '';
-            foreach($idUser as $id){
-                $queryPicture = new Query;
-                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
-            }
-            
-            $string = $string.'
-                <div class="col-xs-12 col-lg-6 first">
-                            <div class="shadow box game-new '.$classSport.'" >
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="top">
-                                        <div class="square">'. $area['name'] .'</div>
-                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
-                                    </div>
-                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                        
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="people">
-                                        <p>Игроков: <span class="count">'.$countUser2.'</span></p>
-                                        <div class="scroll">
-                                            <div class="right"></div>
-                                            <div class="circle">
-                                                <div class="plus man"><span>+</span></div>'.$str.'
+                
+                $string = $string.'
+                    <div class="col-xs-12 col-lg-6 first">
+                                <div class="shadow box game-new '.$classSport.'" >
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="top">
+                                            <div class="square">'. $area['name'] .'</div>
+                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                        </div>
+                                        <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                            
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="people">
+                                            <p>Игроков: <span class="count">'.$countUser2.'</span></p>
+                                            <div class="scroll">
+                                                <div class="right"></div>
+                                                <div class="circle">
+                                                    <div class="plus man"><span>+</span></div>'.$str.'
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="type">
+                                            <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                            <span class="big">'. $sport['name'] .'</span>
+                                        </div>
+                                        <div class="time">
+                                            <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                            <span class="big">'. $timeGame .'</span>
+                                        </div>
+                                        <div class="ball">
+                                            <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                            <span class="big">'. $ball .'</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="type">
-                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                        <span class="big">'. $sport['name'] .'</span>
-                                    </div>
-                                    <div class="time">
-                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                        <span class="big">'. $timeGame .'</span>
-                                    </div>
-                                    <div class="ball">
-                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                        <span class="big">'. $ball .'</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>';
-        }  
-        $count = count($listGame);
-        return $count." | ".$string;
+                            </div>';
+            }  
+            $count = count($listGame);
+            return $count." | ".$string;
+        }
     }
 
     public function actionReset()
@@ -378,6 +381,115 @@ class GameController extends Controller
         $count = count($gameList);
         return $count." | ".$string;
     }
+
+    public function actionNear()
+    {
+        $latCenter = Yii::$app->getRequest()->getBodyParam("lat");
+        $lonCenter = Yii::$app->getRequest()->getBodyParam("lon");
+        // $latCenter = 59.9830;
+        // $lonCenter = 30.412;
+        $radius = 0.01; // 1,1км
+        $rSum = $radius*$radius;
+
+        $query = new Query;
+        $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, lat, lon, name, district_city_id')
+              ->from('game,court')
+              ->andWhere('court.id = game.court_id')
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))]);
+
+        $listGame = $query->orderBy('time')->all();
+
+
+        $string = '';
+        foreach ($listGame as $list) {
+            $summa = 0;
+            $latSum = ($latCenter - $list['lat'])*($latCenter - $list['lat']);
+            $lonSum = ($lonCenter - $list['lon'])*($lonCenter - $list['lon']);
+
+            $summa = $latSum + $lonSum;
+            if($summa <= $rSum){
+                $area = Court::find()
+                            ->where(['id' => $list['court_id']])
+                            ->one();
+
+                $sport = SportType::find()
+                            ->where(['id' => $list['sport_type_id']])
+                            ->one();
+
+                if($list['need_ball'] == 1)
+                    $ball = 'Есть';
+                else
+                    $ball = 'Нет';
+
+                $styleSport = '';
+
+                if($list['sport_type_id'] == 1)
+                    $styleSport = 'basketball';
+                elseif($list['sport_type_id'] == 2)
+                    $styleSport = 'football';
+
+                if(date_format(date_create($list['time']), 'd') == (date("d")+1))
+                    $timeGame =  'завтра '.date_format(date_create($list['time']), 'H:i');
+                elseif(date_format(date_create($list['time']), 'd') == (date("d")))
+                    $timeGame =  'сегодня '.date_format(date_create($list['time']), 'H:i');
+                else
+                    $timeGame =  date_format(date_create($list['time']), 'd-m H:i');
+
+
+                $queryPeoples = new Query;
+                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $list['gameId']])->all();
+                $countUser2 = count($idUser);
+                $str = '';
+                foreach($idUser as $id){
+                    $queryPicture = new Query;
+                    $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                    $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                }
+
+                 $string = $string.'
+                    <div class="col-xs-12 col-lg-6 first">
+                                <div class="shadow box game-new '.$styleSport.'" >
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="top">
+                                            <div class="square">'. $area['name'] .'</div>
+                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                        </div>
+                                        <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                            
+                                        </div>
+                                        <div class="divider"></div>
+                                        <div class="people">
+                                            <p>Игроков: <span class="count">'.$countUser2.'</span></p>
+                                            <div class="scroll">
+                                                <div class="right"></div>
+                                                <div class="circle">
+                                                    <div class="plus man"><span>+</span></div>'.$str.'
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="type">
+                                            <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
+                                            <span class="big">'. $sport['name'] .'</span>
+                                        </div>
+                                        <div class="time">
+                                            <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
+                                            <span class="big">'. $timeGame .'</span>
+                                        </div>
+                                        <div class="ball">
+                                            <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
+                                            <span class="big">'. $ball .'</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+            }
+        }  
+        return $string;
+    }
+
+    
 
     public function actionApply()
     {
@@ -589,7 +701,7 @@ class GameController extends Controller
                 return self::ERROR_CREATE_BOX . '<p id="warning">Игра уже существует</p>';
 
             $model->save();
-            
+
             // Создается запись в таблице game_user
             $model2 = Yii::createObject(GameUser::className());
             $model2->user_id = $model->creator_id;
@@ -620,6 +732,8 @@ class GameController extends Controller
             ]);
         }
     }
+
+
 
     /**
      * Deletes an existing Game model.
