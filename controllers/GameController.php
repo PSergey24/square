@@ -6,6 +6,7 @@ use Yii;
 use app\models\Game;
 use app\models\Court;
 use app\models\SportType;
+use app\models\GameUser;
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -130,13 +131,13 @@ class GameController extends Controller
                     
 
                 if($districtFilter != 0){
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
                           ->from('game,court,game_user')
                           ->andWhere('court.id = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
                 }else{
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id,COUNT(game_id)')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id,COUNT(game_id)')
                           ->from('game,game_user')
                           ->andWhere('game.id = game_user.game_id');
                 }
@@ -395,14 +396,14 @@ class GameController extends Controller
                 $query = new Query;
 
                 if($districtFilter != 0){
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
                           ->from('game,game_user,court')
                           ->andWhere('court.id = game.court_id')
                           ->andWhere(['court.district_city_id' => $districtFilter])
                           ->andWhere('game.id = game_user.game_id');
                     
                 }else{
-                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, idGameUser, game_id, user_id,COUNT(game_id)')
+                    $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id,, game_user.id as idGameUser, game_id, user_id,COUNT(game_id)')
                           ->from('game,game_user')
                           ->andWhere('game.id = game_user.game_id');
                 }
@@ -588,6 +589,12 @@ class GameController extends Controller
                 return self::ERROR_CREATE_BOX . '<p id="warning">Игра уже существует</p>';
 
             $model->save();
+            
+            // Создается запись в таблице game_user
+            $model2 = Yii::createObject(GameUser::className());
+            $model2->user_id = $model->creator_id;
+            $model2->game_id = $model->id;
+            $model2->save();
 
             return self::SUCCESS_CREATE_BOX  . '<p id="warning">Игра успешно создана</p>';
 
