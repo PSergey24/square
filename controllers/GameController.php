@@ -7,6 +7,7 @@ use app\models\Game;
 use app\models\Court;
 use app\models\SportType;
 use app\models\GameUser;
+use yii\web\Response;
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
@@ -69,6 +70,7 @@ class GameController extends Controller
 
         $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
         $numGame = sizeof($listGame);
+        $gameArray = '';
         foreach ($listGame as $itemGame) {
             $pictureUserArr = array();
             $nameArea = Court::find()
@@ -79,6 +81,8 @@ class GameController extends Controller
             $nameSport = SportType::find()
                         ->where(['id' => $itemGame['sport_type_id']])
                         ->one();
+
+            $gameArray = $gameArray.$itemGame['id']." ";
 
             $query = new Query;
             $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->all();
@@ -103,6 +107,7 @@ class GameController extends Controller
             array_push($idUsersArr,$idUser);
             array_push($nameSportArr,$nameSport['name']);
         }
+        $gameArray = trim($gameArray);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -114,6 +119,7 @@ class GameController extends Controller
             'idUsersArr' => $idUsersArr,
             'pictureUsersArr' => $pictureUsersArr,
             'plusMan' => $plusMan,
+            'gameArray' => $gameArray,
         ]);
     }
 
@@ -237,7 +243,7 @@ class GameController extends Controller
 
             $string = '';
 
-
+            $gameArray = '';
             foreach ($listGame as $thisGame) {
                 $area = Court::find()
                             ->where(['id' => $thisGame['court_id']])
@@ -251,6 +257,8 @@ class GameController extends Controller
                     $ball = 'Есть';
                 else
                     $ball = 'Нет';
+
+                $gameArray = $gameArray.$thisGame['gameId']." ";
 
                 $classSport = '';
                 if($thisGame['sport_type_id'] == 1)
@@ -323,7 +331,8 @@ class GameController extends Controller
                             </div>';
             }  
             $count = count($listGame);
-            return $count." | ".$string;
+            $gameArray = trim($gameArray);
+            return $count." | ".$string." | ".$gameArray;
         }
     }
 
@@ -336,7 +345,8 @@ class GameController extends Controller
             $userAuth = Yii::$app->user->identity->getId();
         else
             $userAuth = 0;
-
+    
+        $gameArray = '';
 
         $string = '';
         foreach ($gameList as $game) {
@@ -352,6 +362,10 @@ class GameController extends Controller
                 $ball = 'Есть';
             else
                 $ball = 'Нет';
+
+            $gameArray = $gameArray.$game['id']." ";
+
+
 
             $classSport = '';
             if($game['sport_type_id'] == 1)
@@ -424,7 +438,9 @@ class GameController extends Controller
                         </div>';
         }  
         $count = count($gameList);
-        return $count." | ".$string;
+        $gameArray = trim($gameArray);
+
+        return $count." | ".$string." | ".$gameArray;
     }
 
     public function actionNear()
@@ -450,7 +466,7 @@ class GameController extends Controller
 
         $listGame = $query->orderBy('time')->all();
 
-
+        $gameArray = '';
         $string = '';
         foreach ($listGame as $list) {
             $summa = 0;
@@ -471,6 +487,8 @@ class GameController extends Controller
                     $ball = 'Есть';
                 else
                     $ball = 'Нет';
+
+                $gameArray = $gameArray.$list['gameId']." ";
 
                 $styleSport = '';
 
@@ -543,8 +561,9 @@ class GameController extends Controller
                                 </div>
                             </div>';
             }
-        }  
-        return $string;
+        } 
+        $gameArray = trim($gameArray); 
+        return $string." | ".$gameArray;
     }
 
     
@@ -651,6 +670,7 @@ class GameController extends Controller
         }
        
         $string = '';
+        $gameArray = '';
         foreach ($listGame as $thisGame) {
             $area = Court::find()
                         ->where(['id' => $thisGame['court_id']])
@@ -660,6 +680,7 @@ class GameController extends Controller
                             ->where(['id' => $thisGame['sport_type_id']])
                             ->one();
 
+            $gameArray = $gameArray.$thisGame['gameId']." ";
 
             if($thisGame['need_ball'] == 1)
                 $ball = 'Есть';
@@ -738,7 +759,8 @@ class GameController extends Controller
                         </div>';
         }  
         $count = count($listGame);
-        return $count." | ".$string;
+        $gameArray = trim($gameArray);
+        return $count." | ".$string." | ".$gameArray;
     }
 
     public function actionPlayer()
@@ -838,6 +860,18 @@ class GameController extends Controller
 
         }
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionGet_markers()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $query = new Query;
+        $query->select('court.id as courtId, address, lat, lon, name, game.id as gameId, sport_type_id, court_id')
+            ->from('court,game')
+            ->andWhere('court_id = court.id');
+        $rows = $query->all();
+        // var_dump($rows);
+        return $rows;
     }
 
     /**

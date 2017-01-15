@@ -37,6 +37,19 @@ $( document ).ready(function() {
 	          	$('.game-list').html(result[1]);
 	          	num = Number(result[0]);
 	            $('[data-num-game]').attr("data-num-game", num);
+
+	            $.each(markers, function (index, value) {
+	            	markers[index].setVisible(false);
+	            })
+
+	            var gameId = result[2].split(' ');
+
+	            for (var i = 0; i < gameId.length; i++) {
+	            	$.each(markers, function (index, value) {
+		            	if(value['id'] == gameId[i])
+		            		markers[index].setVisible(true);
+		            })
+	            }
 	          }
 	        });
 
@@ -82,6 +95,16 @@ $( document ).ready(function() {
 	          	var num = $('[data-num-game]').attr('data-num-game');
 	          	num = Number(num) + Number(result[0]);
 	            $('[data-num-game]').attr("data-num-game", num);
+
+
+	            var gameId = result[2].split(' ');
+
+	            for (var i = 0; i < gameId.length; i++) {
+	            	$.each(markers, function (index, value) {
+		            	if(value['id'] == gameId[i])
+		            		markers[index].setVisible(true);
+		            })
+	            }
 	          }
 	        });
 		}
@@ -101,7 +124,21 @@ $( document ).ready(function() {
 		          	url: "/game/near",
 		          	data: "lat="+lat+"&&lon="+lon,
 			          success: function(data){
-			          	$('.game-list').html(data);
+			          	var result = data.split(' | ');
+			          	$('.game-list').html(result[0]);
+
+			          	$.each(markers, function (index, value) {
+			            	markers[index].setVisible(false);
+			            })
+
+			            var gameId = result[1].split(' ');
+
+			            for (var i = 0; i < gameId.length; i++) {
+			            	$.each(markers, function (index, value) {
+				            	if(value['id'] == gameId[i])
+				            		markers[index].setVisible(true);
+				            })
+			            }
 			          }
 		        });
 
@@ -135,6 +172,23 @@ $( document ).ready(function() {
           	$('.game-list').html(result[1]);
           	num = Number(result[0]);
             $('[data-num-game]').attr("data-num-game", num);
+            // alert('метка: '+markers[1]);
+
+
+           
+            $.each(markers, function (index, value) {
+            	markers[index].setVisible(false);
+            })
+
+            var gameId = result[2].split(' ');
+
+            for (var i = 0; i < gameId.length; i++) {
+            	$.each(markers, function (index, value) {
+	            	if(value['id'] == gameId[i])
+	            		markers[index].setVisible(true);
+	            })
+            }
+
           }
         });
     });

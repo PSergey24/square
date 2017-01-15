@@ -9,23 +9,23 @@ use yii\widgets\Pjax;
 $this->title = 'Games';
 $this->registerCssFile('/css/games.css');
 $this->params['breadcrumbs'][] = $this->title;
+
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
     [
         'async' => true,
+        'defer' => true
     ]
-);
-$this->registerJsFile(
-    '@web/js/game.js',
-    ['depends' => [\yii\web\JqueryAsset::className()]]
 );
 $this->registerJs("
     var map, myloc_marker, myloc_infoWindow, infowindow, contentString;
     var markers = new Array();
+    var SPB_lat = 59.910326;
+    var SPB_lng = 30.3185942;
     var directionsDisplay, directionsService, map;
     function initMap() {
         var directionsService = new google.maps.DirectionsService();
         directionsDisplay = new google.maps.DirectionsRenderer();
-        var latlng = new google.maps.LatLng(59.910326, 30.3185942);
+        var latlng = new google.maps.LatLng(SPB_lat, SPB_lng);
         var options = {
             zoom: 11,
             center: latlng,
@@ -41,33 +41,61 @@ $this->registerJs("
 
         map = new google.maps.Map(document.getElementById('map'), options);
         directionsDisplay.setMap(map);
-        
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            var pos = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
 
-            myloc_marker = new google.maps.Marker({
-                position: pos,
-                map: map,
-                icon: '/img/my_location.png'
-            });
-            myloc_infoWindow = new google.maps.InfoWindow({
-                content: 'Вы находитесь здесь'
-            });
-            myloc_infoWindow.open(map, myloc_marker);
-            map.setCenter(pos);
-            map.setZoom(14);
-          }, function() {
-          });
-        } else {
-          // Browser doesn't support Geolocation
-          alert('Ошибка: Ваш браузер не поддерживает геолокацию!');
-        }           
+        
+
+        $.ajax({url: '/game/get_markers', success: function(result) {
+            var res = '".$gameArray."';
+            var gameId = res.split(' ');
+            $.each(result, function (index, value) {
+
+
+
+                if(value['sport_type_id'] == 1){
+                    var pinImgLink = '/img/basket.png';
+                }else if((value['sport_type_id'] == 2))
+                    var pinImgLink = '/img/foot.png';
+                else
+                    var pinImgLink = '/img/other.png';
+
+        
+            visible_val = false;
+
+            for(var i = 0; i < gameId.length; i++) {
+                if(value['gameId'] == gameId[i])
+                    visible_val = true;
+
+            }
+
+
+            
+
+                var marker = new google.maps.Marker({
+                    id: value['gameId'],
+                    position: {lat: Number(value['lat']), lng: Number(value['lon'])},
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    type_id: 1,
+                    address: 1,
+                    photo: 1,
+                    visible: visible_val,
+                    icon: pinImgLink
+                });
+
+                markers.push(marker);
+            })
+
+        }});
+
     }
 ", $this::POS_HEAD);
+
+
+
+$this->registerJsFile(
+    '@web/js/game.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 
 $this->registerJs("
     function people(game,symbol){
@@ -84,6 +112,15 @@ $this->registerJs("
                     if(result[1] == 0)
                     {
                         $('[data-id-game='+result[0]+']').remove();
+                        var n = $('[data-num-game]').attr('data-num-game');
+                        n = n - 1;
+                        $('[data-num-game]').attr('data-num-game',n);
+
+                        $.each(markers, function (index, value) {
+                            if(value['id'] == result[0])
+                                markers[index].setVisible(false);
+                        })
+
                     }
                     else{
                         $('[data-id-game='+result[0]+'] .circle a').remove();
@@ -108,6 +145,8 @@ $this->registerJs("
     }
 
 ", $this::POS_HEAD);
+
+
 ?>
 
     <div class="container-fluid info">
