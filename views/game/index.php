@@ -68,6 +68,46 @@ $this->registerJs("
         }           
     }
 ", $this::POS_HEAD);
+
+$this->registerJs("
+    function people(game,symbol){
+
+        $.ajax({
+            type: 'POST',
+            url: '/game/player',
+            data: 'game='+game+'&&symbol='+symbol,
+            success: function(data){
+                if(data == 'Вы не авторизованы')
+                    alert(data);
+                else{
+                    var result = data.split('|');
+                    if(result[1] == 0)
+                    {
+                        $('[data-id-game='+result[0]+']').remove();
+                    }
+                    else{
+                        $('[data-id-game='+result[0]+'] .circle a').remove();
+                        if(result[2] == '-')
+                        {
+                            $('[data-id-game-plus='+result[0]+'] span').html('+');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'+\')');
+                        }
+                        else{
+                            $('[data-id-game-plus='+result[0]+'] span').html('-');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'-\')');
+                        }
+                        $('[data-id-game='+result[0]+'] .count').html(result[1]);
+                        $('[data-id-game='+result[0]+'] .circle').append(result[3]);
+                    }
+                }
+            },
+            error:  function(data){
+                    alert('Ошибка: '+data);
+            }
+        });
+    }
+
+", $this::POS_HEAD);
 ?>
 
     <div class="container-fluid info">
@@ -149,7 +189,7 @@ $this->registerJs("
                     <?php $i = 0;
                     foreach ($listGame as $listGame) { ?>
 
-                        <div class="col-xs-12 col-lg-6 first">
+                        <div class="col-xs-12 col-lg-6 first"  data-id-game="<?php echo $listGame['id']; ?>">
                             <div class=<?php if($listGame['sport_type_id'] == 1) echo '"shadow box game-new basketball"'; elseif($listGame['sport_type_id'] == 2) echo '"shadow box game-new football"'; else echo '"shadow box game-new"'; ?> >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
@@ -166,7 +206,7 @@ $this->registerJs("
                                             <div class="right"></div>
                                             <div class="circle">
                 
-                                                <div class="plus man"><span>+</span></div>
+                                                <div class="plus man" data-id-game-plus="<?php echo $listGame['id']; ?>" onclick="people(<?php echo $listGame['id']; ?>,'<?php echo $plusMan[$i]; ?>')"><span><?php echo $plusMan[$i]; ?></span></div>
                                                 <?php
                                                     for($j=0;$j<$countUsersArr[$i];$j++)
                                                     {

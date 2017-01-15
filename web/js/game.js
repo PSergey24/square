@@ -139,6 +139,41 @@ $( document ).ready(function() {
         });
     });
 
+
+  //   $('.plus').on('click', function(){
+  //   	var game = $(this).attr("data-id-game-plus");
+  //   	var symbol = $('[data-id-game-plus='+game+'] span').html();
+  //   	alert(game+' | '+symbol);
+
+		// $.ajax({
+		// 	type: "POST",
+	 //        url: "/game/player",
+	 //        data: "game="+game+"&&symbol="+symbol,
+	 //        success: function(data){
+	 //        	if(data == 'Вы не авторизованы')
+	 //        		alert(data);
+	 //        	else{
+	 //        		var result = data.split('|');
+
+
+	 //        		if(result[2] == '-')
+	 //        			$('[data-id-game-plus='+result[0]+'] span').html('+');
+	 //        		else
+	 //        			$('[data-id-game-plus='+result[0]+'] span').html('-');
+
+	 //        		$('[data-id-game='+result[0]+'] .circle a').remove();
+	 //        		$('[data-id-game='+result[0]+'] .count').html(result[1]);
+	 //        		$('[data-id-game='+result[0]+'] .circle').append(result[3]);
+
+
+	 //        	}
+	 //        },
+	 //        error:  function(data){
+	 //        		alert('Ошибка: '+data);
+	 //        }
+  //       });
+  //   });
+
     $('.gameTime').click(function(){
     	if($(this).hasClass('timeSelected'))
     	{
@@ -152,6 +187,9 @@ $( document ).ready(function() {
     	}
     	
     });
+    
+
+
 
 
 

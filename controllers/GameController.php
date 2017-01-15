@@ -54,6 +54,15 @@ class GameController extends Controller
         $idUsersArr = array();
         $countUsersArr = array();
         $pictureUsersArr = array();
+        $plusMan = array();
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
+
+
         $dataProvider = new ActiveDataProvider([
             'query' => Game::find(),
         ]);
@@ -73,11 +82,19 @@ class GameController extends Controller
 
             $query = new Query;
             $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->all();
+
+            $p = 0;          
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
                 array_push($pictureUserArr,$pictureUser);
+                if($id['user_id'] == $userAuth)
+                    $p = 1;
             }
+            if($p == 1)
+                array_push($plusMan,'-');
+            else
+                array_push($plusMan,'+');
             
 
             $countUser = count($idUser);
@@ -96,6 +113,7 @@ class GameController extends Controller
             'countUsersArr' => $countUsersArr,
             'idUsersArr' => $idUsersArr,
             'pictureUsersArr' => $pictureUsersArr,
+            'plusMan' => $plusMan,
         ]);
     }
 
@@ -119,6 +137,12 @@ class GameController extends Controller
         $nearFilter = Yii::$app->getRequest()->getBodyParam("nearFilter");
         $peopleFilter = Yii::$app->getRequest()->getBodyParam("peopleFilter");
         $districtFilter = Yii::$app->getRequest()->getBodyParam("districtFilter");
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
 
         if($nearFilter == 'no'){
 
@@ -246,14 +270,21 @@ class GameController extends Controller
                 $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
                 $countUser2 = count($idUser);
                 $str = '';
+                $p = 0;
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
                     $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($id['user_id'] == $userAuth)
+                        $p = 1;
                 }
+                if($p == 1)
+                    $plusMan = '-';
+                else
+                    $plusMan = '+';
                 
                 $string = $string.'
-                    <div class="col-xs-12 col-lg-6 first">
+                    <div class="col-xs-12 col-lg-6 first" data-id-game="'.$thisGame['gameId'].'">
                                 <div class="shadow box game-new '.$classSport.'" >
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="top">
@@ -269,7 +300,7 @@ class GameController extends Controller
                                             <div class="scroll">
                                                 <div class="right"></div>
                                                 <div class="circle">
-                                                    <div class="plus man"><span>+</span></div>'.$str.'
+                                                    <div class="plus man"  data-id-game-plus="'.$thisGame['gameId'].'" onclick="people('.$thisGame['gameId'].',\''.$plusMan.'\')"><span>'.$plusMan.'</span></div>'.$str.'
                                                 </div>
                                             </div>
                                         </div>
@@ -299,6 +330,13 @@ class GameController extends Controller
     public function actionReset()
     {
         $gameList = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
+
 
         $string = '';
         foreach ($gameList as $game) {
@@ -333,14 +371,21 @@ class GameController extends Controller
             $countUser2 = count($idUser);
             $str = '';
 
+            $p = 0;
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
                 $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                if($id['user_id'] == $userAuth)
+                        $p = 1;
             }
+                if($p == 1)
+                    $plusMan = '-';
+                else
+                    $plusMan = '+';
 
             $string = $string.'
-                <div class="col-xs-12 col-lg-6 first">
+                <div class="col-xs-12 col-lg-6 first" data-id-game="'.$game['id'].'">
                             <div class="shadow box game-new '.$classSport.'" >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
@@ -356,7 +401,7 @@ class GameController extends Controller
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
-                                                <div class="plus man"><span>+</span></div>'.$str.'
+                                                <div class="plus man"  data-id-game-plus="'.$game['id'].'" onclick="people('.$game['id'].',\''.$plusMan.'\')"><span>'.$plusMan.'</span></div>'.$str.'
                                             </div>
                                         </div>
                                     </div>
@@ -390,6 +435,12 @@ class GameController extends Controller
         // $lonCenter = 30.412;
         $radius = 0.01; // 1,1км
         $rSum = $radius*$radius;
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
 
         $query = new Query;
         $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, lat, lon, name, district_city_id')
@@ -440,14 +491,21 @@ class GameController extends Controller
                 $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $list['gameId']])->all();
                 $countUser2 = count($idUser);
                 $str = '';
+                $p = 0;
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
                     $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($id['user_id'] == $userAuth)
+                        $p = 1;
                 }
+                if($p == 1)
+                    $plusMan = '-';
+                else
+                    $plusMan = '+';
 
                  $string = $string.'
-                    <div class="col-xs-12 col-lg-6 first">
+                    <div class="col-xs-12 col-lg-6 first" data-id-game="'.$list['gameId'].'">
                                 <div class="shadow box game-new '.$styleSport.'" >
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="top">
@@ -463,7 +521,7 @@ class GameController extends Controller
                                             <div class="scroll">
                                                 <div class="right"></div>
                                                 <div class="circle">
-                                                    <div class="plus man"><span>+</span></div>'.$str.'
+                                                    <div class="plus man" data-id-game-plus="'.$list['gameId'].'" onclick="people('.$list['gameId'].',\''.$plusMan.'\')"><span>'.$plusMan.'</span></div>'.$str.'
                                                 </div>
                                             </div>
                                         </div>
@@ -497,6 +555,12 @@ class GameController extends Controller
         $timeFilter = Yii::$app->getRequest()->getBodyParam("timeFilter");
         $peopleFilter = Yii::$app->getRequest()->getBodyParam("peopleFilter");
         $districtFilter = Yii::$app->getRequest()->getBodyParam("districtFilter");
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
 
         if($peopleFilter != 'no')
         {
@@ -621,15 +685,21 @@ class GameController extends Controller
             // var_dump($idUser);
             $countUser2 = count($idUser);
             $str = '';
-
+            $p = 0;
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
                 $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                if($id['user_id'] == $userAuth)
+                    $p = 1;
             }
+            if($p == 1)
+                $plusMan = '-';
+            else
+                $plusMan = '+';
 
             $string = $string.'
-                <div class="col-xs-12 col-lg-6 first">
+                <div class="col-xs-12 col-lg-6 first" data-id-game="'.$thisGame['gameId'].'">
                             <div class="shadow box game-new '.$classSport.'" >
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
@@ -645,7 +715,7 @@ class GameController extends Controller
                                         <div class="scroll">
                                             <div class="right"></div>
                                             <div class="circle">
-                                                <div class="plus man"><span>+</span></div>'.$str.'
+                                                <div class="plus man" data-id-game-plus="'.$thisGame['gameId'].'" onclick="people('.$thisGame['gameId'].',\''.$plusMan.'\')"><span>'.$plusMan.'</span></div>'.$str.'
                                             </div>
                                         </div>
                                     </div>
@@ -669,6 +739,62 @@ class GameController extends Controller
         }  
         $count = count($listGame);
         return $count." | ".$string;
+    }
+
+    public function actionPlayer()
+    {
+        $game = Yii::$app->getRequest()->getBodyParam("game");
+        $symbol = Yii::$app->getRequest()->getBodyParam("symbol");
+        // $symbol = '+';
+        // $game = 29;
+        // return $symbol;
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            return 'Вы не авторизованы';
+
+        $gameUser = Yii::createObject(GameUser::className());
+        $gameUser->game_id = $game;
+        $gameUser->user_id = $userAuth;
+
+        $string = '';
+        if($symbol == '-')
+        {
+            $player = $gameUser->findOne([
+                'game_id' => $gameUser->game_id,
+                'user_id' => $gameUser->user_id
+            ]);
+            $player->delete();
+        }else{
+            $gameUser->save();
+        }
+                $query = new Query;
+                $query->select('user_id')
+                      ->from('game_user')
+                      ->andWhere(['game_id' => $game]);
+                $players = $query->all();
+                $count = count($players);
+
+                if($count == 0){
+                    $gameItem = Yii::createObject(Game::className());
+                    $gameItem = $gameItem->findOne([
+                        'id' => $gameUser->game_id
+                    ]);
+                    $gameItem->delete();
+                }
+
+                foreach ($players as $man) {
+                    $queryMan = new Query;
+                    $queryMan->select('picture')
+                          ->from('profile')
+                          ->andWhere(['user_id' => $man]);
+                    $picture = $queryMan->one();
+
+                    $string = $string.'<a href="#"><img src="/img/uploads/'.$picture['picture'].'" class="man"></a>';
+                }
+                // echo $string;
+                return $game.'|'.$count.'|'.$symbol.'|'.$string;
     }
 
     /**
