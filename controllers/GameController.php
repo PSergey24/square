@@ -865,12 +865,40 @@ class GameController extends Controller
     public function actionGet_markers()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
+
         $query = new Query;
-        $query->select('court.id as courtId, address, lat, lon, name, game.id as gameId, sport_type_id, court_id')
-            ->from('court,game')
-            ->andWhere('court_id = court.id');
+        $query->select('court.id as courtId, address, lat, lon, name, game.id as gameId, time, sport_type_id, court_id, game_id, user_id, count(game_id) as count')
+            ->from('court,game, game_user')
+            ->andWhere('court_id = court.id')
+            ->andWhere('game_id = game.id')
+            ->groupBy('game.id');
         $rows = $query->all();
-        // var_dump($rows);
+        $arr = '';
+        $i = 0;
+        foreach($rows as $row){
+            $queryPeoples = new Query;
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $row['gameId']])->all();
+            $countUser2 = count($idUser);
+            $str = '';
+            $plusMinus = '+';
+            foreach($idUser as $id){
+                $queryPicture = new Query;
+                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+
+                if($id['user_id'] == $userAuth)
+                    $plusMinus = '-';
+            }
+            // echo $userAuth." -- ".$plusMinus."\n";
+            $rows[$i]['string'] = $str;
+            $rows[$i]['plus'] = $plusMinus;
+            $i++;
+        }
         return $rows;
     }
 

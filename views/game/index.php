@@ -47,16 +47,26 @@ $this->registerJs("
         $.ajax({url: '/game/get_markers', success: function(result) {
             var res = '".$gameArray."';
             var gameId = res.split(' ');
+
+            infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
             $.each(result, function (index, value) {
 
 
 
                 if(value['sport_type_id'] == 1){
                     var pinImgLink = '/img/basket.png';
-                }else if((value['sport_type_id'] == 2))
+                    var styleItem = 'basketball';
+                }else if((value['sport_type_id'] == 2)){
                     var pinImgLink = '/img/foot.png';
-                else
+                    var styleItem = 'football';
+                }
+                else{
                     var pinImgLink = '/img/other.png';
+                    var styleItem = '';
+                }
 
         
             visible_val = false;
@@ -67,20 +77,43 @@ $this->registerJs("
 
             }
 
-
-            
-
                 var marker = new google.maps.Marker({
                     id: value['gameId'],
                     position: {lat: Number(value['lat']), lng: Number(value['lon'])},
                     map: map,
                     animation: google.maps.Animation.DROP,
-                    type_id: 1,
-                    address: 1,
-                    photo: 1,
+                    style: styleItem,
+                    time: value['time'],
+                    count: value['count'],
+                    people: value['string'],
+                    plus: value['plus'],
+                    court: value['court_id'],
                     visible: visible_val,
                     icon: pinImgLink
                 });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.close();
+                    if(myloc_infoWindow) { 
+                        myloc_infoWindow.close(); 
+                    }
+                    var contentString = '<div class=\"gameMap '+ this.style +'\" data-id-game=\"'+this.id+'\">' +
+                                        '<div class=\"timeMap\">'+ this.time +'</div>' + 
+                                        '<p>Игроков: <span class=\"count\">'+ this.count+'</span></p>' + 
+                                        '<div class=\"scroll\">' +
+                                        '<div class=\"playersMap\">' + 
+                                        '<div class=\"right\"></div>' +
+                                        '<div class=\"plus man\"  data-id-game-plus=\"'+this.id+'\" onclick=\"people('+this.id+',\''+this.plus+'\')\" ><span>'+this.plus+'</span></div>' + this.people +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<p><a href=\"/court/'+this.court+'\" target=\"_blank\"><button class=\"mid-green-btn\">Открыть площадку </button></a></p>' + 
+                                        '</div>';
+                    infowindow.setContent(contentString);
+                    infowindow.open(map, marker);
+                });
+
+
+
 
                 markers.push(marker);
             })
@@ -124,17 +157,36 @@ $this->registerJs("
                     }
                     else{
                         $('[data-id-game='+result[0]+'] .circle a').remove();
+                        $('[data-id-game='+result[0]+'] .playersMap a').remove();
                         if(result[2] == '-')
                         {
                             $('[data-id-game-plus='+result[0]+'] span').html('+');
                             $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'+\')');
+                            $.each(markers, function (index, value) {
+                                if(value['id'] == result[0]){
+                                    markers[index]['count'] = result[1];
+                                    markers[index]['people'] = result[3];
+                                    markers[index]['plus'] = '+';
+                                }
+                            })
                         }
                         else{
                             $('[data-id-game-plus='+result[0]+'] span').html('-');
                             $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'-\')');
+                            $.each(markers, function (index, value) {
+                                if(value['id'] == result[0]){
+                                    markers[index]['count'] = result[1];
+                                    markers[index]['people'] = result[3];
+                                    markers[index]['plus'] = '-';
+                                }
+                            })
                         }
                         $('[data-id-game='+result[0]+'] .count').html(result[1]);
+                        
+                        
                         $('[data-id-game='+result[0]+'] .circle').append(result[3]);
+                        $('[data-id-game='+result[0]+'] .playersMap').append(result[3]);
+                        
                     }
                 }
             },

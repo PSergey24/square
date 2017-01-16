@@ -552,3 +552,40 @@ input::-webkit-inner-spin-button {
 		margin: 0;
 	}
 }
+
+/* окошко на карте */
+.gameMap.basketball .mid-green-btn{ 
+border-color: #FAA225 !important; 
+color: #FAA225 !important; 
+} 
+.gameMap.football .mid-green-btn{ 
+border-color: #57C815 !important; 
+color: #57C815 !important; 
+}
+.gameMap .mid-green-btn{ 
+border-color: #0288D1 !important; 
+color: #0288D1 !important; 
+}
+.gameMap{ 
+width: 19rem; 
+background-color: white; 
+float: left; 
+overflow: hidden; 
+} 
+.timeMap{ 
+font-size: 1.25rem; 
+font-weight: 400; 
+margin: 7px 0px; 
+} 
+.gameMap p:last-child{ 
+text-align: center; 
+} 
+.playersMap{ 
+margin-bottom: 20px; 
+float: left; 
+overflow-y: hidden; 
+width: 140%; 
+max-height: 50px; 
+white-space: nowrap; 
+text-overflow: ellipsis; 
+}
