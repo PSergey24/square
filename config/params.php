@@ -2,7 +2,7 @@
 
 return [
     'adminEmail'                => 'admin@example.com',
-    'admin_account_username'    => ['user'],
+    'admin_account_username'    => ['serg123', 'Vova'],
     'vk_client_id'              => '5668750',
     'vk_secret'                 => 'zFyOKlv9xolrZ61jb6M0',
     'fb_app_id'                 => '311022849275078',

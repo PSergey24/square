@@ -5,6 +5,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+use yii\db\Query;
 
 cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
@@ -28,16 +29,29 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
                     'action' => '/game/create'
                 ]);
             ?>
+
             <?= Html::activeHiddenInput($model, 'court_id', [
                 'value' => Yii::$app->getRequest()->getQueryParam('id')
             ]);
             ?>
             <p>
+            <?php 
+                $query = new Query;
+                $query->select('type_id')
+                      ->from('court')
+                      ->andWhere(['id' => Yii::$app->getRequest()->getQueryParam('id')]);
+                $typeCourt = $query->one();
+
+                $querySport = new Query;
+                $querySport->select('name')
+                           ->from('sport_type')
+                           ->andWhere(['id' => $typeCourt['type_id']]);
+                $sportName = $querySport->one();
+            ?>
             <p class="little">Выберите вид спорта</p>
             <?= Html::activeDropDownList($model, 'sport_type_id',
                 [
-                    '1' => 'Баскетбол',
-                    '2' => 'Футбол'
+                    $typeCourt['type_id'] => $sportName['name']
                 ],
                 [
                     'class' => 'selectpicker .form-control date',

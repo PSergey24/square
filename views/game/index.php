@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+$par = require('../config/params.php');
+
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
@@ -63,7 +65,10 @@ $this->registerJs("
                     var pinImgLink = '/img/foot.png';
                     var styleItem = 'football';
                 }
-                else{
+                else if((value['sport_type_id'] == 3)){
+                    var pinImgLink = '/img/volleyball.png';
+                    var styleItem = '';
+                }else{
                     var pinImgLink = '/img/other.png';
                     var styleItem = '';
                 }

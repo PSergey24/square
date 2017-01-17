@@ -72,8 +72,13 @@ $this->registerJs("
                 visible_val = false;
             if (value['type_id'] == 1) {
                 var pinImgLink = '/img/basket.png';
-            }else
+            }else if(value['type_id'] == 2)
                 var pinImgLink = '/img/foot.png';
+            else if(value['type_id'] == 3)
+                var pinImgLink = '/img/volleyball.png';
+            else{
+                var pinImgLink = '/img/other.png';
+            }
 
             var marker = new google.maps.Marker({
                 id: value['id'],

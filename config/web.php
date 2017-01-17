@@ -106,6 +106,7 @@ $config = [
                 'security'      => 'app\controllers\user\SecurityController',
                 'registration'  => 'app\controllers\user\RegistrationController',
                 'settings'      => 'app\controllers\user\SettingsController',
+                'admin'      => 'app\controllers\user\AdminController',
             ],
             'modelMap' => [
                 'User'             => 'app\models\User',

@@ -313,13 +313,13 @@ input::-webkit-inner-spin-button {
     transition: ease-out 0.2s;
 }
 .plus{
-	border: 2px solid #0288D1;
+	border: 2px solid #3F51B5;
 }
 .minus{
 	border: 2px solid #EF5350;
 }
 .plus:hover {
-	background: #0288D1 !important;
+	background: #3F51B5 !important;
 }
 .minus:hover {
 	background: #EF5350 !important;
@@ -338,7 +338,7 @@ input::-webkit-inner-spin-button {
     transition: ease-out 0.2s;
 }
 .plus span{
-	color: #0288D1;
+	color: #3F51B5;
 }
 .minus span{
 	color: #D32F2F;
@@ -349,33 +349,33 @@ input::-webkit-inner-spin-button {
 	color: white !important;
 }
 .football .description{
-	background-color: #57C815 !important;
+	background-color: #00AE2F !important;
 }
 .football .plus{
-	border: 2px solid #57C815 !important;
+	border: 2px solid #00AE2F !important;
 }
 .football .plus span{
-	color: #57C815 !important;
+	color: #00AE2F !important;
 }
 .football .plus:hover {
-	background: #57C815 !important;
+	background: #00AE2F !important;
 }
 .basketball .description{
-	background-color: #FAA225 !important;
+	background-color: #FF9800 !important;
 }
 .basketball .plus{
-	border: 2px solid #FAA225 !important;
+	border: 2px solid #FF9800 !important;
 }
 .basketball .plus span{
-	color: #FAA225 !important;
+	color: #FF9800 !important;
 }
 .basketball .plus:hover {
-	background: #FAA225 !important;
+	background: #FF9800 !important;
 }
 /*-------------------------------------------------------*/
 
 .description{
-	background-color:#0288D1;
+	background-color:#3F51B5;
 	padding: 10px 0px;
 	padding-left: 2	5px !important;
 	border-bottom-right-radius: 3px;
@@ -555,16 +555,16 @@ input::-webkit-inner-spin-button {
 
 /* окошко на карте */
 .gameMap.basketball .mid-green-btn{ 
-border-color: #FAA225 !important; 
-color: #FAA225 !important; 
+border-color: #FF9800 !important; 
+color: #FF9800 !important; 
 } 
 .gameMap.football .mid-green-btn{ 
-border-color: #57C815 !important; 
-color: #57C815 !important; 
+border-color: #00AE2F !important; 
+color: #00AE2F !important; 
 }
 .gameMap .mid-green-btn{ 
-border-color: #0288D1 !important; 
-color: #0288D1 !important; 
+border-color: #3F51B5 !important; 
+color: #3F51B5 !important; 
 }
 .gameMap{ 
 width: 19rem; 
@@ -589,3 +589,9 @@ max-height: 50px;
 white-space: nowrap; 
 text-overflow: ellipsis; 
 }
+
+/* чтобы скрыть фильтры */
+.filterHidden{
+	display: none;
+}
+
