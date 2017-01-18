@@ -1,0 +1,64 @@
+.menu-admin li{
+	float: left;
+}
+.menu-admin li:focus{
+	border-bottom:1px solid red;
+}
+
+
+/* модерация фотографий */
+
+.tablePhoto{
+	border-collapse: collapse;
+	margin-left:50px;
+}
+.tablePhoto th,.tablePhoto td{
+	text-align: center;
+	padding:10px;
+}
+.tablePhoto img{
+	width:300px;
+}
+.tablePhoto, .tablePhoto tr,.tablePhoto td, .tablePhoto th{
+	border:1px solid black;
+}
+.add,.delete{
+	cursor:pointer;
+}
+
+/* Список всех площадок */
+
+.allCourts{
+	border-collapse: collapse;
+	margin-left:50px;
+	float:left;
+	margin-bottom:100px;
+}
+
+.allCourts th,.allCourts td{
+	text-align: center;
+	padding:10px;
+}
+.allCourts, .allCourts tr,.allCourts td, .allCourts th{
+	border:1px solid black;
+}
+
+
+.courtDistrict{
+	border-collapse: collapse;
+	margin-left:50px;
+	float:left;
+	margin-bottom:100px;
+}
+
+.courtDistrict th,.courtDistrict td{
+	text-align: center;
+	padding:10px;
+}
+.courtDistrict, .courtDistrict tr,.courtDistrict td, .courtDistrict th{
+	border:1px solid black;
+}
+
+.show{
+	cursor:pointer;
+}

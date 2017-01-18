@@ -190,6 +190,7 @@ $( document ).ready(function() {
         });
     });
 
+
     $('.gameTime').click(function(){
     	if($(this).hasClass('timeSelected'))
     	{

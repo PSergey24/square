@@ -22,9 +22,11 @@ use yii\widgets\Pjax;
  * @var UserSearch $searchModel
  */
 
-
+$this->registerCssFile('/css/admin.css');
 ?>
 
-<?= $this->render('/admin/_menu') ?>
 
+
+<?= $this->render('/admin/_menu') ?>
+<h1>Статистика</h1>
 <?php echo $a; ?>

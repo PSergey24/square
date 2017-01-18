@@ -24,6 +24,7 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('user', 'Manage users');
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerCssFile('/css/admin.css');
 ?>
 
 <?= $this->render('/_alert', [
@@ -32,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <?= $this->render('/admin/_menu') ?>
 
+<h1>Пользователи</h1>
 <?php Pjax::begin() ?>
 
 <?= GridView::widget([

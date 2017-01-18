@@ -15,7 +15,7 @@ use yii\bootstrap\Nav;
 
 <?= Nav::widget([
     'options' => [
-        'class' => 'nav-tabs',
+        'class' => 'menu-admin',
         'style' => 'margin-bottom: 15px',
     ],
     'items' => [
@@ -24,7 +24,23 @@ use yii\bootstrap\Nav;
             'url'     => ['/admin'],
         ],
         [
+            'label'   => Yii::t('user', 'Площадки'),
+            'url'     => ['/admin/courts'],
+        ],
+        [
             'label'   => Yii::t('user', 'Статистика'),
+            'url'     => ['/admin/stat'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Модерация картинок'),
+            'url'     => ['/admin/photo'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Модерация сообщений'),
+            'url'     => ['/admin/stat'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Модерация площадок'),
             'url'     => ['/admin/stat'],
         ],
         // [

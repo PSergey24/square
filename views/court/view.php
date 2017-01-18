@@ -140,14 +140,29 @@ if (!Yii::$app->user->getIsGuest()) {
 }
 
 $this->registerJs("
-    $('#join').click(function() {
-            if ($('#join span').text() == '1') {
-                $('#join span').text('2')
-            }else {
-                $('#join span').text('1')  
-            }      
-        }
-    );
+    $('.join').click(function() {
+        var idGame = $(this).attr('data-id-game'); 
+        var symbol = $('[data-id-game = '+idGame+'] .symbol').html();   
+
+            $.ajax({
+              type: \"POST\",
+              url: \"/court/button_plus\",
+              data: \"id=\"+idGame+\"&&symbol=\"+symbol,
+              success: function(data){
+                var result = data.split('|');
+                if(result[2] != 0)
+                {
+                    $('[data-block-game = '+result[0]+'] .symbol').html(result[1]);
+                    $('[data-block-game = '+result[0]+'] .players').html(result[2]);
+                }else{
+                    $('[data-block-game = '+result[0]+']').remove();
+                }
+                
+                
+
+              }
+            });
+    });
 ");
 //Description link on click smoothly fade in description block
 $this->registerJs("$('#description_link').click(function () {
@@ -234,7 +249,7 @@ $this->registerJs("
         <?php
             if($games) {
                 foreach ($games as $game) {
-                    echo '<div class="game">
+                    echo '<div class="game" data-block-game="'.$game['id'].'">
                         <div class="time">';
                     $tm = strtotime($game['time']);
                     $current_datetime = new DateTime();
@@ -242,14 +257,18 @@ $this->registerJs("
                     $tm_current = strtotime($current_datetime);
                     if (date("d", $tm) == date("d", $tm_current))
                         echo 'Сегодня ' . date("H:i", $tm);
-                    else
+                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
                         echo 'Завтра ' . date("H:i", $tm);
+                    else
+                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
+
                     echo '</div>';
                     if (!$game['need_ball'] == 1)
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
                     else
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                    echo '<button class="mid-blue-btn" id="join"> + <span class="players">1</span></button></div>';
+                    echo '<button class="mid-blue-btn join" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
+
                 }
             }
             else echo '<p class="nogames">В ближайшее время игр нет :(</p>';

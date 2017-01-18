@@ -50,13 +50,7 @@ $this->registerJs("
 ", $this::POS_HEAD);
 $this->registerJs("
     // sport_type select
-    var court_images = [
-        'court_img_0.jpg','court_img_1.jpg','court_img_2.jpg','court_img_3.jpg','court_img_4.jpg','court_img_5.jpg',
-        'court_img_6.jpg','court_img_7.jpg','court_img_8.jpg','court_img_9.jpg','court_img_10.jpg','court_img_11.jpg',
-        'court_img_12.jpg','court_img_13.jpg','court_img_14.jpg','court_img_15.jpg','court_img_16.jpg','court_img_17.jpg',
-        'court_img_18.jpg','court_img_19.jpg','court_img_20.jpg','court_img_21.jpg',
-    ];
-    
+
     $.ajax({url: '/court/get_points', success: function(result) {
         var sport_type = " . (($filters['sport_type'] != null) ? $filters['sport_type'] : 0) . ";
         var visible_val;
@@ -80,6 +74,11 @@ $this->registerJs("
                 var pinImgLink = '/img/other.png';
             }
 
+            if(value['photo'] == 0)
+                var photoCourt = 'defaultCourt.png';
+            else
+                var photoCourt = value['photo'];
+
             var marker = new google.maps.Marker({
                 id: value['id'],
                 position: {lat: Number(value['lat']), lng: Number(value['lon'])},
@@ -87,7 +86,8 @@ $this->registerJs("
                 animation: google.maps.Animation.DROP,
                 type_id: value['type_id'],
                 address: value['address'],
-                photo: court_images[rnd],
+                photo: photoCourt,
+                bookmark: value['bookmark'],
                 visible: visible_val,
                 icon: pinImgLink
             });
@@ -99,9 +99,9 @@ $this->registerJs("
                 var contentString = '<div class=\"searchImgForm court_info\">' +
                                         '<div class=\"forSmall\">' +
                                             '<a href=\"/court/' + this.id + 
-                                            '\"><div style=\"background-image: url(/img/' + this.photo + ');\" class=\"image-right image\">' +
+                                            '\"><div style=\"background-image: url(/img/courts/' + this.photo + ');\" class=\"image-right image\">' +
                                             '<div class=\"close\"></div><div class=\"players\">' +
-                                                '<i class=\"fa fa-male\" aria-hidden=\"true\"></i>25</div><span>Открыть площадку</span></div>' +
+                                                '<i class=\"fa fa-male\" aria-hidden=\"true\"></i>'+this.bookmark+'</div><span>Открыть площадку</span></div>' +
                                             '<div class=\"sliderText center \">' + this.address + '</div></a>' +
                                         '</div>' +
                                     '</div>';

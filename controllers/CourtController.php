@@ -15,6 +15,8 @@ use yii\web\NotFoundHttpException;
 use app\models\CourtBookmark;
 use app\models\CourtType;
 use app\models\Court;
+use app\models\Game;
+use app\models\GameUser;
 use app\models\DistrictCity;
 use app\models\forms\GameCreateForm;
 use app\custom\HTMLSelectData;
@@ -109,16 +111,47 @@ class CourtController extends Controller
     public function actionView($id)
     {
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
+        // $id = 177;
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            $userAuth = 0;
+
         $query = new Query;
         $query->select('id, address, type_id, name, lat, lon')
             ->from('court')
             ->where(['id' => $id]);
         $court = $query->one();
 
-        $query->select('time, need_ball')
-            ->from('game')
-            ->where(['court_id' => $id]);
-        $games = $query->all();
+        $query->select('game.id as id,time, need_ball,COUNT(game_id) as count')
+            ->from('game,game_user')
+            ->where(['court_id' => $id])
+            ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+            ->andWhere('game.id = game_user.game_id');
+        $games = $query->groupBy('game.id')->orderBy('time')->all();
+
+        // var_dump($games);
+        // echo count($games);
+        $i = 0;
+        foreach ($games as $gameItem) {
+            // echo $gameItem['id']."\n";
+                $queryPlayer = new Query;
+                $queryPlayer->select('user_id')
+                    ->from('game_user')
+                    ->where(['game_id' => $gameItem['id']]);
+                $players = $queryPlayer->all();
+                $plus = '+';
+                foreach ($players as $player) {
+                    // echo $player['user_id']."</br>";
+                    if($player['user_id'] == $userAuth)
+                        $plus = '-';
+                }
+                // echo "---</br>";
+                $games[$i]['plus'] = $plus;
+            $i++;
+        }
+
 
         $bookmarked = $this->isBookmarked($id) ? true : false;
         $likes_count = count(Yii::createObject(CourtLikes::className())
@@ -137,6 +170,59 @@ class CourtController extends Controller
         ]);
     }
 
+    public function actionButton_plus()
+    {
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        $symbol = Yii::$app->getRequest()->getBodyParam("symbol");
+        // $symbol = '+';
+        // $game = 29;
+        // return $symbol;
+
+        // получаем id авторизованного пользователя
+        if(Yii::$app->user->identity)
+            $userAuth = Yii::$app->user->identity->getId();
+        else
+            return 'Вы не авторизованы';
+
+        $gameUser = Yii::createObject(GameUser::className());
+        $gameUser->game_id = $id;
+        $gameUser->user_id = $userAuth;
+
+        $string = '';
+        if($symbol == '-')
+        {
+            $player = $gameUser->findOne([
+                'game_id' => $gameUser->game_id,
+                'user_id' => $gameUser->user_id
+            ]);
+            $player->delete();
+        }else{
+            $gameUser->save();
+        }
+
+                $query = new Query;
+                $query->select('user_id')
+                      ->from('game_user')
+                      ->andWhere(['game_id' => $id]);
+                $players = $query->all();
+                $count = count($players);
+
+        if($symbol == '-')
+            $newSymbol = '+';
+        else
+            $newSymbol = '-';
+
+        if($count == 0)
+        {
+            $game = Yii::createObject(Game::className());
+            $gameDelete = $game->findOne([
+                'id' => $id
+            ]);
+            $gameDelete->delete();
+        }
+
+        return $id."|".$newSymbol."|".$count;
+    }
     /**
      * Creates a new Court model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -228,8 +314,36 @@ class CourtController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
         $query = new Query;
         $query->select('id, lat, lon, name, address, type_id')
-            ->from('court');
+              ->from('court');
         $rows = $query->all();
+        $i = 0;
+        foreach ($rows as $row) {
+            $queryPhoto = new Query;
+            $queryPhoto->select('photo')
+                       ->from('court_photo')
+                       ->where(['court_id' => $row['id']])
+                       ->andWhere('avatar = 1');
+            $rowsPhoto = $queryPhoto->one();
+
+            $queryBookmark = new Query;
+            $queryBookmark->select('count(user_id) as countBookmark')
+                       ->from('court_bookmark')
+                       ->where(['court_id' => $row['id']]);
+            $rowsBookmark = $queryBookmark->one();
+
+            if($rowsPhoto['photo']!='')
+            {
+                $rows[$i]['photo'] = $rowsPhoto['photo'];
+            }
+            else
+            {
+                $rows[$i]['photo'] = '0';
+            }
+            $rows[$i]['bookmark'] = $rowsBookmark['countBookmark'];
+
+
+            $i++;
+        }
         return $rows;
     }
 

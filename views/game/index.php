@@ -135,6 +135,29 @@ $this->registerJsFile(
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
 
+
+$this->registerJs("
+    function setMapCenter(idGame){
+        $.ajax({
+            type: 'POST',
+            url: '/game/pos_game',
+            data: 'id='+idGame,
+            success: function(data){
+                var lat = data['lat'];
+                var lng = data['lon'];
+                var zoom = 13;
+                var pos = new google.maps.LatLng(lat, lng);
+                    map.setCenter(pos);
+                    map.setZoom(zoom);
+            },
+            error:  function(data){
+                    alert('Ошибка: '+data);
+            }
+        });
+    }
+
+", $this::POS_HEAD);
+
 $this->registerJs("
     function people(game,symbol){
 
@@ -290,7 +313,7 @@ $this->registerJs("
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
                                         <div class="square"><?php echo $nameAreaArr[$i]; ?></div>
-                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter(<?php echo $listGame['id']; ?>)"></i></div>
                                     </div>
                                     <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
                                         

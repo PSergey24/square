@@ -297,7 +297,7 @@ class GameController extends Controller
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="top">
                                             <div class="square">'. $area['name'] .'</div>
-                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter('.$thisGame['gameId'].')"></i></div>
                                         </div>
                                         <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
                                             
@@ -404,7 +404,7 @@ class GameController extends Controller
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
                                         <div class="square">'. $area['name'] .'</div>
-                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter('.$game['id'].')"></i></div>
                                     </div>
                                     <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
                                         
@@ -528,7 +528,7 @@ class GameController extends Controller
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                         <div class="top">
                                             <div class="square">'. $area['name'] .'</div>
-                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                            <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter('.$list['gameId'].')"></i></div>
                                         </div>
                                         <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
                                             
@@ -725,7 +725,7 @@ class GameController extends Controller
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <div class="top">
                                         <div class="square">'. $area['name'] .'</div>
-                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true"></i></div>
+                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter('.$thisGame['gameId'].')"></i></div>
                                     </div>
                                     <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
                                         
@@ -900,6 +900,22 @@ class GameController extends Controller
             $i++;
         }
         return $rows;
+    }
+
+
+    public function actionPos_game()
+    {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        
+        $query = new Query;
+        $query->select('lat,lon')
+            ->from('court,game')
+            ->andWhere(['game.id' => $id])
+            ->andWhere('game.court_id = court.id');
+        $row = $query->one();
+        // echo $row['lat'];
+        return $row;
     }
 
     /**
