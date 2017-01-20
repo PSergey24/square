@@ -183,7 +183,8 @@ select:focus, input:focus{
 }
 input{
 	margin-right: 5px !important;
-	margin-left: 9px !important; 
+	margin-left: 9px !important;
+	max-width: 32px;
 }
 .amount {
 	color: rgba(0,0,0,.54) !important;
@@ -348,11 +349,19 @@ input::-webkit-inner-spin-button {
 .football .plus:hover span,  .basketball .plus:hover span{
 	color: white !important;
 }
+.basketball .mid-green-btn{
+	border-color: #FAA225 !important;
+	color: #FAA225 !important;
+}
+.football .mid-green-btn{
+	border-color: #57C815 !important;
+	color: #57C815 !important;
+} 
 .football .description{
 	background-color: #00AE2F !important;
 }
 .football .plus{
-	border: 2px solid #00AE2F !important;
+	border: 1px solid #57C815 !important;
 }
 .football .plus span{
 	color: #00AE2F !important;
@@ -364,7 +373,7 @@ input::-webkit-inner-spin-button {
 	background-color: #FF9800 !important;
 }
 .basketball .plus{
-	border: 2px solid #FF9800 !important;
+	border: 1px solid #FAA225 !important;
 }
 .basketball .plus span{
 	color: #FF9800 !important;
@@ -422,6 +431,33 @@ input::-webkit-inner-spin-button {
 	color: #0288D1 !important;
 }
 
+
+.gameMap{
+	width: 19rem;
+	background-color: white;
+	float: left;
+	overflow: hidden;
+}
+.timeMap{
+	font-size: 1.25rem;
+	font-weight: 400;
+	margin: 7px 0px;
+}
+.gameMap p:last-child{
+	text-align: center;
+}
+.playersMap{
+	margin-bottom: 20px;
+	float: left;
+	overflow-y: hidden;
+    width: 140%;
+    max-height: 50px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+
+
 #map{
 	height: 100%;
 	padding-left: 0 !important;
@@ -436,9 +472,11 @@ input::-webkit-inner-spin-button {
 		overflow-x:hidden;
 	}
 	#map{
-		height: 12rem;
+		float: left;
 	}
-
+	.search{
+		margin-bottom: 0 !important;
+	}
 	.games{
 		overflow: visible;
 		padding: 0 !important;
