@@ -36,7 +36,9 @@ $this->registerJsFile(
 <table class="allCourts">
 	<tr>
 		<th>Район</th>
-		<th>Число плащадок</th>
+		<th>Число</br> плащадок</th>
+		<th>Баскетбольных</br> плащадок</th>
+		<th>Футбольных</br> плащадок</th>
 		<th></th>
 	</tr>
 <?php 
@@ -46,7 +48,9 @@ $this->registerJsFile(
 ?>	
 <tr>
 	<td><?= $district['name']; ?></td>	
-	<td><?= $count[$i]; ?></td>	
+	<td><?= $count[$i]; ?></td>
+	<td><?= $countB[$i]; ?></td>	
+	<td><?= $countF[$i]; ?></td>		
 	<td><p class="show" data-district-id="<?= $district['id']; ?>">Показать все площадки</p></td>	
 </tr>
 <?php 
@@ -57,9 +61,9 @@ $this->registerJsFile(
 
 <table class="courtDistrict">
 	<tr>
-		<th>Название площадки</th>
-		<th>Число сыгранных игр</th>
-		<th>Подписанных участников</th>
+		<th>Название</br> площадки</th>
+		<th>Число сыгранных</br> игр</th>
+		<th>Подписанных</br> участников</th>
 	</tr>
 	<tr>
 		<td colspan="3">Выберите район</td>

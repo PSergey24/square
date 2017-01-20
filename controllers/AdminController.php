@@ -83,6 +83,8 @@ class AdminController extends AdminController
     	$districts = DistrictCity::find()->all();
 
     	$count = array();
+    	$countB = array();
+    	$countF = array();
     	$i = 0;
     	foreach ($districts as $district) {
     		$query = new Query;
@@ -91,7 +93,20 @@ class AdminController extends AdminController
 	              ->where(['district_city_id' => $district['id']]);
 	        $rows = $query->one();
 
+	        $query = new Query;
+	        $query->select('count(district_city_id) as count')
+	              ->from('court')
+	              ->where(['district_city_id' => $district['id']])
+	              ->andWhere('type_id = 1');
+	        $rowsB = $query->one();
+	        $query->select('count(district_city_id) as count')
+	              ->from('court')
+	              ->where(['district_city_id' => $district['id']])
+	              ->andWhere('type_id = 2');
+	        $rowsF = $query->one();
 	        $count[$i] = $rows['count'];
+	        $countB[$i] = $rowsB['count'];
+	        $countF[$i] = $rowsF['count'];
     		// echo $district['id']." | ".$district['name']." | ".$rows['count']."</br>";
     		$i++;
     	}
@@ -99,6 +114,8 @@ class AdminController extends AdminController
         return $this->render('courts',[
             'districts' => $districts,
             'count' => $count,
+            'countB' => $countB,
+            'countF' => $countF,
         ]);
     }
 

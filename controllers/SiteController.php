@@ -11,6 +11,7 @@ use yii\db\Query;
 use yii\web\Controller;
 use DateTime;
 use app\models\User;
+use app\models\Profile;
 use app\models\MapFilters;
 
 class SiteController extends Controller
@@ -55,21 +56,37 @@ class SiteController extends Controller
         $query = new Query();
         $query_games = new Query();
         $user_id = Yii::$app->user->getId();
-        $query->select('court_id')
-            ->from('court_bookmark')
-            ->where(['user_id' => $user_id]);
-        $bookmarks = $query->all();
-        $courts = [];
+        $query->select('court.id as id, address')
+            ->from('court_bookmark, court')
+            ->where(['user_id' => $user_id])
+            ->andWhere('court_id = court.id');
+        $courts = $query->all();
+        $photo = [];
+        $i=0;
+        foreach ($courts as $court) {
+            $query->select('photo')
+                ->from('court_photo')
+                ->where(['court_id' => $court['id']])
+                ->andWhere('avatar = 1')
+                ->andWhere('flag_moderation = 0');
+
+            if($query->one())
+            {
+                $photo[$i] = $query->one();
+            }
+            else
+                $photo[$i]['photo'] = 'defaultCourt.png';
+            $i++;
+        }
         $games = [];
-        $address = array();
-        foreach ($bookmarks as $bookmark) {
-            $query->select('id, address')
-                ->from('court')
-                ->where(['id' => $bookmark['court_id']]);
-            $court_addr = $query->one();
-            $query_games->select('time, need_ball')
-                ->from(['game'])
-                ->where(['court_id' => $court_addr['id']]);
+
+            $query_games->select('court.id as court_id, address, time, need_ball')
+                ->from('court,game,game_user')
+                ->where(['user_id' => $user_id])
+                ->andWhere('game_id = game.id')
+                ->andWhere('court_id = court.id')
+                ->andWhere(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+                ->orderBy('time');
             $game_rows = $query_games->all();
 
             foreach ($game_rows as $row) {
@@ -79,21 +96,85 @@ class SiteController extends Controller
                 $tm_current = strtotime($current_datetime);
                 if (date("d", $tm) == date("d", $tm_current))
                     $row['time'] = 'Сегодня ' . date("H:i", $tm);
-                else
+                elseif(date("d", $tm) == date(date("d")+1, $tm_current))
                     $row['time'] = 'Завтра ' . date("H:i", $tm);
-                $row['address'] = $court_addr['address'];
-                $row['court_id'] = $court_addr['id'];
+                else
+                    $row['time'] = date("d.m.Y", $tm) ." ".date("H:i", $tm);
                 array_push($games, $row);
             }
-
-//            $all_games = array_merge($game_rows, $games);
-            array_push($courts, $court_addr);
-        }
              
         return $this->render('profile.php', [
             'courts' => $courts,
             'games' => $games,
             'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
+            'photo' => $photo,
+        ]);
+    }
+
+    public function actionUsers($id) {
+
+        $query = new Query();
+        $query_games = new Query();
+
+        $query->select('court.id as id, address')
+            ->from('court_bookmark, court')
+            ->where(['user_id' => $id])
+            ->andWhere('court_id = court.id');
+        $courts = $query->all();
+        $photo = [];
+        $i=0;
+        foreach ($courts as $court) {
+            $query->select('photo')
+                ->from('court_photo')
+                ->where(['court_id' => $court['id']])
+                ->andWhere('avatar = 1')
+                ->andWhere('flag_moderation = 0');
+
+            if($query->one())
+            {
+                $photo[$i] = $query->one();
+            }
+            else
+                $photo[$i]['photo'] = 'defaultCourt.png';
+            $i++;
+        }
+
+        $games = [];
+
+            $query_games->select('court.id as court_id, address, time, need_ball')
+                ->from('court,game,game_user')
+                ->where(['user_id' => $id])
+                ->andWhere('game_id = game.id')
+                ->andWhere('court_id = court.id')
+                ->andWhere(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+                ->orderBy('time');
+            $game_rows = $query_games->all();
+
+            foreach ($game_rows as $row) {
+                $tm = strtotime($row['time']);
+                $current_datetime = new DateTime();
+                $current_datetime = date_format($current_datetime, 'Y-m-d');
+                $tm_current = strtotime($current_datetime);
+                if (date("d", $tm) == date("d", $tm_current))
+                    $row['time'] = 'Сегодня ' . date("H:i", $tm);
+                elseif(date("d", $tm) == date(date("d")+1, $tm_current))
+                    $row['time'] = 'Завтра ' . date("H:i", $tm);
+                else
+                    $row['time'] = date("d.m.Y", $tm) ." ".date("H:i", $tm);
+                array_push($games, $row);
+            }
+
+        $query->select('picture')
+            ->from('profile')
+            ->where(['user_id' => $id]);
+        $picture = $query->one();
+
+        return $this->render('users.php', [
+            'courts' => $courts,
+            'games' => $games,
+            'username' => User::find('username')->where(['id' => $id])->one()->username,
+            'picture' => $picture,
+            'photo' => $photo,
         ]);
     }
     

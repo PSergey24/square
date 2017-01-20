@@ -282,7 +282,7 @@ class GameController extends Controller
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                    $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                     if($id['user_id'] == $userAuth)
                         $p = 1;
                 }
@@ -389,7 +389,7 @@ class GameController extends Controller
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                 if($id['user_id'] == $userAuth)
                         $p = 1;
             }
@@ -513,7 +513,7 @@ class GameController extends Controller
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                    $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                     if($id['user_id'] == $userAuth)
                         $p = 1;
                 }
@@ -710,7 +710,7 @@ class GameController extends Controller
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                 if($id['user_id'] == $userAuth)
                     $p = 1;
             }
@@ -889,7 +889,7 @@ class GameController extends Controller
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="#"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
 
                 if($id['user_id'] == $userAuth)
                     $plusMinus = '-';

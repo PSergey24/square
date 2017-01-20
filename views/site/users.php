@@ -17,7 +17,7 @@ $this->params['picture_href'] = Profile::getAvatar();
     <div class="container s">
 
         <div class="top-info">
-            <img class="userPhoto" src="<?= $this->params['picture_href']  ?>">
+            <img class="userPhoto" src="../../img/uploads/<?= $picture['picture'] ?>">
 
             <h1 class="h1-white"><?= $username ?></h1>
             <p>
@@ -36,8 +36,9 @@ $this->params['picture_href'] = Profile::getAvatar();
                 <h2 class="h2-black">Площадки <?= $username ?> <span><?= count($courts) ?></span></h2>
                 <div class="divider"></div>
                 <?php
+
                     if ($courts){
-                        $i = 0;
+                        $i=0;
                         foreach ($courts as $court) {
                             echo '<a href=/court/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg" style="background-image: url(/img/courts/'.$photo[$i]['photo'].')"><p>'. $court["address"] . '</p></div></div></a>';
                             $i++;

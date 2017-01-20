@@ -331,7 +331,7 @@ $this->registerJs("
                                                     {
                                                         // коммент не удаляем. в этой переменной id пользователя для ссылки
                                                         // echo '<a href="#">'.$idUsersArr[$i][$j]['user_id'].'</a>';
-                                                        echo '<a href="#"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
+                                                        echo '<a href="users/'.$idUsersArr[$i][$j]['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
                                                     }
 
                                                 ?>

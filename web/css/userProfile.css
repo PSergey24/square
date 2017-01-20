@@ -101,7 +101,7 @@ h1.h1-white{
 	text-align: center;
 }
 .contentUserImg{
-	background-image: url('/img/arena.jpg');
+	background-size: cover;
 	height: 150px;
 	border-radius: 5px;
 	-webkit-filter: contrast(1.3);
