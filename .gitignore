@@ -31,4 +31,4 @@ phpunit.phar
 sftp-config.json
 
 #DB params
-/confi/db.php
+/config/db.php
