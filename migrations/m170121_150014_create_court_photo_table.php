@@ -17,7 +17,7 @@ class m170121_150014_create_court_photo_table extends Migration
         $this->createTable('court_photo', [
             'id' => $this->primaryKey(),
             'court_id' => $this->integer()->notNull(),
-            'photo' => $this->varchar()->notNull(),
+            'photo' => $this->string()->notNull(),
             'avatar' => $this->tinyint()->notNull(),
             'approved' => $this->tinyint()->notNull(),
         ], $this->tableOptions);
