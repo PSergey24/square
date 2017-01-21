@@ -75,7 +75,7 @@ $this->registerJs("
             }
 
             if(value['photo'] == 0)
-                var photoCourt = 'defaultCourt.png';
+                var photoCourt = 'defaultCourt.jpg';
             else
                 var photoCourt = value['photo'];
 

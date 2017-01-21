@@ -75,7 +75,7 @@ class SiteController extends Controller
                 $photo[$i] = $query->one();
             }
             else
-                $photo[$i]['photo'] = 'defaultCourt.png';
+                $photo[$i]['photo'] = 'defaultCourt.jpg';
             $i++;
         }
         $games = [];
@@ -135,7 +135,7 @@ class SiteController extends Controller
                 $photo[$i] = $query->one();
             }
             else
-                $photo[$i]['photo'] = 'defaultCourt.png';
+                $photo[$i]['photo'] = 'defaultCourt.jpg';
             $i++;
         }
 

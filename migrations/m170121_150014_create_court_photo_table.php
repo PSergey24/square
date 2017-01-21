@@ -21,7 +21,7 @@ class m170121_150014_create_court_photo_table extends Migration
             'avatar' => $this->tinyint()->notNull(),
             'approved' => $this->tinyint()->notNull(),
         ], $this->tableOptions);
-    }
+    
         $this->createIndex(
             'court_photo-court_id',
             'court_photo',
@@ -36,6 +36,7 @@ class m170121_150014_create_court_photo_table extends Migration
             'CASCADE',
             'CASCADE'
         );
+    }
 
     /**
      * @inheritdoc
