@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\CourtLikes;
+use app\models\Game;
 use app\models\MapFilters;
 use app\models\SportType;
 use Yii;
@@ -109,16 +110,16 @@ class CourtController extends Controller
     public function actionView($id)
     {
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
-        $query = new Query;
-        $query->select('id, address, type_id, name, lat, lon')
-            ->from('court')
-            ->where(['id' => $id]);
-        $court = $query->one();
 
-        $query->select('time, need_ball')
-            ->from('game')
-            ->where(['court_id' => $id]);
-        $games = $query->all();
+        $court = Court::find()
+            ->select('id, address, type_id, name, lat, lon')
+            ->where(['id' => $id])
+            ->one();
+
+        $games = Game::find()
+            ->select('time, need_ball')
+            ->where(['court_id' => $id])
+            ->all();
 
         $bookmarked = $this->isBookmarked($id) ? true : false;
         $likes_count = count(Yii::createObject(CourtLikes::className())
@@ -131,8 +132,8 @@ class CourtController extends Controller
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
             'court' => $court,
-            'court_json' => json_encode($court),
-            'bookmarked' => $bookmarked,
+            'court_json' => json_encode($court->getAttributes()),
+            'is_bookmarked' => $bookmarked,
             'likes_count' => $likes_count
         ]);
     }
@@ -260,15 +261,14 @@ class CourtController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-        function isBookmarked($court_id)
-        {
+    function isBookmarked($court_id)
+    {
+        $user_id = Yii::$app->user->getId();
+        $bookmarks = Yii::createObject(CourtBookmark::className());
+        $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
+        if ($bookmark)
+            return $bookmark;
 
-            $user_id = Yii::$app->user->getId();
-            $bookmarks = Yii::createObject(CourtBookmark::className());
-            $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
-            if ($bookmark)
-                return $bookmark;
-            return false;
-
-        }
+        return false;
+    }
 }

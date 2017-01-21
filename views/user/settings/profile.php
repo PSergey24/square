@@ -42,7 +42,7 @@ $this->registerCssFile('/css/settings.css');
                                 'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
                                 'labelOptions' => ['class' => 'col-lg-3 control-label'],
                             ],
-                            'enableAjaxValidation'   => true,
+                            'enableAjaxValidation'   => false,
                             'enableClientValidation' => false,
                             'validateOnBlur'         => false,
                         ]); ?>
@@ -57,6 +57,7 @@ $this->registerCssFile('/css/settings.css');
                             </div>
                         </div>
                         <?php \yii\widgets\ActiveForm::end(); ?>
+
                         <?php $form_account = ActiveForm::begin([
                             'id'          => 'account-form',
                             'options'     => ['class' => 'form-horizontal'],
