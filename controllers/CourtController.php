@@ -157,8 +157,8 @@ class CourtController extends Controller
             'model' => $this->findModel($id),
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
-            'court' => $court,
-            'court_json' => json_encode($court),
+            'court' => $court->getAttributes(),
+            'court_json' => json_encode($court->getAttributes()),
             'bookmarked' => $bookmarked,
             'likes_count' => $likes_count
         ]);
