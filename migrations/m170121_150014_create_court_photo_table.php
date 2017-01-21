@@ -1,5 +1,7 @@
 <?php
 
+namespace app\migrations;
+
 use yii\db\Migration;
 
 /**
@@ -44,7 +46,7 @@ class m170121_150014_create_court_photo_table extends Migration
             'court_photo-court_id-court-id',
             'court_photo'
         );
-        
+
         $this->dropTable('court_photo');
     }
 }
