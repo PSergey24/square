@@ -9,8 +9,10 @@ $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
 
-$this->params['picture_href'] = Profile::getAvatar();
-
+if(Yii::$app->user->identity)
+    $userAuth = Yii::$app->user->identity->getId();
+else
+    $userAuth = 0;
 ?>
 
 <div class="container-fluid top">
@@ -43,8 +45,13 @@ $this->params['picture_href'] = Profile::getAvatar();
                             echo '<a href=/court/' . $court["id"] . '><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 wrap"><div class="contentUserImg" style="background-image: url(/img/courts/'.$photo[$i]['photo'].')"><p>'. $court["address"] . '</p></div></div></a>';
                             $i++;
                         }
-                    } else echo '<p class="noinfo">Здесь будут отображаться площадки, которые ты добавишь в избранные ツ</p>
+                    }elseif($userAuth != 0)
+                    {
+                        echo '<p class="noinfo">Здесь будут отображаться площадки, которые ты добавишь в избранные ツ</p>
                 <a href="/court" class="mid-green-btn find">Найти площадку</a>';
+                    }
+                    else
+                        echo '<p class="noinfo">Данный игрок ещё не подписан ни на одну площадку ツ</p>'; 
                 ?>
             </div>
         </div>
@@ -63,7 +70,7 @@ $this->params['picture_href'] = Profile::getAvatar();
                                     <p class="timeGame">'.$game['time'].'</p>'.$ballImg.'<a class="timeGameAddress" href="/court/' . $game['court_id'] . '">'.$game['address'].'</a>
                                 </div>';
                         }
-                    } else echo '<p class="noinfo">Присоединись к игре, и ты увидишь ее здесь</p>';
+                    }else echo '<p class="noinfo">Присоединись к игре, и ты увидишь ее здесь</p>';
                 ?>
             </div>
         </div>

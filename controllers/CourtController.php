@@ -68,7 +68,36 @@ class CourtController extends Controller
      */
     public function actionIndex()
     {
-        $popular = Court::find()->limit(3)->all();
+        // $popular = Court::find()->limit(3)->all();
+
+        $img = array();
+        $query = new Query;
+        $query->select('court.id as id,address,COUNT(user_id) as count')
+            ->from('court, court_bookmark')
+            ->where('court_id = court.id');
+        $popular = $query->groupBy('court.id')->orderBy('COUNT(user_id) desc')->limit(3)->all();
+
+        $i=0;
+        foreach ($popular as $item) {
+            $query2 = new Query;
+            $query2->select('photo')
+                  ->from('court_photo')
+                  ->where(['court_id' => $item['id']])
+                  ->andWhere('avatar = 1')
+                  ->andWhere('approved = 0');
+            
+            $img[$i] = $query2->one();
+            if($img[$i] == '')
+                $img[$i]['photo'] = 'defaultCourt.jpg';
+
+            $i++;
+        }
+
+
+
+
+
+
         $filters = Yii::createObject(MapFilters::className());
 
         if (Yii::$app->request->getIsPost())
@@ -83,7 +112,9 @@ class CourtController extends Controller
             'popular' => $popular,
             'filters' => $filters,
             'districts' => $districts,
-            'sport_types' => $sport_types
+            'sport_types' => $sport_types,
+            'img' =>$img
+
         ]);
 //        $filters = $this->get_map_filter_params();
 

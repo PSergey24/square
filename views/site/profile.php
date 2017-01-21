@@ -9,7 +9,7 @@ $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
 
-$this->params['picture_href'] = Profile::getAvatar();
+    $this->params['picture_href'] = Profile::getAvatar();
 
 ?>
 
