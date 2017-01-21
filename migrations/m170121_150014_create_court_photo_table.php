@@ -2,7 +2,7 @@
 
 namespace app\migrations;
 
-use yii\db\Migration;
+use app\migrations\Migration;
 
 /**
  * Handles the creation of table `court_photo`.
