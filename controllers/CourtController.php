@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\CourtLikes;
+use app\models\Game;
 use app\models\MapFilters;
 use app\models\SportType;
 use Yii;
@@ -164,8 +165,8 @@ class CourtController extends Controller
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
             'court' => $court,
-            'court_json' => json_encode($court),
-            'bookmarked' => $bookmarked,
+            'court_json' => json_encode($court->getAttributes()),
+            'is_bookmarked' => $bookmarked,
             'likes_count' => $likes_count
         ]);
     }
@@ -374,15 +375,14 @@ class CourtController extends Controller
         throw new NotFoundHttpException('The requested page does not exist.');
     }
 
-        function isBookmarked($court_id)
-        {
+    function isBookmarked($court_id)
+    {
+        $user_id = Yii::$app->user->getId();
+        $bookmarks = Yii::createObject(CourtBookmark::className());
+        $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
+        if ($bookmark)
+            return $bookmark;
 
-            $user_id = Yii::$app->user->getId();
-            $bookmarks = Yii::createObject(CourtBookmark::className());
-            $bookmark = $bookmarks->find()->where(['user_id' => $user_id, 'court_id' => $court_id])->one();
-            if ($bookmark)
-                return $bookmark;
-            return false;
-
-        }
+        return false;
+    }
 }

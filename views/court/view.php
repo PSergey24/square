@@ -89,7 +89,7 @@ if (!Yii::$app->user->getIsGuest()) {
                 $.ajax({
                     url: '/like/create',
                     method: 'POST',
-                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    data: {court_id: " . $court->id . ", user_id:" . Yii::$app->user->getId() . "},
                     success: function(isAdd) {
                         if (isAdd) {
                             $('#like i').removeClass('fa-heart-o');
@@ -102,7 +102,7 @@ if (!Yii::$app->user->getIsGuest()) {
                 $.ajax({
                     url: '/like/delete',
                     method: 'DELETE',
-                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    data: {court_id: " . $court->id . ", user_id:" . Yii::$app->user->getId() . "},
                     success: function(isRemoved) {
                         if (isRemoved) {
                             $('#like i').removeClass('fa-heart');
@@ -118,7 +118,7 @@ if (!Yii::$app->user->getIsGuest()) {
         $.ajax({
             url: '/like/has-like',
             method: 'POST',
-            data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+            data: {court_id: " . $court->id . ", user_id:" . Yii::$app->user->getId() . "},
             success: function(hasLike) {
                 if (hasLike) {
                     $('#like i').removeClass('fa-heart-o');
@@ -193,10 +193,10 @@ $this->registerJs("
 
 <div class="container-fluid top">
     <div class="container s">
-        <h2 class="h2-white" style="position:relative;"><?= $court['address'] ?></h2>
+        <h2 class="h2-white" style="position:relative;"><?= $court->address ?></h2>
         <div >
             <?php
-            if ($court['type_id'] != 1)
+            if ($court->type_id != 1)
                 echo Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), [
                     'class' => 'tag'
                 ]);
@@ -216,7 +216,7 @@ $this->registerJs("
         </div>
         <div class="buttons">
             <a class="mid-green-btn shadow" id="bookmark">
-                <?php if ($bookmarked) : ?>
+                <?php if ($is_bookmarked) : ?>
                     <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                     <span class="hidden-xs">Удалить из избранного</span>
                 <?php else:?>
@@ -251,7 +251,7 @@ $this->registerJs("
                 foreach ($games as $game) {
                     echo '<div class="game" data-block-game="'.$game['id'].'">
                         <div class="time">';
-                    $tm = strtotime($game['time']);
+                    $tm = strtotime($game->time);
                     $current_datetime = new DateTime();
                     $current_datetime = date_format($current_datetime, 'Y-m-d');
                     $tm_current = strtotime($current_datetime);
@@ -263,7 +263,7 @@ $this->registerJs("
                         echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
 
                     echo '</div>';
-                    if (!$game['need_ball'] == 1)
+                    if (!$game->need_ball == 1)
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
                     else
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
