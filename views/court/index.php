@@ -248,6 +248,8 @@ $this->registerJs("
     </div>
 </div>
 
+
+
 <div class="container-fluid" id="slider">
     <div class="container containerSlider">
         <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h2>
