@@ -18,8 +18,8 @@ class m170121_150014_create_court_photo_table extends Migration
             'id' => $this->primaryKey(),
             'court_id' => $this->integer()->notNull(),
             'photo' => $this->string()->notNull(),
-            'avatar' => $this->tinyint()->notNull(),
-            'approved' => $this->tinyint()->notNull(),
+            'avatar' => $this->boolean()->notNull(),
+            'approved' => $this->boolean()->notNull(),
         ], $this->tableOptions);
     
         $this->createIndex(
