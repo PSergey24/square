@@ -1,11 +1,15 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,500,700');
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
 html,body{
 	font-family:'Roboto';
-	background-color: #F0F0FA;
+	background-color: #f0f2f2;
 	font-size:1rem;
-	font-weight: 300;
+	font-weight: 400;
 		/* для footer*/
+}
+.forSmall{
+	padding-left: 5px !important;
+	padding-right: 5px !important;
 }
    input, option, select{
    	outline: none;
@@ -17,6 +21,9 @@ html{
 	min-height: 100%;
 	position: relative;
 }
+p {
+	line-height: 1.54;
+}
 #test{
 	height: 400px;
 	width: 100%;
@@ -26,7 +33,27 @@ html{
 	text-align: center;
 	display: block;
 }
-
+/* СКРОЛЛ ----------------------------------------*/
+::-webkit-scrollbar{
+    width:4px !important;
+}
+::-webkit-scrollbar-thumb{
+    border-width:1px 1px 1px 2px;
+    border-color: green;
+    background-color: #BCBCD2;
+}
+::-webkit-scrollbar-thumb:hover{
+    border-width: 1px 1px 1px 2px;
+    border-color: #555;
+    background-color: #AAAABE;
+}
+::-webkit-scrollbar-track{
+    border-width:0;
+    background-color: #D8D8E1;
+}
+::-webkit-scrollbar-track:hover{
+    background-color: #D8D8E1;
+}
 /* КНОПКИ ----------------------------------------*/
 .big-green-btn, .big-blue-btn, .mid-green-btn, .mid-blue-btn,.big-green-btn:visited, .big-blue-btn:visited, .mid-green-btn:visited, .mid-blue-btn:visited{
 border: none;
@@ -39,7 +66,7 @@ outline: none;
 .big-green-btn, .big-blue-btn{
 	padding: 0.9375rem 2.5rem;
 	font-size: 1.125rem;
-	font-weight: 300;
+	font-weight: 400;
 }
 .mid-green-btn, .mid-blue-btn{
 	padding: 0.625rem 2rem;
@@ -71,9 +98,9 @@ background:#00d12d;
 }
 
 
-/* ТЕНЬ ----------------------------------------*/
+/* ТЕНЬ ---------------------------------------- box-shadow: 0 3px 9px rgba(0,0,0,.2); hover*/
 .shadow{
-	box-shadow: 0 1px 1px rgba(0,0,0,0.2);
+	box-shadow: 0 1px 3px rgba(0,0,0,.28);
 }
 
 /* БОКСЫ ----------------------------------------*/
@@ -100,12 +127,12 @@ background:#00d12d;
 .h1-black, .h1-white{
 font-size: 2.6rem;
 margin: 1.5rem 0px;
-font-weight:700;
+font-weight:500;
 line-height: 1.4;
 letter-spacing: 1px;
 }
 .h1-black, .h2-black{
-color:rgba(0,0,0,0.74);
+color:rgba(0,0,0,0.87);
 }
 .h1-white, .h2-white{
 color:rgba(255,255,255,1);
@@ -147,7 +174,6 @@ border:1px solid green;
 	#menu ul.main-menu{
 		text-align: center;
 		margin:0;
-		margin-left: 13px;
 	}
 		#menu ul.main-menu a li{
 			display:block;
@@ -159,12 +185,14 @@ border:1px solid green;
 				height:100%;
 				color:rgba(255,255,255,0.7);
 				font-size: 0.8125rem;  /* 13px на большом */
-				margin-left: 15px;
 				text-align: center;
 				text-transform: uppercase;
 				line-height: 65px;
-				padding: 0px 5px;
+				padding: 0px 15px;
 				cursor: pointer;
+			}
+			#logo{
+				margin-right: 15px;
 			}
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
@@ -301,7 +329,7 @@ border:1px solid green;
 	border-bottom-left-radius: 3px; 
 	border-bottom-right-radius: 3px; 
 	line-height: 35px; 
-	padding: 5px 15px; 
+	padding: 7px 15px; 
 	} 
 	ul.dropdown .dropdown-inside a{ 
 	float: left; 
@@ -323,8 +351,8 @@ border:1px solid green;
 	}
 	.divide{
 		width: 100%;
-		border: 1px solid #004CA3;
-		margin: 5px 0;
+		border-bottom: 1px solid rgba(0,0,0,.15);
+		margin: 7px 0;
 		float: left;
 	}
 	ul.dropdown .dropdown-inside a:hover{ 
@@ -380,7 +408,7 @@ border:1px solid green;
 			border-top:none;
 			border-left:none;
 			border-right:none;
-			background-color: white;
+			background: none;
 
 		}
 		.nav-tabs li.active a:hover,.nav-tabs li.active a:focus{
@@ -388,13 +416,14 @@ border:1px solid green;
 			border-left:none;
 			border-right:none;
 			border-bottom:3px solid rgba(0,0,0,0.87);
+			background: none;
 		}
 
 
 		.nav-tabs li a:hover{
 			border-bottom:3px solid rgba(0,0,0,0.38);
 			color:rgba(0,0,0,0.38);
-			background-color: white;
+			background: none;
 			border-top:none;
 			border-left:none;
 			border-right:none;
@@ -438,10 +467,26 @@ border:1px solid green;
 				padding-top: 9px;
 				padding-bottom: 9px;
 				font-size: 1rem;
-				font-weight: 500;
+				font-weight: 400;
 			}
 			input[type="text"]:focus,input[type="password"]:focus,input[type="button"]:focus { outline: none; }
-
+			.tabs i{
+				color: white;
+				opacity: 0.54;
+				background-color: #004CA3;
+				width: 2.65rem;
+				border-radius: 5px;
+				margin-bottom: 10px;
+				vertical-align: middle;
+				height: 2.6rem;
+		
+			}
+			.tabs .fa-facebook, .fa-vk{
+				line-height: 2.6rem !important;
+			}
+			.tabs i:hover{
+				opacity: 1;
+			}
 			.tab-content fieldset{
 				margin-top: 18px;
 				border-top:1px solid rgba(0,0,0,0.74);
@@ -456,19 +501,12 @@ border:1px solid green;
 				width:60%;
 			}
 			.tab-content fieldset a{
-				margin:0 7px;
-			}
-			.tab-content fieldset img{
-				margin-bottom: 10px;
-				width:40px;
-				height: 40px;
-				border-radius: 5px;
+				margin:0 8px;
 			}
 
 
 	/* для footer */
 .footer{
-    background-color: #E2E8EB;
     text-align: center;
     padding: 0.9375rem 0;
     color:rgba(0,0,0,0.5);
@@ -476,8 +514,6 @@ border:1px solid green;
     position: absolute;
     bottom: 0;
     left: 0;
-
-    /* bottom: -4.5674rem; */
 }
 .helper {
 visibility:hidden;
@@ -515,7 +551,7 @@ position: relative;
 		padding: 0 5px;
 	}
 	.forSmall, .searchImgForm {
-    padding: 0;
+    padding: 0 !important;
 }
 	/* Шапка */
 	.tabs{
@@ -530,6 +566,10 @@ position: relative;
 	}
 	#logo{
 		margin-top:14px;
+		margin-right: 0px;
+	}
+	.navbar-toggle{
+		margin-right: 0 !important;
 	}
 	#registration{
 		margin:0 20px 0 0;
@@ -552,14 +592,13 @@ position: relative;
 				color:rgba(255,255,255,1);
 			}
 
-		#menu ul.main-menu a{
+		#court, #game {
 			opacity:0.7;
 		}
-		#menu ul.main-menu a:hover{
+		#court:hover, #game:hover{
 			opacity:1;
 		}
 		#menu ul.main-menu a li{
-			/*padding: 0 20px;*/
 			display: inline-block;
   			float: none;
   			width: 70px;
@@ -569,13 +608,12 @@ position: relative;
   			padding-top: 10px;
     		padding-bottom: 6px;
 			text-transform: none;
-  			font-weight: 400;
+  			font-weight: 500;
 		}
 
 				
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
-				background:  #005BC3;
 			}
 				#menu ul.main-menu a li img{
 					width: 30px;

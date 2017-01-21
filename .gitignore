@@ -23,10 +23,12 @@ composer.phar
 
 # phpunit itself is not needed
 phpunit.phar
+
 # local phpunit config
 /phpunit.xml
 
 #Sublime Text SFTP config
 sftp-config.json
+
 #DB params
-config/db.php
+/config/db.php

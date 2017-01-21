@@ -65,10 +65,12 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<controller:like>/<id:\d+>' => '<controller>/index',
+                '<action:users>/<id:\d+>' => 'site/users',
                 '<controller:\w+>/<id:\d+>' => '<controller>/view',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '<action:profile>' => 'site/profile'
+                '<action:profile>' => 'site/profile',
             ],
         ],
         'authClientCollection' => [
@@ -105,6 +107,7 @@ $config = [
                 'security'      => 'app\controllers\user\SecurityController',
                 'registration'  => 'app\controllers\user\RegistrationController',
                 'settings'      => 'app\controllers\user\SettingsController',
+                'admin'      => 'app\controllers\user\AdminController',
             ],
             'modelMap' => [
                 'User'             => 'app\models\User',

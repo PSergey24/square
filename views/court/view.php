@@ -17,7 +17,11 @@ $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('/css/squareProfile.css', [
     'depends' => [AppAsset::className()]
 ]);
-
+$this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
+    [
+        'async' => true,
+    ]
+);
 $this->registerJs("
     var map;
     var court = " . $court_json . ";
@@ -51,27 +55,119 @@ $this->registerJs("
         });
     }
 ", $this::POS_HEAD);
-$this->registerJs("
-    //Bookmark btn onclick change pic and text
-    $('#bookmark').click(function () {
-            var url = document.URL;
-            var id = url.substring(url.lastIndexOf('/') + 1);
-            $.ajax({
-                url: '/court/bookmark',
-                data: {court_id: id},
-                success: function(success) {
-                    $('#bookmark img').attr('src', '/img/star-active.png');
-                    $('#bookmark span').text('Удалить из избранного');
-                    console.log(success);
-                },
+if (!Yii::$app->user->getIsGuest()) {
+    $this->registerJs("
+        //Bookmark btn onclick change pic and text
+        $('#bookmark').click(function () {
+                var url = document.URL;
+                var id = url.substring(url.lastIndexOf('/') + 1);
+                $.ajax({
+                    url: '/court/bookmark',
+                    data: {court_id: id},
+                    success: function(success) {
+                        if ($('#bookmark span').text() == 'Удалить из избранного') {
+                            $('.mid-green-btn i').removeClass('fa-star');
+                            $('.mid-green-btn i').addClass('fa-star-o');
+                            $('#bookmark span').text('Добавить в избранное');
+                        }else {
+                            $('.mid-green-btn i').removeClass('fa-star-o');
+                            $('.mid-green-btn i').addClass('fa-star');
+                            $('#bookmark span').text('Удалить из избранного');  
+                        }
+                        
+                    },
+                });
             });
+    ");
+
+    $this->registerJs("
+        $('#like').click(function() {
+            //get current like count in 10 mathematical numeral system
+            current_like_count = parseInt($('#like .players').text(), 10);
+            
+            if ($('#like i').hasClass('fa-heart-o')) {
+                $.ajax({
+                    url: '/like/create',
+                    method: 'POST',
+                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    success: function(isAdd) {
+                        if (isAdd) {
+                            $('#like i').removeClass('fa-heart-o');
+                            $('#like i').addClass('fa-heart');
+                            $('#like .players').text(current_like_count + 1);
+                        }
+                    },
+                });
+            }else {
+                $.ajax({
+                    url: '/like/delete',
+                    method: 'DELETE',
+                    data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+                    success: function(isRemoved) {
+                        if (isRemoved) {
+                            $('#like i').removeClass('fa-heart');
+                            $('#like i').addClass('fa-heart-o');
+                            $('#like .players').text(current_like_count - 1);
+                        }
+                    },
+                });              
+            }      
         });
-    //Description link on click smoothly fade in description block
-    $('#description_link').click(function () {
-        $('#description').toggle(300);
+    ");
+    $this->registerJs("
+        $.ajax({
+            url: '/like/has-like',
+            method: 'POST',
+            data: {court_id: " . $court["id"] . ", user_id:" . Yii::$app->user->getId() . "},
+            success: function(hasLike) {
+                if (hasLike) {
+                    $('#like i').removeClass('fa-heart-o');
+                    $('#like i').addClass('fa-heart');
+                }
+            },
+        });
+    ");
+} else {
+    $this->registerJs("
+        $('#like, #bookmark').click(function() {
+          $('.needLogin').modal({
+               show: true, 
+               backdrop: 'static',
+               keyboard: true
+           })
+        });
+    ");
+}
+
+$this->registerJs("
+    $('.join').click(function() {
+        var idGame = $(this).attr('data-id-game'); 
+        var symbol = $('[data-id-game = '+idGame+'] .symbol').html();   
+
+            $.ajax({
+              type: \"POST\",
+              url: \"/court/button_plus\",
+              data: \"id=\"+idGame+\"&&symbol=\"+symbol,
+              success: function(data){
+                var result = data.split('|');
+                if(result[2] != 0)
+                {
+                    $('[data-block-game = '+result[0]+'] .symbol').html(result[1]);
+                    $('[data-block-game = '+result[0]+'] .players').html(result[2]);
+                }else{
+                    $('[data-block-game = '+result[0]+']').remove();
+                }
+                
+                
+
+              }
+            });
     });
 ");
-
+//Description link on click smoothly fade in description block
+$this->registerJs("$('#description_link').click(function () {
+        $('#description').toggle(300);
+    });");
 //refresh games block after create new game
 $this->registerJs('$("#game-create").on("pjax:end", function() {
            $.pjax.reload({container: "#games"});
@@ -92,13 +188,13 @@ $this->registerJs("
         }
     }
 ");
+
 ?>
 
 <div class="container-fluid top">
     <div class="container s">
-
-        <h2 class="h2-white"><?= $court['address'] ?></h2>
-        <p>
+        <h2 class="h2-white" style="position:relative;"><?= $court['address'] ?></h2>
+        <div >
             <?php
             if ($court['type_id'] != 1)
                 echo Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), [
@@ -109,7 +205,7 @@ $this->registerJs("
                     'class' => 'tag'
                 ]);;
             ?>
-        </p>
+        </div>
         <div class="description ">
             <a id="description_link" href="javascript:void(0)" title="" rel="nofollow" class="link">Описание
                 площадки</a><?= Html::img('@web/img/down.png', ['class' => 'arrow', 'id' => '1']) ?>
@@ -120,12 +216,19 @@ $this->registerJs("
         </div>
         <div class="buttons">
             <a class="mid-green-btn shadow" id="bookmark">
-                <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
-                <span class="hidden-xs">Добавить в избранные</span>
+                <?php if ($bookmarked) : ?>
+                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                    <span class="hidden-xs">Удалить из избранного</span>
+                <?php else:?>
+                    <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
+                    <span class="hidden-xs">Добавить в избранное</span>
+                <?php endif;?>
             </a>
-
-            <button class="mid-blue-btn shadow"><i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="hidden-xs">Мне нравится</span> <span class="players">15</span></button>
-
+            <button class="mid-blue-btn shadow" id="like">
+                <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i>
+                <span class="hidden-xs">Мне нравится</span>
+                <span class="players"><?= $likes_count ?></span>
+            </button>
         </div>
 
     </div>
@@ -141,91 +244,55 @@ $this->registerJs("
     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
         <h2 class="h2-box">Ближайшие игры</h2>
         <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
-        <div class="col-lg-12 col-xs-12 box games" id="game_list">
-            <?php
-            foreach ($games as $game) {
-                echo '<div class="game">
-                    <div class="time">';
-                $tm = strtotime($game['time']);
-                $current_datetime = new DateTime();
-                $current_datetime = date_format($current_datetime, 'Y-m-d');
-                $tm_current = strtotime($current_datetime);
-                if (date("d", $tm) == date("d", $tm_current))
-                    echo 'Сегодня ' . date("H:i", $tm);
-                else
-                    echo 'Завтра ' . date("H:i", $tm);
-                echo '</div>';
-                if ($game['need_ball'] == 1)
-                    echo Html::img('@web/img/ball-ok.png');
-                else
-                    echo Html::img('@web/img/ball-not.png');
-                echo '<button class="mid-blue-btn">+ <span class="players">1</span></button></div>';
+        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
+            
+        <?php
+            if($games) {
+                foreach ($games as $game) {
+                    echo '<div class="game" data-block-game="'.$game['id'].'">
+                        <div class="time">';
+                    $tm = strtotime($game['time']);
+                    $current_datetime = new DateTime();
+                    $current_datetime = date_format($current_datetime, 'Y-m-d');
+                    $tm_current = strtotime($current_datetime);
+                    if (date("d", $tm) == date("d", $tm_current))
+                        echo 'Сегодня ' . date("H:i", $tm);
+                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
+                        echo 'Завтра ' . date("H:i", $tm);
+                    else
+                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
+
+                    echo '</div>';
+                    if (!$game['need_ball'] == 1)
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
+                    else
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
+                    echo '<button class="mid-blue-btn join" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
+
+                }
             }
+            else echo '<p class="nogames">В ближайшее время игр нет :(</p>';
             ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
-        <?php Pjax::end(); ?>
+        <div class="social">
+            <span>ПОЗОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
+            <a href="#"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
         </div>
-</div>
+        <?php Pjax::end(); ?>
+
+    </div>
 
 <?php if (Yii::$app->user->isGuest): ?>
-
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create create-game">
-            <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
-            <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
-            <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
-        </div>
-    </div>
-</div>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create create-game">
-            <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
-            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>
-            <p id="warning">Игра успешно создана</p>
-        </div>
-    </div>
-</div>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create create-game">
-            <i class="fa fa-times close fa-lg " data-dismiss="modal" aria-hidden="true" id="close"></i>
-            <p class="h2-black">Создание игры</p>
-        <?php
-            $form = ActiveForm::begin([
-                'options' => ['class' => 'form-horizontal'],
-                'id' => 'game-create',
-                'enableAjaxValidation' => true,
-            ]);
-        ?>
-           <?= Html::hiddenInput('court_id', Yii::$app->getRequest()->getQueryParam('id'));
-           ?>
-            <p class="little">Выберите время игры</p>
-                <p class="align-right">
-                    <?php
-                        $select_day = [
-                            '0' => 'Сегодня',
-                            '1' => 'Завтра'
-                        ];
-                        echo Html::activeDropDownList($model_game, 'time', $select_day, [
-                            'class' => 'selectpicker input date',
-                        ]);
-
-                    ?>
-                    <?= Html::input('time', 'time_digit', null, [
-                        'class' => 'input date',
-                        'id' => 'time'
-                        ])
-                    ?>
-                    </p>
-            <p class="ball">
-                <?= $form->field($model_game, 'need_ball')->checkbox(['label' => 'Нужен мяч']); ?>
-
-            <?= Html::submitButton('Готово', ['class' => 'mid-green-btn']) ?>
-
-            <?php ActiveForm::end() ?>
+    <div class="modal fade bs-example-modal-lg needLogin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm ">
+            <div class="modal-content game-create create-game">
+                <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+                <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
+                <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
+            </div>
 
         </div>
     </div>

@@ -42,12 +42,11 @@ AppAsset::register($this);
                     <a href="#">Пользовательское соглашение</a>
                     <p>Квадрат 2016</p>
             </div>
-            </div>
             <div class="container-fluid footer">
                 <a href="#">Обратная связь</a>
                 <a href="#">О компании</a>
                 <a href="#">Пользовательское соглашение</a>
-                <p>Квадрат 2016</p>
+                <p><a href="/">Квадрат 2016-2017</a></p>
             </div>
             <!--Footer END-->
         <?php $this->endBody() ?>

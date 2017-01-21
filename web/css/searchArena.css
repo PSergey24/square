@@ -1,7 +1,10 @@
-#court_info{
-	display: none;
-	width: 16rem;
+#court{
+	background-color: #00418C !important;
+	color: #ffffff !important;
+	opacity: 1 !important;
 }
+
+
 .border{
 	border:1px solid red;
 }
@@ -40,6 +43,7 @@
 }
 .searchImgForm{
 	padding: 0;
+	width: 14rem;
 }
 
 
@@ -60,7 +64,7 @@
 	color: rgba(255,255,255,1);
 }
 #center{
-	padding-bottom: 3rem;
+	padding-bottom: 1.5rem;
 	position: relative;
 }
 #center form{
@@ -70,8 +74,7 @@
 .search{
 	width: 33.33% !important;
 	background: white;
-	margin-top: 2.5rem;
-	margin-bottom: 1.5rem;
+	margin:1.5rem 0;
 	border: 1px solid rgba(0,0,0,0.1);
 }
 
@@ -97,44 +100,6 @@
 	border-top-right-radius:5px;
 	border-bottom-right-radius:0;
 }
-
-.arrow_box {
-	position: relative;
-}
-.arrow_box:after, .arrow_box:before {
-	top: 100%;
-	left: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-
-}
-
-/*.arrow_box:after { Треугольник и крестик
-	border-color: rgba(255, 255, 255, 0);
-	border-top-color: #ffffff;
-	border-width: 10px;
-	margin-left: -10px;
-}
-.arrow_box:before {
-	border-color: rgba(163, 163, 163, 0);
-	border-width: 11px;
-	margin-left: -11px;
-	border-top-color: rgba(0,0,0,0.2);
-}
-.close{
-	height: 20px;
-	width: 20px;
-	margin-right: 5px;
-	margin-top: 7px;
-	background-image: url(../img/close.png);
-	background-size: cover;
-	cursor: pointer;
-	opacity: .8
-}*/
 .close:hover{
 	opacity: 1;
 }
@@ -148,14 +113,17 @@
 	margin-top: 1.5rem;
 }
 .image{
-	width:100%;
+	width: 100%;
+}
+.images{
+	width: 16rem;
+	border-radius: 5rem;
+}
+.images, .image{
 	height: 10rem;
 	background-size: cover;
-	border-top-left-radius:5px;
-	border-bottom-left-radius:0;
-	border-top-right-radius:5px;
-	border-bottom-right-radius:0;
-	margin:0;
+	background-position: center;
+	margin:auto;
 	-webkit-filter: contrast(1.3);
 	 transition:all 0.3s linear;
 	-moz-transition:all 0.3s linear;
@@ -164,12 +132,12 @@
 	box-shadow: 0 10rem 0px rgba(0,0,0,0.15) inset;
 	text-align: center;
 	position: relative;
+	max-width: 300px;
 }
-.image span{
+.image span, .images span{
 	color: rgb(255,255,255);
 	line-height: 10rem;
 	opacity: 0;
-	margin-right: -25px;
 	transition:all 0.3s linear;
 	-moz-transition:all 0.3s linear;
 	-webkit-transition:all 0.3s linear;
@@ -184,6 +152,9 @@
 	font-weight: 300;
 	font-size: 1rem;
 }
+.images .players{
+	right: 6.5rem;
+}
 .players i{
 	margin-right: 3px;
 }
@@ -194,19 +165,20 @@
 .image-right span{
 	line-height: 8rem;
 }
-#court_info a:hover .image{
-	box-shadow: 0 8rem 0px rgba(0,0,0,0.3) inset;
+.court_info a:hover .image, a:hover .images{
+	box-shadow: 0 12rem 0px rgba(0,0,0,0.4) inset;
 }
-#court_info a:hover span{
+.court_info a:hover span{
 	opacity: 1;
 }
 #slider{
 	background: #fff;
-	padding-top: 2.5rem;
-	padding-bottom: 3rem;
+	padding: 2rem 0;
+	text-align: center;
+	padding-top: 2.1rem;
 }
 #slider a:hover .image{
-	box-shadow: 0 10rem 0px rgba(0,0,0,0.3) inset;
+	box-shadow: 0 10rem 0px rgba(0,0,0,0.4) inset;
 }
 #slider a:hover span{
 	opacity: 1;
@@ -214,27 +186,27 @@
 
 #slider .h2-black{
 	margin:0;
-	margin-bottom: 1.5rem;
+	margin-bottom: 2.6rem;
 }
-.sliderText{
-	width:100%;
+.sliderTextPop{
+	width: 80%;
+}
+.sliderTextPop, .sliderText{
+	margin: auto;
 	padding:1.5rem;
 	overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
     color: rgba(0,0,0,0.74);
     text-decoration: underline;
-    border-top-left-radius:0;
-	border-bottom-left-radius:5px;
-	border-top-right-radius:0;
-	border-bottom-right-radius:5px;
 	text-align: center;
-	background: rgb(255,255,255);
+	max-width: 300px;
 }
 #notArena{
 	background:#03a9f4;
 	padding-top: 2rem;
 	padding-bottom: 2.5rem;
+	text-align: center;
 }
 #notArena .h2-white{
 	margin: 0;
@@ -243,7 +215,6 @@
 	font-size:1.125rem;
 	color:rgb(255,255,255);
 	margin:1.5rem 0;
-	margin-top:0.5rem;
 	line-height: 1.7;
 }
 #notArena p:last-child{
@@ -259,14 +230,20 @@
 }
 
 @media (max-width: 767px) {
+	.images{
+		width: 80%;
+	}
+	.images .players{
+		right: 46%;
+	}
+	.margin{
+		margin-bottom: 2rem;
+	}
 	.sliderText{
 		padding: 2rem;
 	}
 	#address{
 		padding: 1.5rem !important;
-	}
-	#court_info{
-		width: 15rem;
 	}
 	.search {
 		width: 50% !important;

@@ -5,6 +5,7 @@ namespace app\controllers\user;
 use dektrium\user\controllers\SettingsController as BaseSettings;
 use app\models\Profile;
 use yii\web\UploadedFile;
+use dektrium\user\models\SettingsForm;
 
 class SettingsController extends BaseSettings {
 
@@ -36,9 +37,8 @@ class SettingsController extends BaseSettings {
                 $current_picture = $model->getAttribute('picture');
                 if ($current_picture != Profile::DEFAULT_PICTURE_NAME)   {
                     $file_to_remove = getcwd() . Profile::DEFAULT_PICTURE_FOLDER . $current_picture;
-                    if (!unlink($file_to_remove)) {
-                        throw new \yii\web\HttpException(500, 'The requested Item could not be found.');
-                    }
+                    if (file_exists($file_to_remove))
+                        unlink($file_to_remove);
                 }
                 $filename = $model->picture->name;
                 //rename if file with filename = $model_picture already exist
@@ -59,9 +59,10 @@ class SettingsController extends BaseSettings {
                 }
             }
         }
-        
+        $model_account = \Yii::createObject(SettingsForm::className());
         return $this->render('profile', [
             'model' => $model,
+            'model_account' => $model_account
         ]);
     }
 }

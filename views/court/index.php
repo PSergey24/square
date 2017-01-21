@@ -4,26 +4,33 @@ use yii\helpers\Html;
 use yii\widgets\ListView;
 use yii\widgets\Pjax;
 use app\assets\CustomBootstrapAsset;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\CourtSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Courts';
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Площадки';
 $this->registerCssFile('/css/searchArena.css',[
         'depends' => [CustomBootstrapAsset::className()]
 ]);
 $this->registerJsFile('https://maps.googleapis.com/maps/api/js?key=AIzaSyDxkhFJ3y--2AadULGUoE9kdlRH3nT-668&callback=initMap',
     [
         'async' => true,
+        'defer' => true
     ]
 );
 $this->registerJs("
-    var map;
+    var map, myloc_marker, myloc_infoWindow, infowindow, contentString;
     var markers = new Array();
+    var SPB_lat = 59.910326;
+    var SPB_lng = 30.3185942;
+    var directionsDisplay, directionsService, map;
     function initMap() {
-        var latlng = new google.maps.LatLng(59.910326, 30.3185942);
+        var directionsService = new google.maps.DirectionsService();
+        directionsDisplay = new google.maps.DirectionsRenderer();
+        var latlng = new google.maps.LatLng(SPB_lat, SPB_lng);
         var options = {
             zoom: 11,
             center: latlng,
@@ -38,22 +45,19 @@ $this->registerJs("
         };
 
         map = new google.maps.Map(document.getElementById('map'), options);
+        directionsDisplay.setMap(map);
     }
 ", $this::POS_HEAD);
-
 $this->registerJs("
     // sport_type select
-    var court_images = [
-        'court_img_0.jpg','court_img_1.jpg','court_img_2.jpg','court_img_3.jpg','court_img_4.jpg','court_img_5.jpg',
-        'court_img_6.jpg','court_img_7.jpg','court_img_8.jpg','court_img_9.jpg','court_img_10.jpg','court_img_11.jpg',
-        'court_img_12.jpg','court_img_13.jpg','court_img_14.jpg','court_img_15.jpg','court_img_16.jpg','court_img_17.jpg',
-        'court_img_18.jpg','court_img_19.jpg','court_img_20.jpg','court_img_21.jpg',
-    ];
-    
+
     $.ajax({url: '/court/get_points', success: function(result) {
-        var sport_type = " . $sport_type . ";
+        var sport_type = " . (($filters['sport_type'] != null) ? $filters['sport_type'] : 0) . ";
         var visible_val;
-        $('#sport_type').val(sport_type);
+        infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        
         $.each(result, function (index, value) {
             var rnd = Math.floor(Math.random() * (20 - 0 + 1)) + 0;
             if(value['type_id'] == sport_type || sport_type == 0)
@@ -62,8 +66,18 @@ $this->registerJs("
                 visible_val = false;
             if (value['type_id'] == 1) {
                 var pinImgLink = '/img/basket.png';
-            }else
+            }else if(value['type_id'] == 2)
                 var pinImgLink = '/img/foot.png';
+            else if(value['type_id'] == 3)
+                var pinImgLink = '/img/volleyball.png';
+            else{
+                var pinImgLink = '/img/other.png';
+            }
+
+            if(value['photo'] == 0)
+                var photoCourt = 'defaultCourt.jpg';
+            else
+                var photoCourt = value['photo'];
 
             var marker = new google.maps.Marker({
                 id: value['id'],
@@ -72,15 +86,27 @@ $this->registerJs("
                 animation: google.maps.Animation.DROP,
                 type_id: value['type_id'],
                 address: value['address'],
-                photo: court_images[rnd],
+                photo: photoCourt,
+                bookmark: value['bookmark'],
                 visible: visible_val,
                 icon: pinImgLink
             });
             google.maps.event.addListener(marker, 'click', function() {
-                $('#court_link').attr('href', '/court/view/' + this.id);
-                $('#address').text(this.address);
-                $('#court_photo').css('background-image', 'url(/img/' + this.photo +')');
-                $('#court_info').css('display', 'block');
+                infowindow.close();
+                if(myloc_infoWindow) { 
+                    myloc_infoWindow.close(); 
+                }
+                var contentString = '<div class=\"searchImgForm court_info\">' +
+                                        '<div class=\"forSmall\">' +
+                                            '<a href=\"/court/' + this.id + 
+                                            '\"><div style=\"background-image: url(/img/courts/' + this.photo + ');\" class=\"image-right image\">' +
+                                            '<div class=\"close\"></div><div class=\"players\">' +
+                                                '<i class=\"fa fa-male\" aria-hidden=\"true\"></i>'+this.bookmark+'</div><span>Открыть площадку</span></div>' +
+                                            '<div class=\"sliderText center \">' + this.address + '</div></a>' +
+                                        '</div>' +
+                                    '</div>';
+                infowindow.setContent(contentString);
+                infowindow.open(map, marker);
             });
             markers.push(marker);
         })
@@ -89,67 +115,162 @@ $this->registerJs("
 
 $this->registerJs("
      $('#sport_type').change(function (e) {
+        var selectedValue = $('#sport_type').val() != '' ? $('#sport_type').val() : 0;
         for (var i = 0; i < markers.length; i++) {
-            if (markers[i].type_id !== $('#sport_type').val()) {
-                markers[i].setVisible(false);
-            }else {
+            if (selectedValue == 0)
                 markers[i].setVisible(true);
+            else {
+                if (markers[i].type_id != selectedValue) {
+                    markers[i].setVisible(false);
+                }else {
+                    markers[i].setVisible(true);
+                }
             }
         }
     });
 ");
+$this->registerJs("
+    $('#nearest_courts').click(function (e) {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                infowindow.close();
+                myloc_marker = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    icon: '/img/my_location.png'
+                });
+                myloc_infoWindow = new google.maps.InfoWindow({
+                    content: 'Вы находитесь здесь'
+                });
+                if(myloc_marker) {
+                    if(myloc_infoWindow) { 
+                        myloc_infoWindow.close(); 
+                    }
+                    myloc_marker.setPosition(pos);
+                }else {
+                    myloc_marker = new google.maps.Marker({
+                        position: pos,
+                        map: map,
+                        icon: '/img/my_location.png'
+                    });
+                }
+                myloc_infoWindow.open(map, myloc_marker);
+                map.setCenter(pos);
+                map.setZoom(15);
+            }, function() {
+                    alert(\"Ошибка: в Вашем браузере данная функция недоступна!\");
+                }
+            );
+         } else {
+           // Browser doesn't support Geolocation
+           alert(\"Ошибка: Ваш браузер не поддерживает геолокацию!\");
+         }
+    });
+");
+$this->registerJs("
+     changeDistrict();
+     $('#district_type').change(changeDistrict);
+
+     function changeDistrict() {
+        if ($('#district_type :selected').val() != '') {
+            $.ajax({
+            url: '/court/district_coord', 
+            data: {
+                name: $('#district_type :selected').text()
+            }, 
+            success: function(result) {
+                setMapCenter(result['lat'], result['lng']);
+            }
+        });
+        }else {
+            setMapCenter(SPB_lat, SPB_lng, 11);          
+        }      
+    }
+    
+    function setMapCenter(lat, lng, zoom = 13) {
+        var pos = new google.maps.LatLng(lat, lng);
+            map.setCenter(pos);
+            map.setZoom(zoom);
+    }
+", $this::POS_LOAD);
 ?>
 
-<div class="container-fluid" id="center" >
-    <div class="container">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <form>
-                <select id="city_type" class="search">
-                    <option value="1" disabled selected>Санкт-Петербург</option>
-                </select>
-                <select id="district_type" class="search">
-                    <option value="1" selected >Адмиралтейский</option>
-                    <option value="2">Кировский</option>
-                    <option value="3">Центральный</option>
-                </select>
-                <select id="sport_type" class="search">
-                    <option value="0" selected>Вид спорта</option>
-                    <option value="1">Баскетбол</option>
-                    <option value="2">Футбол</option>
-                </select>
-            </form>
+<div class="container-fluid" id="center">
 
-            <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <div id="map"></div>
-            </div>
-            <div class="center"><button class="mid-blue-btn">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
-            <div id="court_info" class="searchImgForm">
-                <div class="arrow_box forSmall">
-                    <a href="#" id="court_link"><div style="background-image: url(img/arena.jpg);" class="image-right image" id="court_photo"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
-                    <div class="sliderText center" id="address">Измайловский пр. д.86</div></a>
-                </div>
-            </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['/court']),
+            'fieldConfig' => [
+                'options' => [
+                    'tag' => false
+                ],
+                'errorOptions' => ['tag' => false]
+            ],
+            'enableClientValidation' => false
+        ]);
+        ?>
+
+        <?= $form->field($filters, 'city')
+            ->dropDownList(['Санкт-Петербург'], [
+                'class' => 'search selectpicker',
+                'id' => 'city_type'
+            ])->label(false);
+        ?>
+
+        <?= $form->field($filters, 'district_sity')
+            ->dropDownList($districts, [
+                'id' => 'district_type',
+                'class' => 'search selectpicker',
+                'prompt' => 'Выберите район'
+            ])
+            ->label(false);
+        ?>
+
+        <?= $form->field($filters, 'sport_type')
+            ->dropDownList($sport_types, [
+                'id' => 'sport_type',
+                'class' => 'search selectpicker',
+                'prompt' => 'Вид спорта'
+            ])
+            ->label(false);
+        ?>
+
+        <?php ActiveForm::end(); ?>
+
+        <div class="searchImgBox col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div id="map"></div>
         </div>
+        <div class="center"><button class="mid-blue-btn" id="nearest_courts">Ближайшие к вам</button><a class="mid-green-btn" href="court/create">Добавить площадку</a></div>
     </div>
 </div>
 
 <div class="container-fluid" id="slider">
     <div class="container containerSlider">
-        <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h1>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[0]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_22.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
-            <div class="sliderText shadow"><?= $popular[0]['address'] ?></div></a>
+        <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h2>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
+                <a href="<?= '/court/' . $popular[0]['id'] ?>" id="court_link">
+                <div style="background-image: url(../img/court_img_22.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
+                <div class="sliderTextPop"><?= $popular[0]['address'] ?></div></a>
+            </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[2]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_23.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>21</div><span>Открыть площадку</span></div>
-            <div class="sliderText shadow"><?= $popular[2]['address'] ?></div></a>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
+                <a href="<?= '/court/' . $popular[2]['id'] ?>" id="court_link">
+                <div style="background-image: url(../img/court_img_23.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>21</div><span>Открыть площадку</span></div>
+                <div class="sliderTextPop"><?= $popular[2]['address'] ?></div></a>
+            </div>
         </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 forSmall margin">
-            <a href="<?= '/court/view/' . $popular[1]['id'] ?>" id="court_link">
-            <div style="background-image: url(../img/court_img_24.jpg);" class="image"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
-            <div class="sliderText shadow"><?= $popular[1]['address'] ?></div></a>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 ">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
+                <a href="<?= '/court/' . $popular[1]['id'] ?>" id="court_link">
+                <div style="background-image: url(../img/court_img_24.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
+                <div class="sliderTextPop"><?= $popular[1]['address'] ?></div></a>
+            </div>
         </div>
     </div>
 </div>

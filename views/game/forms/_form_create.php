@@ -5,15 +5,16 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+use yii\db\Query;
 
 cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
 ?>
 
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-     aria-hidden="true">
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm ">
-        <div class="modal-content game-create" class="create-game ">
+        <div class="modal-content game-create create-game">
+            <i class="fa fa-times close fa-lg " data-dismiss="modal" aria-hidden="true" id="close"></i>
             <p class="h2-black">Создание игры</p>
 
             <?php 
@@ -28,38 +29,52 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
                     'action' => '/game/create'
                 ]);
             ?>
+
             <?= Html::activeHiddenInput($model, 'court_id', [
                 'value' => Yii::$app->getRequest()->getQueryParam('id')
             ]);
             ?>
             <p>
+            <?php 
+                $query = new Query;
+                $query->select('type_id')
+                      ->from('court')
+                      ->andWhere(['id' => Yii::$app->getRequest()->getQueryParam('id')]);
+                $typeCourt = $query->one();
+
+                $querySport = new Query;
+                $querySport->select('name')
+                           ->from('sport_type')
+                           ->andWhere(['id' => $typeCourt['type_id']]);
+                $sportName = $querySport->one();
+            ?>
             <p class="little">Выберите вид спорта</p>
             <?= Html::activeDropDownList($model, 'sport_type_id',
                 [
-                    '1' => 'Баскетбол',
-                    '2' => 'Футбол'
+                    $typeCourt['type_id'] => $sportName['name']
                 ],
                 [
-                    'class' => 'selectpicker input date',
+                    'class' => 'selectpicker .form-control date',
+                    'id' => '1'
                 ]
             );
             ?>
             </p>
             <p class="little">Выберите время игры</p>
-            <p class="align-right">
+            <p class="align-right" id="align-right">
                 <?= Html::activeDropDownList($model, 'day',
                     [
                         '0' => 'Сегодня',
                         '1' => 'Завтра'
                     ],
                     [
-                        'class' => 'selectpicker input date',
+                        'class' => 'selectpicker .form-control date-2',
                         'required' => true
                     ]
                 );
                 ?>
                 <?= $form->field($model, 'time_digit')->input('time', [
-                        'class' => 'input date',
+                        'class' => 'input date-2',
                         'id' => 'time'
                     ])
                     ->label(false)
@@ -69,7 +84,7 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
                
             </p>
             <p class="ball">
-                <?= Html::activeCheckbox($model, 'need_ball', ['label'   => 'Нужен мяч']); ?>
+                <?= Html::activeCheckbox($model, 'need_ball', ['label'   => 'Мяч есть']); ?>
 
 
             </p>

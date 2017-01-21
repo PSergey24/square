@@ -17,7 +17,7 @@ use dektrium\user\Finder;
 class Profile extends BaseProfile {
 
     //default picture name that applied to every new user
-    const DEFAULT_PICTURE_NAME = 'default_avatar.png';
+    const DEFAULT_PICTURE_NAME = 'default_avatar.jpg';
 
     //default folder where are store all profile picture
     const DEFAULT_PICTURE_FOLDER = '/img/uploads/';
@@ -41,9 +41,10 @@ class Profile extends BaseProfile {
     {
         $parent_rules = parent::rules();
         unset($parent_rules['gravatarEmailPattern'], $parent_rules['gravatarEmailLength']);
+
         return array_merge($parent_rules, [
             'picture' => [
-                'picture', 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg',
+                'picture', 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg',
                 'maxSize' => 1024 * 1024 * 2
         ]]);
     }
@@ -65,5 +66,15 @@ class Profile extends BaseProfile {
 
         return self::DEFAULT_PICTURE_FOLDER . $picture_filename;
 
+    }
+    public static function getAvatar()
+    {
+        $profile = self::find()->where(['user_id' => \Yii::$app->user->getId()])->one();
+
+        $picture_href = filter_var($profile->getAttribute('picture'), FILTER_VALIDATE_URL) ?
+            $picture_href = $profile->getAttribute('picture') :
+            $picture_href = '/img/uploads/' . $profile->getAttribute('picture');
+
+        return $picture_href;
     }
 }

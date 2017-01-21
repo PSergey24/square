@@ -10,74 +10,84 @@
  */
 
 use yii\helpers\Html;
-
+use yii\widgets\ActiveForm;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
- * @var dektrium\user\models\Profile $profile
+ * @var dektrium\user\models\SettingsForm $model_account
  */
 
 $this->title = Yii::t('user', 'Profile settings');
 $this->params['breadcrumbs'][] = $this->title;
+$this->registerCssFile('/css/settings.css');
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
-
-<div class="row">
-    <div class="col-md-3">
-        <?= $this->render('_menu') ?>
-    </div>
-    <div class="col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <?= Html::encode($this->title) ?>
+<div class="container">
+    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+        <div class="row">
+            <div class="col-md-3">
+                <?= $this->render('_menu') ?>
             </div>
-            <div class="panel-body">
-                <?php $form = \yii\widgets\ActiveForm::begin([
-                    'id' => 'profile-form',
-                    'options' => ['class' => 'form-horizontal'],
-                    'fieldConfig' => [
-                        'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
-                        'labelOptions' => ['class' => 'col-lg-3 control-label'],
-                    ],
-                    'enableAjaxValidation'   => true,
-                    'enableClientValidation' => false,
-                    'validateOnBlur'         => false,
-                ]); ?>
+            <div class="col-md-9">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <?= Html::encode($this->title) ?>
+                    </div>
+                    <div class="panel-body">
+                        <?php $form = ActiveForm::begin([
+                            'id' => 'profile-form',
+                            'options' => ['class' => 'form-horizontal'],
+                            'fieldConfig' => [
+                                'template' => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
+                                'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            ],
+                            'enableAjaxValidation'   => false,
+                            'enableClientValidation' => false,
+                            'validateOnBlur'         => false,
+                        ]); ?>
 
-                <?= $form->field($model, 'name') ?>
+                        <?= $form->field($model, 'picture')->fileInput()->label('Фото профиля') ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <?= \yii\helpers\Html::submitButton(
+                                    Yii::t('user', 'Save'),
+                                    ['class' => 'btn btn-block btn-success']
+                                ) ?><br>
+                            </div>
+                        </div>
+                        <?php \yii\widgets\ActiveForm::end(); ?>
 
-                <?= $form->field($model, 'public_email') ?>
+                        <?php $form_account = ActiveForm::begin([
+                            'id'          => 'account-form',
+                            'options'     => ['class' => 'form-horizontal'],
+                            'fieldConfig' => [
+                                'template'     => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
+                                'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            ],
+                            'enableAjaxValidation'   => true,
+                            'enableClientValidation' => false,
+                        ]); ?>
 
-                <?= $form->field($model, 'website') ?>
+                        <?= $form_account->field($model_account, 'username') ?>
 
-                <?= $form->field($model, 'location') ?>
+                        <?= $form_account->field($model_account, 'new_password')->passwordInput() ?>
 
-                <?= $form
-                    ->field($model, 'timezone')
-                    ->dropDownList(
-                        \yii\helpers\ArrayHelper::map(
-                            \dektrium\user\helpers\Timezone::getAll(),
-                            'timezone',
-                            'name'
-                        )
-                    ); ?>
-
-                <?= $form->field($model, 'picture')->fileInput() ?>
-
-                <?= $form->field($model, 'bio')->textarea() ?>
-
-                <div class="form-group">
-                    <div class="col-lg-offset-3 col-lg-9">
-                        <?= \yii\helpers\Html::submitButton(
-                            Yii::t('user', 'Save'),
-                            ['class' => 'btn btn-block btn-success']
-                        ) ?><br>
+                        <?= $form_account->field($model_account, 'current_password')->passwordInput() ?>
+                        <?php \yii\widgets\ActiveForm::end(); ?>
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <?= \yii\helpers\Html::submitButton(
+                                    Yii::t('user', 'Save'),
+                                    ['class' => 'btn btn-block btn-success']
+                                ) ?><br>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <?php \yii\widgets\ActiveForm::end(); ?>
             </div>
         </div>
     </div>
 </div>
+

@@ -2,14 +2,14 @@
 	background:rgba(0,0,0,0.3);
 	background-image: url(/img/square.jpg);
 	background-size: cover;
-	box-shadow:0 0 0 250px rgba(0, 0, 0, 0.33) inset;
+	box-shadow: 0 70px 120px 0px rgba(0, 0, 0, 0.33) inset;	
 }
 
 
 .tag, .tag:visited, .tag:active {
-	color: rgba(255,255,255,0.7);
+	color: rgba(255,255,255,0.85);
 	font-size: 1.125rem;
-	border-bottom: 0.125rem rgba(255,255,255,0.7) solid;
+	border-bottom: 0.125rem rgba(255,255,255,0.85) solid;
 	margin-right: 10px;
 	text-decoration: none;
 }
@@ -18,10 +18,37 @@
 	text-decoration: none;
 	border-bottom: 0.125rem rgba(255,255,255,1) solid;
 }
+.s{
+	position: relative;
+}
+.social{
+	color: rgb(255,255,255);
+	font-size: 0.8125rem;
+	text-align: center;
+	color: rgba(0,0,0,.87);
+	margin-bottom: 1.5rem;
+	margin-top: -2rem;
+}
+.social i{
+	color: white;
+    opacity: 0.87;
+    background-color: #1565c0;
+    width: 2.65rem;
+    height: 2.6rem;
+    margin-left: 10px;
+    border-radius: 3px;
+    margin-top: 0.5125rem;
+}
+.social i:hover{
+	opacity: 1;
+}
+.social .fa-facebook, .fa-vk {
+    line-height: 2.6rem !important;
+}
 .description a{
 
 	font-size: 1.125rem;
-	color: rgba(255,255,255,0.7);
+	color: rgba(255,255,255,0.85);
 }
 .description{
 	margin-top: 3rem;
@@ -66,20 +93,21 @@
 	margin-right: 5px;
 }
 .chat{
-	height: 250px;
+	height: 300px;
 	z-index: 2;
 	padding: 0 !important;
 }
 
 
 .h2-box{
-	margin-top:2.4rem;
+	margin-top:2.9rem;
 	font-size: 1.5625rem;
 	font-weight: 500;
 	margin-bottom: -1.25rem; 
 }
 .games{
-	
+	margin-bottom: 1rem !important;
+	margin-top:3.5rem !important;
 }
 .game{
 	text-align: right;
@@ -91,7 +119,8 @@
 }
 .box{
 	padding: 1.25rem 1.5625rem;
-	margin: 2.5rem 0;
+	margin: 3rem 0;
+	margin-bottom: 5rem;
 }
 .games .game:nth-child(1){
 	margin-top: 0px;
@@ -143,9 +172,10 @@ label{
 	right: 8px;
 	color: rgba(0,0,0,0.64);
 }
-.fa-heart-o{
+.fa-heart-o, .fa-heart{
 	margin-right: 6px;
 }
+
 .login{
 	margin-top: 1.8rem;
 	margin-bottom: 0.3rem;
@@ -174,12 +204,10 @@ label{
 	font-size: 1.125rem;
 }
 .little{
-	color: rgba(0,0,0,0.37);
+	color: rgba(0,0,0,0.5);
 	margin-bottom: 0.35rem;
 	margin-top: 0.85rem;
-}
-.input:first-child{
-	padding: 0 0;
+	text-align: left;
 }
 .btn{
 	width: 100%;
@@ -187,8 +215,10 @@ label{
 	padding-bottom: 13px;
 	background: #eeeeee;
 }
+
 .input{
 	font-size: 1rem;
+	padding: 11px 20px !important;
 }
 .sport{
 	width: 100%;
@@ -196,16 +226,25 @@ label{
 .align-right{
 	text-align: right;
 }
+#align-right{
+	margin: 0 !important;
+}
 .align-right .input:last-child{
 	padding: 9px 20px;
 }
 .date{
-	width: 48% !important;
+	width: 100% !important;
 	text-align: center;
 }
-.date:first-child{
+.date-2{
+	width: 45% !important;
+	text-align: center;
+}
+
+.date-2:first-child{
 	margin-left: 0 !important;
 	float: left !important;
+	margin-right: 5%;
 }
 .ball{
 	color: rgba(0,0,0,0.74);
@@ -216,6 +255,18 @@ label{
 }
 .need{
 	margin-right: 0.5rem;
+}
+#game-create-form{
+	text-align: center;
+}
+.form-control {
+    height: auto !important;
+    padding: 12px 20px !important;
+    color: rgba(0,0,0,0.74) !important;
+    box-shadow: 0px 1px 1px rgba(0,0,0,0.1) inset !important;
+    background: #eeeeee !important;
+    border-radius: 5px !important;
+    border: none !important;
 }
 input[type="checkbox"] {
 background: url(../../img/checkbox.png); /* Переключатель выключен */
@@ -251,6 +302,9 @@ input[type="checkbox"]:checked {
 	}
 }
 @media (max-width: 767px) {
+	.box{
+		margin-bottom: 2.5rem;
+	}
 	.h2-box{
 		margin-bottom: -1.25rem;
 		margin-top:0;
@@ -270,5 +324,11 @@ input[type="checkbox"]:checked {
 	}
 	.img{
 	margin-right: 0px;
-}
+	}
+	.chat{
+		height: 270px;
+	}
+	.social{
+
+	}
 }
