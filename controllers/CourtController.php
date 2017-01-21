@@ -316,7 +316,8 @@ class CourtController extends Controller
             $queryPhoto->select('photo')
                        ->from('court_photo')
                        ->where(['court_id' => $row['id']])
-                       ->andWhere('avatar = 1');
+                       ->andWhere('avatar = 1')
+                       ->andWhere('approved = 0');
             $rowsPhoto = $queryPhoto->one();
 
             $queryBookmark = new Query;

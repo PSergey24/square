@@ -68,7 +68,7 @@ class SiteController extends Controller
                 ->from('court_photo')
                 ->where(['court_id' => $court['id']])
                 ->andWhere('avatar = 1')
-                ->andWhere('flag_moderation = 0');
+                ->andWhere('approved = 0');
 
             if($query->one())
             {
@@ -128,7 +128,7 @@ class SiteController extends Controller
                 ->from('court_photo')
                 ->where(['court_id' => $court['id']])
                 ->andWhere('avatar = 1')
-                ->andWhere('flag_moderation = 0');
+                ->andWhere('approved = 0');
 
             if($query->one())
             {

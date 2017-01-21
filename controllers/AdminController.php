@@ -38,7 +38,7 @@ class AdminController extends AdminController
     	$query = new Query;
         $query->select('*')
               ->from('court_photo')
-              ->where('flag_moderation = 1');
+              ->where('approved = 1');
         $rows = $query->all();
 
         return $this->render('photo',[
@@ -54,7 +54,7 @@ class AdminController extends AdminController
     	$courtPhoto = Yii::createObject(CourtPhoto::className());
         $photo = $courtPhoto->find()->where(['id' => $id])->one();
 
-        $photo->flag_moderation = 0;
+        $photo->approved = 0;
         
         if($photo->save())
         	return $tr;
