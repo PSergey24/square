@@ -813,7 +813,7 @@ class GameController extends Controller
                           ->andWhere(['user_id' => $man]);
                     $picture = $queryMan->one();
 
-                    $string = $string.'<a href="#"><img src="/img/uploads/'.$picture['picture'].'" class="man"></a>';
+                    $string = $string.'<a href="users/'.$man['user_id'].'" target="_blank"><img src="/img/uploads/'.$picture['picture'].'" class="man"></a>';
                 }
                 // echo $string;
                 return $game.'|'.$count.'|'.$symbol.'|'.$string;

@@ -231,7 +231,7 @@ $this->registerJs("
 
     <div class="container-fluid info">
     	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="small">
-    		<div class="col-lg-6 col-md-5 col-sm-6 col-xs-12 games ">
+    		<div class="col-lg-6 col-md-5 col-sm-6 col-xs-12 games">
     			<div class="search">
                     <div class="show col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div class="title show col-lg-2 col-md-2 col-sm-3 col-xs-4">Поиск игр</div>
@@ -304,7 +304,7 @@ $this->registerJs("
                         <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply">Применить</button></div>
                     </div>
                 </div>
-                <div class="game-list hidden-xs">
+                <div class="game-list">
                     <?php $i = 0;
                     foreach ($listGame as $listGame) { ?>
 
@@ -314,6 +314,9 @@ $this->registerJs("
                                     <div class="top">
                                         <div class="square"><?php echo $nameAreaArr[$i]; ?></div>
                                         <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter(<?php echo $listGame['id']; ?>)"></i></div>
+                                    </div>
+                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
+                                        
                                     </div>
                                     <div class="divider"></div>
                                     <div class="people">
@@ -362,11 +365,9 @@ $this->registerJs("
                     <?php $i++; }  ?>
                     
         		</div>
-        		
-                <button class="mid-blue-btn hidden-xs" id="more" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
-
+                <button class="mid-blue-btn" id="more" data-near="no" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>
-    		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12" id="map"></div>
+    		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>
     </div>
 
