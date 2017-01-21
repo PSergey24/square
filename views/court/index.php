@@ -221,22 +221,27 @@ $this->registerJs("
             ])->label(false);
         ?>
 
-        <?= $form->field($filters, 'district_sity')
-            ->dropDownList($districts, [
-                'id' => 'district_type',
-                'class' => 'search selectpicker',
-                'prompt' => 'Выберите район'
-            ])
-            ->label(false);
+        <?
+            if ($districts != null) {
+                echo $form->field($filters, 'district_sity')
+                    ->dropDownList($districts, [
+                        'id' => 'district_type',
+                        'class' => 'search selectpicker',
+                        'prompt' => 'Выберите район'
+                    ])
+                    ->label(false);
+            }
         ?>
 
-        <?= $form->field($filters, 'sport_type')
-            ->dropDownList($sport_types, [
-                'id' => 'sport_type',
-                'class' => 'search selectpicker',
-                'prompt' => 'Вид спорта'
-            ])
-            ->label(false);
+        <?  if ($sport_types != null) {
+                echo $form->field($filters, 'sport_type')
+                    ->dropDownList($sport_types, [
+                        'id' => 'sport_type',
+                        'class' => 'search selectpicker',
+                        'prompt' => 'Вид спорта'
+                    ])
+                    ->label(false);
+            }
         ?>
 
         <?php ActiveForm::end(); ?>
@@ -255,23 +260,23 @@ $this->registerJs("
         <h2 class="h2-black col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">Популярные площадки</h2>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
-                <a href="<?= '/court/' . $popular[0]['id'] ?>" id="court_link">
+                <a href="<?= '/court/' . empty($popular[0]['id']) ? "/" : $popular[0]['id']?>" id="court_link">
                 <div style="background-image: url(../img/court_img_22.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
-                <div class="sliderTextPop"><?= $popular[0]['address'] ?></div></a>
+                <div class="sliderTextPop"><?= empty($popular[0]['address']) ? "Адрес" : $popular[0]['address'] ?></div></a>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
-                <a href="<?= '/court/' . $popular[2]['id'] ?>" id="court_link">
+                <a href="<?= '/court/' . empty($popular[2]['id']) ? "/" : $popular[2]['id'] ?>" id="court_link">
                 <div style="background-image: url(../img/court_img_23.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>21</div><span>Открыть площадку</span></div>
-                <div class="sliderTextPop"><?= $popular[2]['address'] ?></div></a>
+                <div class="sliderTextPop"><?= empty($popular[2]['address']) ? "Адрес": $popular[2]['address'] ?> </div></a>
             </div>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 ">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
-                <a href="<?= '/court/' . $popular[1]['id'] ?>" id="court_link">
+                <a href="<?= '/court/' . empty($popular[1]['id']) ? "/" : $popular[1]['id'] ?>" id="court_link">
                 <div style="background-image: url(../img/court_img_24.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>25</div><span>Открыть площадку</span></div>
-                <div class="sliderTextPop"><?= $popular[1]['address'] ?></div></a>
+                <div class="sliderTextPop"><?= empty($popular[1]['address']) ? "Адрес" : $popular[1]['address'] ?></div></a>
             </div>
         </div>
     </div>
