@@ -49,53 +49,63 @@ class GameController extends Controller
      */
     public function actionIndex()
     {
-        $nameSportArr = array();
-        $nameAreaArr = array();
-        $idUsersArr = array();
-        $countUsersArr = array();
-        $pictureUsersArr = array();
         $dataProvider = new ActiveDataProvider([
             'query' => Game::find(),
         ]);
 
-        $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])->limit(6)->orderBy('time')->all();
-        $numGame = sizeof($listGame);
-        foreach ($listGame as $itemGame) {
+        $games = Game::find()
+            ->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+            ->limit(6)
+            ->orderBy('time')
+            ->all();
+
+        $game_count = count($games);
+        
+        foreach ($games as $game) {
             $pictureUserArr = array();
             $nameArea = Court::find()
-                        ->where(['id' => $itemGame['court_id']])
+                        ->where(['id' => $game['court_id']])
                         ->one();
-            array_push($nameAreaArr,$nameArea['name']);
+            $nameAreaArr[] = $nameArea['name'];
 
             $nameSport = SportType::find()
-                        ->where(['id' => $itemGame['sport_type_id']])
+                        ->where(['id' => $game['sport_type_id']])
                         ->one();
 
             $query = new Query;
-            $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->all();
-            foreach($idUser as $id){
+            $users_id = $query->select('user_id')
+                ->from('game_user')
+                ->where(['game_id' => $game['id']])
+                ->all();
+
+            foreach($users_id as $user_id){
                 $queryPicture = new Query;
-                $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
+
+                $pictureUser = $queryPicture
+                    ->select('picture')
+                    ->from('profile')
+                    ->where(['user_id' => $user_id])
+                    ->one();
+
                 array_push($pictureUserArr,$pictureUser);
             }
-            
 
-            $countUser = count($idUser);
-            array_push($pictureUsersArr,$pictureUserArr);
-            array_push($countUsersArr,$countUser);
-            array_push($idUsersArr,$idUser);
-            array_push($nameSportArr,$nameSport['name']);
+            $countUser = count($users_id);
+            $pictureUsersArr[] = $pictureUserArr;
+            $countUsersArr[] = $countUser;
+            $idUsersArr[] = $users_id;
+            $nameSportArr[] = $nameSport['name'];
         }
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'listGame' => $listGame,
-            'nameSportArr' => $nameSportArr,
-            'nameAreaArr' => $nameAreaArr,
-            'numGame' => $numGame,
-            'countUsersArr' => $countUsersArr,
-            'idUsersArr' => $idUsersArr,
-            'pictureUsersArr' => $pictureUsersArr,
+            'listGame' => $games,
+            'nameSportArr' => empty($nameSportArr) ? null : $nameSportArr,
+            'nameAreaArr' => empty($nameAreaArr) ? null :$nameAreaArr,
+            'numGame' => $game_count,
+            'countUsersArr' => empty($countUsersArr) ? null :$countUsersArr,
+            'idUsersArr' => empty($idUsersArr) ? null : $idUsersArr,
+            'pictureUsersArr' => empty($pictureUsersArr) ? null : $pictureUsersArr,
         ]);
     }
 
@@ -126,9 +136,7 @@ class GameController extends Controller
             $min = $pieces[0];
             $max = $pieces[1];
 
-
             $query = new Query;
-                    
 
                 if($districtFilter != 0){
                     $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, game_user.id as idGameUser, game_id, user_id, court.id as courtId, address, name, district_city_id,COUNT(game_id)')
@@ -173,10 +181,7 @@ class GameController extends Controller
 
             $listGame = $query->offset($numGame)->limit(6)->orderBy('time')->all();
         }else{
-
-
             $query = new Query;
-            
 
                 if($districtFilter != 0){
                     $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, name, district_city_id')
@@ -572,8 +577,10 @@ class GameController extends Controller
 
             $model->load(Yii::$app->request->post());
 
-            if (!$model->creator_id)
+            if (Yii::$app->user->isGuest)
                 throw new UserException('Для того чтобы создать игру необходимо авторизоваться');
+
+            $model->creator_id = Yii::$app->user->getId();
 
             $date = new DateTime();
             if ($model->day) {

@@ -37,7 +37,9 @@ class Court extends \yii\db\ActiveRecord
     public function init()
     {
         parent::init();
-        $this->creator_id = Yii::$app->user->getId();
+
+        if (!Yii::$app->user->isGuest)
+            $this->creator_id = Yii::$app->user->getId();
     }
 
 
