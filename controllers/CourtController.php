@@ -3,7 +3,6 @@
 namespace app\controllers;
 
 use app\models\CourtLikes;
-use app\models\Game;
 use app\models\MapFilters;
 use app\models\SportType;
 use Yii;

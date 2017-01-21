@@ -832,8 +832,10 @@ class GameController extends Controller
 
             $model->load(Yii::$app->request->post());
 
-            if (!$model->creator_id)
+            if (Yii::$app->user->isGuest)
                 throw new UserException('Для того чтобы создать игру необходимо авторизоваться');
+
+            $model->creator_id = Yii::$app->user->getId();
 
             $date = new DateTime();
             if ($model->day) {
