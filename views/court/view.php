@@ -276,7 +276,7 @@ $this->registerJs("
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
         <div class="social">
-            <span>ПОЗВОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
+            <span>ПОЗОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
             <a href="#"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
             <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
         </div>

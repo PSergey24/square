@@ -13,10 +13,10 @@ body{
 }
 .top{
 	max-height: 100%;
-	background-image: url(../../img/basketball.jpg);
+	background-image: url(../../img/basketball1.jpg);
 	background-size: cover;
 	text-align: center !important;
-	box-shadow: 100px 450px 150px rgba(0,0,0,0.5) inset;
+	box-shadow: 100px 450px 150px rgba(0,0,0,0.3) inset;
 }
 .big{
 	font-size: 3rem;
@@ -31,6 +31,7 @@ body{
 	display: inline-block;
 	line-height: 1.6;
 	padding: 0 1rem;
+	font-weight: 300;
 
 }
 form{

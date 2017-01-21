@@ -118,12 +118,12 @@ class CourtController extends Controller
         else
             $userAuth = 0;
 
-        $query = new Query;
-        $query->select('id, address, type_id, name, lat, lon')
-            ->from('court')
-            ->where(['id' => $id]);
-        $court = $query->one();
+        $court = Court::find()
+            ->select('id, address, type_id, name, lat, lon')
+            ->where(['id' => $id])
+            ->one();
 
+        $query = new Query;
         $query->select('game.id as id,time, need_ball,COUNT(game_id) as count')
             ->from('game,game_user')
             ->where(['court_id' => $id])
@@ -131,11 +131,8 @@ class CourtController extends Controller
             ->andWhere('game.id = game_user.game_id');
         $games = $query->groupBy('game.id')->orderBy('time')->all();
 
-        // var_dump($games);
-        // echo count($games);
         $i = 0;
         foreach ($games as $gameItem) {
-            // echo $gameItem['id']."\n";
                 $queryPlayer = new Query;
                 $queryPlayer->select('user_id')
                     ->from('game_user')
@@ -143,15 +140,12 @@ class CourtController extends Controller
                 $players = $queryPlayer->all();
                 $plus = '+';
                 foreach ($players as $player) {
-                    // echo $player['user_id']."</br>";
                     if($player['user_id'] == $userAuth)
                         $plus = '-';
                 }
-                // echo "---</br>";
                 $games[$i]['plus'] = $plus;
             $i++;
         }
-
 
         $bookmarked = $this->isBookmarked($id) ? true : false;
         $likes_count = count(Yii::createObject(CourtLikes::className())
