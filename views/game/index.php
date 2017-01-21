@@ -367,24 +367,6 @@ $this->registerJs("
 
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12" id="map"></div>
-            <div class="gameMap football">
-                <div class="timeMap">Сегодня, 12:20</div>
-                <p>Игроков: <span class="count">2</span></p>
-                <div class="scroll">
-                    <div class="playersMap">
-                        <div class="right"></div>
-                        <div class="plus man"><span>+</span></div>
-                        <a href="#"><img src="/img/uploads/Nick.jpg" class="man"></a>
-                        <a href="#"><img src="/img/uploads/serg123.jpg" class="man"></a>
-                        <a href="#"><img src="/img/uploads/Nick.jpg" class="man"></a>
-                        <a href="#"><img src="/img/uploads/serg123.jpg" class="man"></a>
-                        <a href="#"><img src="/img/uploads/Nick.jpg" class="man"></a>
-                        <a href="#"><img src="/img/uploads/serg123.jpg" class="man"></a>
-                    </div>
-                </div>
-                <p><button class="mid-green-btn">Открыть площадку </button></p>
-            </div>
-
     	</div>
     </div>
 
