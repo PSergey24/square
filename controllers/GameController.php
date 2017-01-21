@@ -85,7 +85,7 @@ class GameController extends Controller
             $gameArray = $gameArray.$itemGame['id']." ";
 
             $query = new Query;
-            $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->all();
+            $idUser = $query->select('user_id')->from('game_user')->where(['game_id' => $itemGame['id']])->orderBy('id desc')->all();
 
             $p = 0;          
             foreach($idUser as $id){
@@ -275,14 +275,18 @@ class GameController extends Controller
 
 
                 $queryPeoples = new Query;
-                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
+                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->orderBy('id desc')->all();
                 $countUser2 = count($idUser);
                 $str = '';
                 $p = 0;
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                    $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($userAuth == $id['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$id['user_id'];
+                    $str = $str.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                     if($id['user_id'] == $userAuth)
                         $p = 1;
                 }
@@ -381,7 +385,7 @@ class GameController extends Controller
                 $timeGame =  date_format(date_create($game['time']), 'd-m H:i');
 
             $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $game['id']])->all();
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $game['id']])->orderBy('id desc')->all();
             $countUser2 = count($idUser);
             $str = '';
 
@@ -389,7 +393,11 @@ class GameController extends Controller
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                if($userAuth == $id['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$id['user_id'];
+                $str = $str.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                 if($id['user_id'] == $userAuth)
                         $p = 1;
             }
@@ -506,14 +514,18 @@ class GameController extends Controller
 
 
                 $queryPeoples = new Query;
-                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $list['gameId']])->all();
+                $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $list['gameId']])->orderBy('id desc')->all();
                 $countUser2 = count($idUser);
                 $str = '';
                 $p = 0;
                 foreach($idUser as $id){
                     $queryPicture = new Query;
                     $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                    $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($userAuth == $id['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$id['user_id'];
+                    $str = $str.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                     if($id['user_id'] == $userAuth)
                         $p = 1;
                 }
@@ -702,7 +714,7 @@ class GameController extends Controller
 
             // return $thisGame['id'];
             $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->all();
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $thisGame['gameId']])->orderBy('id desc')->all();
             // var_dump($idUser);
             $countUser2 = count($idUser);
             $str = '';
@@ -710,7 +722,12 @@ class GameController extends Controller
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($userAuth == $id['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$id['user_id'];
+
+                $str = $str.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
                 if($id['user_id'] == $userAuth)
                     $p = 1;
             }
@@ -795,7 +812,7 @@ class GameController extends Controller
                 $query->select('user_id')
                       ->from('game_user')
                       ->andWhere(['game_id' => $game]);
-                $players = $query->all();
+                $players = $query->orderBy('id desc')->all();
                 $count = count($players);
 
                 if($count == 0){
@@ -813,7 +830,12 @@ class GameController extends Controller
                           ->andWhere(['user_id' => $man]);
                     $picture = $queryMan->one();
 
-                    $string = $string.'<a href="users/'.$man['user_id'].'" target="_blank"><img src="/img/uploads/'.$picture['picture'].'" class="man"></a>';
+                    if($userAuth == $man['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$man['user_id'];
+
+                    $string = $string.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$picture['picture'].'" class="man"></a>';
                 }
                 // echo $string;
                 return $game.'|'.$count.'|'.$symbol.'|'.$string;
@@ -844,7 +866,13 @@ class GameController extends Controller
 
             $time = $model->time_digit;
             $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+            if($datetime < $now)
+                return self::ERROR_CREATE_BOX . '<p id="warning">Данное время уже прошло. Исправьте время.</p>';
+
             $model->time = $datetime;
+
+
 
             //check if game already exist
             if (Game::findOne(['court_id' => $model->court_id,'time' => $model->time]))
@@ -884,14 +912,19 @@ class GameController extends Controller
         $i = 0;
         foreach($rows as $row){
             $queryPeoples = new Query;
-            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $row['gameId']])->all();
+            $idUser = $queryPeoples->select('user_id')->from('game_user')->where(['game_id' => $row['gameId']])->orderBy('id desc')->all();
             $countUser2 = count($idUser);
             $str = '';
             $plusMinus = '+';
             foreach($idUser as $id){
                 $queryPicture = new Query;
                 $pictureUser = $queryPicture->select('picture')->from('profile')->where(['user_id' => $id])->one();
-                $str = $str.'<a href="users/'.$id['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
+                    if($userAuth == $id['user_id'])
+                        $link = 'profile';
+                    else
+                        $link = 'users/'.$id['user_id'];
+
+                $str = $str.'<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUser['picture'].'" class="man"></a>';
 
                 if($id['user_id'] == $userAuth)
                     $plusMinus = '-';

@@ -52,7 +52,8 @@ class SiteController extends Controller
     }
 
     public function actionProfile() {
-
+        if(!Yii::$app->user->identity)
+            die('Вы не авторизованы');
         $query = new Query();
         $query_games = new Query();
         $user_id = Yii::$app->user->getId();

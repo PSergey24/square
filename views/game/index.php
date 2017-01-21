@@ -327,11 +327,19 @@ $this->registerJs("
                 
                                                 <div class="plus man" data-id-game-plus="<?php echo $listGame['id']; ?>" onclick="people(<?php echo $listGame['id']; ?>,'<?php echo $plusMan[$i]; ?>')"><span><?php echo $plusMan[$i]; ?></span></div>
                                                 <?php
+                                                if(Yii::$app->user->identity)
+                                                    $userAuth = Yii::$app->user->identity->getId();
+                                                else
+                                                    $userAuth = 0;
                                                     for($j=0;$j<$countUsersArr[$i];$j++)
                                                     {
                                                         // коммент не удаляем. в этой переменной id пользователя для ссылки
                                                         // echo '<a href="#">'.$idUsersArr[$i][$j]['user_id'].'</a>';
-                                                        echo '<a href="users/'.$idUsersArr[$i][$j]['user_id'].'" target="_blank"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
+                                                        if($userAuth == $idUsersArr[$i][$j]['user_id'])
+                                                            $link = 'profile';
+                                                        else
+                                                            $link = 'users/'.$idUsersArr[$i][$j]['user_id'];
+                                                        echo '<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
                                                     }
 
                                                 ?>
