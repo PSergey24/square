@@ -75,23 +75,30 @@ $this->registerJs("
                 ->label(false);
             ?>
 
-            <?= $form->field($model, 'district_sity')
-                ->dropDownList($districts, [
-                    'id' => 'district_type',
-                    'class' => 'search selectpicker',
-                    'prompt' => 'Выберите район',
+            <?
+                if ($districts != null) {
+                    echo $form->field($model, 'district_sity')
+                        ->dropDownList($districts, [
+                            'id' => 'district_type',
+                            'class' => 'search selectpicker',
+                            'prompt' => 'Выберите район',
 
-                ])
-                ->label(false);
+                        ])
+                        ->label(false);
+                }
+
             ?>
 
-            <?= $form->field($model, 'sport_type')
-                ->dropDownList($sport_types, [
-                    'id' => 'sport_type',
-                    'class' => 'search selectpicker',
-                    'prompt' => 'Вид спорта'
-                ])
-                ->label(false);
+            <?
+                if ($sport_types != null) {
+                    echo $form->field($model, 'sport_type')
+                        ->dropDownList($sport_types, [
+                            'id' => 'sport_type',
+                            'class' => 'search selectpicker',
+                            'prompt' => 'Вид спорта'
+                        ])
+                        ->label(false);
+                }
             ?>
 
             <?= Html::submitButton('Поиск', [

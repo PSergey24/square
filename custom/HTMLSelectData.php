@@ -10,12 +10,14 @@ class HTMLSelectData {
 
         $model_objects = $model->find()->all();
 
-        foreach ($model_objects as $object)
-        {
-            $list[$object->id] = $object->name;
-        }
+        if ($model_objects != null) {
 
-        return $list;
+            foreach ($model_objects as $object) {
+                $list[$object->id] = $object->name;
+            }
+
+            return $list;
+        }
     }
 
 }
