@@ -49,14 +49,14 @@ class Court extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lat', 'lon', 'creator_id'], 'required'],
+            [['lat', 'lon', 'creator_id', 'approved'], 'required'],
             ['address', 'required', 'message' => 'Установите маркер на карте'],
             ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
             ['name', 'required', 'message' => 'Опишите площадку'],
             ['type_id', 'required', 'message' => 'Не выбран тип площадки'],
             ['district_city_id', 'required', 'message' => 'Не выбран район города'],
             [['lat', 'lon'], 'number'],
-            [['built_up_area', 'creator_id', 'district_city_id', 'type_id'], 'integer'],
+            [['built_up_area', 'creator_id', 'district_city_id', 'type_id', 'approved'], 'integer'],
             [['address', 'name'], 'string', 'max' => 255],
             [['creator_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(),'targetAttribute' => ['creator_id' => 'id']],
             [['district_city_id'], 'exist', 'skipOnError' => true, 'targetClass' => DistrictCity::className(), 'targetAttribute' => ['district_city_id' => 'id']],
@@ -79,6 +79,7 @@ class Court extends \yii\db\ActiveRecord
             'creator_id' => 'Создатель',
             'district_city_id' => 'Район',
             'type_id' => 'Тип площадки',
+            'approved' => 'Approved',
         ];
     }
 

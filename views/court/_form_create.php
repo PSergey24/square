@@ -47,6 +47,8 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
     <?= Html::activeHiddenInput($model, 'lon') ?>
 
+    <?php echo $form->field($model, 'approved')->hiddenInput(['value' => '1'])->label(false); ?>
+
     <div class="form-group text-center">
         <?= Html::submitButton($model->isNewRecord ? 'Добавить' : 'Обновить', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
