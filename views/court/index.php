@@ -221,8 +221,8 @@ $this->registerJs("
             ])->label(false);
         ?>
 
-        <?
-            if ($districts != null) {
+        <?php
+            if($districts != null){
                 echo $form->field($filters, 'district_sity')
                     ->dropDownList($districts, [
                         'id' => 'district_type',
@@ -233,7 +233,7 @@ $this->registerJs("
             }
         ?>
 
-        <?  if ($sport_types != null) {
+        <?php  if ($sport_types != null) {
                 echo $form->field($filters, 'sport_type')
                     ->dropDownList($sport_types, [
                         'id' => 'sport_type',
