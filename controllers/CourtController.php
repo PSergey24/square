@@ -76,7 +76,6 @@ class CourtController extends Controller
             ->from('court, court_bookmark')
             ->where('court_id = court.id');
         $popular = $query->groupBy('court.id')->orderBy('COUNT(user_id) desc')->limit(3)->all();
-
         $i=0;
         foreach ($popular as $item) {
             $query2 = new Query;
@@ -92,11 +91,6 @@ class CourtController extends Controller
 
             $i++;
         }
-
-
-
-
-
 
         $filters = Yii::createObject(MapFilters::className());
 

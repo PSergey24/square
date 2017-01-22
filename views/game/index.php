@@ -138,6 +138,25 @@ $this->registerJsFile(
 
 $this->registerJs("
     function setMapCenter(idGame){
+        $.each(markers, function (index, value) {
+            if(value['id'] == idGame){
+                    var contentString = '<div class=\"gameMap '+ this.style +'\" data-id-game=\"'+this.id+'\">' +
+                                        '<div class=\"timeMap\">'+ this.time +'</div>' + 
+                                        '<p>Игроков: <span class=\"count\">'+ this.count+'</span></p>' + 
+                                        '<div class=\"scroll\">' +
+                                        '<div class=\"playersMap\">' + 
+                                        '<div class=\"right\"></div>' +
+                                        '<div class=\"plus man\"  data-id-game-plus=\"'+this.id+'\" onclick=\"people('+this.id+',\''+this.plus+'\')\" ><span>'+this.plus+'</span></div>' + this.people +
+                                        '</div>' +
+                                        '</div>' +
+                                        '<p><a href=\"/court/'+this.court+'\" target=\"_blank\"><button class=\"mid-green-btn\">Открыть площадку </button></a></p>' + 
+                                        '</div>';
+                    infowindow.setContent(contentString);
+
+                infowindow.open(map, markers[index]);
+            }
+        })
+
         $.ajax({
             type: 'POST',
             url: '/game/pos_game',

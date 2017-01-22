@@ -75,7 +75,7 @@ $this->registerJs("
                 ->label(false);
             ?>
 
-            <?
+            <?php
                 if ($districts != null) {
                     echo $form->field($model, 'district_sity')
                         ->dropDownList($districts, [
@@ -89,7 +89,7 @@ $this->registerJs("
 
             ?>
 
-            <?
+            <?php
                 if ($sport_types != null) {
                     echo $form->field($model, 'sport_type')
                         ->dropDownList($sport_types, [
