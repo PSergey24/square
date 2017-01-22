@@ -285,8 +285,15 @@ $this->registerJs("
         </div>
         <div class="social">
             <span>ПОЗОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
-            <a href="#"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
+            
+            <!-- Put this script tag to the <head> of your page -->
+            <script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
+            <!-- Put this script tag to the place, where the Share button will be -->
+            <script type="text/javascript">
+            document.write(VK.Share.button({url: 'http://kvadrat.local/court/<?= $court['id'] ?>'}, {type: 'custom', text: "<i class=\"fa fa-vk fa-lg\" aria-hidden=\"true\"></i>"})); 
+            </script>
             <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
+
         </div>
         <?php Pjax::end(); ?>
 
