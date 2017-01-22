@@ -52,7 +52,7 @@ class AdminController extends AdminController
     	$tr = Yii::$app->getRequest()->getBodyParam("tr");
 
     	$courtPhoto = Yii::createObject(CourtPhoto::className());
-        $photo = $courtPhoto->find()->where(['id' => $id])->one();
+        $photo = $courtPhoto->findOne(['id' => $id]);
 
         $photo->approved = 0;
         
@@ -72,7 +72,10 @@ class AdminController extends AdminController
         
         // echo $photo->delete();
         if($photo->delete())
+        {
+            unlink('img/courts/'.$photo['photo']);
         	return $tr;
+        }
         else
         	return 'ошибка';
     }

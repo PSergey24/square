@@ -140,9 +140,10 @@ if (!Yii::$app->user->getIsGuest()) {
 }
 
 $this->registerJs("
-    $('.join').click(function() {
-        var idGame = $(this).attr('data-id-game'); 
-        var symbol = $('[data-id-game = '+idGame+'] .symbol').html();   
+    function plus(idGame,symbol){
+    // $('.join').click(function() {
+        // var idGame = $(this).attr('data-id-game'); 
+        // var symbol = $('[data-id-game = '+idGame+'] .symbol').html();   
 
             $.ajax({
               type: \"POST\",
@@ -155,15 +156,22 @@ $this->registerJs("
                     $('[data-block-game = '+result[0]+'] .symbol').html(result[1]);
                     $('[data-block-game = '+result[0]+'] .players').html(result[2]);
                 }else{
+
                     $('[data-block-game = '+result[0]+']').remove();
+                    var a = $('#game_list').find('.game');
+                    // alert(a[0]);
+                    if(!a[0])
+                        $('#game_list').html('<p class=\"nogames\">В ближайшее время игр нет :(</p><button class=\"mid-green-btn\" data-toggle=\"modal\" data-target=\".bs-example-modal-lg\">Создать игру</button>');
+
                 }
                 
                 
 
               }
             });
-    });
-");
+    // });
+    }
+", $this::POS_HEAD);
 //Description link on click smoothly fade in description block
 $this->registerJs("$('#description_link').click(function () {
         $('#description').toggle(300);
@@ -267,7 +275,7 @@ $this->registerJs("
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
                     else
                         echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                    echo '<button class="mid-blue-btn join" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
+                    echo '<button class="mid-blue-btn" onclick="plus('.$game['id'].',\''.$game['plus'].'\')" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
 
                 }
             }

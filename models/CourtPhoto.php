@@ -31,8 +31,8 @@ class CourtPhoto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['court_id', 'photo', 'avatar', 'flag_moderation'], 'required'],
-            [['court_id', 'avatar', 'flag_moderation'], 'integer'],
+            [['court_id', 'photo', 'avatar', 'approved'], 'required'],
+            [['court_id', 'avatar', 'approved'], 'integer'],
             [['photo'], 'string', 'max' => 255],
             [['court_id'], 'exist', 'skipOnError' => true, 'targetClass' => Court::className(), 'targetAttribute' => ['court_id' => 'id']],
         ];
@@ -48,7 +48,7 @@ class CourtPhoto extends \yii\db\ActiveRecord
             'court_id' => 'Court ID',
             'photo' => 'Photo',
             'avatar' => 'Avatar',
-            'flag_moderation' => 'Flag Moderation',
+            'approved' => 'Approved',
         ];
     }
 
