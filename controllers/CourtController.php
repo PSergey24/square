@@ -333,7 +333,8 @@ class CourtController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
         $query = new Query;
         $query->select('id, lat, lon, name, address, type_id')
-              ->from('court');
+              ->from('court')
+              ->where('approved = 0');
         $rows = $query->all();
         $i = 0;
         foreach ($rows as $row) {
