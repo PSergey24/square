@@ -41,7 +41,7 @@ use yii\bootstrap\Nav;
         ],
         [
             'label'   => Yii::t('user', 'Модерация площадок'),
-            'url'     => ['/admin/stat'],
+            'url'     => ['/admin/courtmod'],
         ],
         // [
         //     'label'   => Yii::t('user', 'Roles'),

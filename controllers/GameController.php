@@ -930,6 +930,15 @@ class GameController extends Controller
                     $plusMinus = '-';
             }
             // echo $userAuth." -- ".$plusMinus."\n";
+
+            if(date_format(date_create($row['time']), 'd') == (date("d")+1))
+                    $timeGame =  'Завтра '.date_format(date_create($row['time']), 'H:i');
+                elseif(date_format(date_create($row['time']), 'd') == (date("d")))
+                    $timeGame =  'Сегодня '.date_format(date_create($row['time']), 'H:i');
+                else
+                    $timeGame =  date_format(date_create($row['time']), 'd-m H:i');
+
+            $rows[$i]['time'] = $timeGame;
             $rows[$i]['string'] = $str;
             $rows[$i]['plus'] = $plusMinus;
             $i++;

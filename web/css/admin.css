@@ -1,3 +1,6 @@
+h1{
+	text-align: center;
+}
 .menu-admin li{
 	float: left;
 }
@@ -22,7 +25,7 @@
 .tablePhoto, .tablePhoto tr,.tablePhoto td, .tablePhoto th{
 	border:1px solid black;
 }
-.add,.delete{
+.add,.delete,.edit{
 	cursor:pointer;
 }
 
@@ -61,4 +64,52 @@
 
 .show{
 	cursor:pointer;
+}
+
+
+/* Модерация новых площадок */
+
+
+.tableNewCourt{
+	border-collapse: collapse;
+	float:left;
+	margin-bottom:100px;
+	margin-top:50px;
+}
+
+.tableNewCourt th,.tableNewCourt td{
+	text-align: center;
+	padding:10px;
+}
+.tableNewCourt, .tableNewCourt tr,.tableNewCourt td, .tableNewCourt th{
+	border:1px solid black;
+}
+
+.h2-black{
+	text-align: center;
+}
+#map{
+	padding: 0 !important;
+	height: 450px;
+}
+.group-field{
+	margin:10px 0 10px 0;
+	height:40px;
+}
+.group-field input{
+	background: #F0F2F2;
+}
+.group-field label{
+	text-align:left;
+}
+@media (max-width: 767px) { 
+	#map{
+		height: 400px;
+	}
+/*	#gmap0-map-canvas{
+		height: 400px !important;
+	}*/
+}
+.court-create button{
+	margin:10px 10px 20px 10px;
 }

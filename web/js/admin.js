@@ -58,6 +58,44 @@ $( document ).ready(function() {
 	        });
     });
 
+    $('.edit').click(function(){
+		
+		var tr = $(this).attr('data-tr-num');
+		var lat = $('[data-tr = '+tr+']').attr("data-lat");
+		var lon = $('[data-tr = '+tr+']').attr("data-lon");
+
+		var id = $('[data-tr = '+tr+'] .item-id').html();
+		var address = $('[data-tr = '+tr+'] .item-address').html();
+		var name = $('[data-tr = '+tr+'] .item-name').html();
+		var area = $('[data-tr = '+tr+'] .item-area').html();
+		var district = $('[data-tr = '+tr+'] .item-district').html();
+		var type = $('[data-tr = '+tr+'] .item-type').html();
+
+		$('#input-address').attr("value",address);
+		$('#input-name').attr("value",name);
+		$('#input-area').attr("value",area);
+		$('#input-district').attr("value",district);
+		$('#input-type').attr("value",type);
+		$('#input-id').attr("value",id);
+		$('#input-lat').attr("value",lat);
+		$('#input-lon').attr("value",lon);
+
+		// var geocoder = new google.maps.Geocoder;
+  //           geocoder.geocode({'location': latlng}, function(results, status) {
+  //           if (status === 'OK') {
+  //           	alert('ok');
+  //               //set address string to input
+  //               // $('#court-address').val(results[0].formatted_address);
+  //           //                        console.log(results);
+  //           }
+  //       });
+		// alert(id);
+
+		// alert(idDistrict);
+		
+
+    });
+
 	
 
 });

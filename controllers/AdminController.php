@@ -173,4 +173,14 @@ class AdminController extends AdminController
     	// echo $string;
         return $string;
     }
+
+    public function actionCourtmod()
+    {
+        $court = Yii::createObject(Court::className());
+        $courts = $court->find()->where('approved = 1')->all();
+
+        return $this->render('courtmod',[
+            'courts' => $courts,
+        ]);
+    }
 }
