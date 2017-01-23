@@ -84,6 +84,7 @@ $this->registerJs("
             if (status === 'OK') {
                 //set address string to input
                 $('#input-address').val(results[0].formatted_address);
+                $('#input-address').attr('value',results[0].formatted_address);
             //                        console.log(results);
             }
             });
@@ -120,12 +121,35 @@ $this->registerJs("
  				<label for="input-area" class="col-lg-3">Площадь</label><input class="col-lg-7 col-lg-offset-2" id="input-area" type="text" value="">
  			</div>
  			<div class="group-field">
- 				<label for="input-district" class="col-lg-3">Район</label><input class="col-lg-7 col-lg-offset-2" id="input-district" type="text" value="">
+ 				<label for="input-district" class="col-lg-3">Район</label>
+ 				<select class="col-lg-7 col-lg-offset-2" id="input-district" data-input-district="">
+ 				<option value="0">Выберите район</option>
+ 				<?php
+ 					if($districts > 0)
+ 					{
+ 						foreach ($districts as $itemDistr) {
+ 							echo "<option value='".$itemDistr['id']."'>".$itemDistr['name']."</option>";
+ 						}
+ 					}
+ 				?>
+ 				</select>
  			</div>
  			<div class="group-field">
- 				<label for="input-type" class="col-lg-3">Вид спорта</label><input class="col-lg-7 col-lg-offset-2" id="input-type" type="text" value="">
+ 				<label for="input-type" class="col-lg-3">Вид спорта</label>
+ 				<select class="col-lg-7 col-lg-offset-2" id="input-type" data-input-type="">
+ 				<option value="0">Выберите вид спорта</option>
+ 				<?php
+ 					if($sportType > 0)
+ 					{
+ 						foreach ($sportType as $itemType) {
+ 							echo "<option value='".$itemType['id']."'>".$itemType['name']."</option>";
+ 						}
+ 					}
+ 				?>
+ 				</select>
  			</div>
  			<input hidden class="col-lg-7 col-lg-offset-2" id="input-id" type="text" value="">
+ 			<input hidden class="col-lg-7 col-lg-offset-2" id="input-tr" type="text" value="">
  			<input hidden class="col-lg-7 col-lg-offset-2" id="input-lat" type="text" value="">
  			<input hidden class="col-lg-7 col-lg-offset-2" id="input-lon" type="text" value="">
  			<button id="addCourt">Добавить</button>
@@ -141,6 +165,15 @@ $this->registerJs("
 	if(count($courts) > 0)
 	{
 ?>		
+	</br><p class="h2-black">Примерные размеры площадок</p></br>
+	<p>Баскетбольная площадка:</p>
+	<p>Ширина: 14-15 метров</p>
+	<p>Длина: 26-28 метров</p>
+	<p>Площадь: 364-420 квадратных метров</p>
+	<p>Футбольная площадка:</p>
+	<p>Ширина: 60-75 метров</p>
+	<p>Длина: 90-120 метров</p>
+	<p>Площадь: 5400-9000 квадратных метров</p>
  	<table class="tableNewCourt">
  		<tr>
  			<th>id</th>
@@ -154,7 +187,7 @@ $this->registerJs("
 		<?php 
 			$i = 0;
 			foreach ($courts as $item) {
-			$i++;
+			
 		 ?>		
 
  		<tr data-tr="<?= $i ?>" data-lat="<?php echo $item['lat']; ?>" data-lon="<?php echo $item['lon']; ?>">
@@ -162,13 +195,14 @@ $this->registerJs("
  			<td class="item-address"><?php echo $item['address']; ?></td>
  			<td class="item-name"><?php echo $item['name']; ?></td>
  			<td class="item-area"><?php echo $item['built_up_area']; ?></td>
- 			<td class="item-district"><?php echo $item['district_city_id']; ?></td>
- 			<td class="item-type"><?php echo $item['type_id']; ?></td>
- 			<td><p class="edit" data-tr-num="<?= $i ?>" onclick="initMap(<?php echo $item['lat']; ?>,<?php echo $item['lon']; ?>)">Редактировать</p></td>
+ 			<td class="item-district" data-item-district="<?php echo $item['district_city_id']; ?>" ><?php echo $courtsName[$i]; ?></td>
+ 			<td class="item-type" data-item-type="<?php echo $item['type_id']; ?>" ><?php echo $courtsSport[$i]; ?></td>
+ 			<td><button type="text" class="edit" data-tr-num="<?= $i ?>" onclick="initMap(<?php echo $item['lat']; ?>,<?php echo $item['lon']; ?>)">Редактировать</button></td>
  		</tr>
  		</tr>
 
-		<?php 		
+		<?php 	
+			$i++;	
 			}
 		 ?>
 	</table>

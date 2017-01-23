@@ -68,34 +68,116 @@ $( document ).ready(function() {
 		var address = $('[data-tr = '+tr+'] .item-address').html();
 		var name = $('[data-tr = '+tr+'] .item-name').html();
 		var area = $('[data-tr = '+tr+'] .item-area').html();
-		var district = $('[data-tr = '+tr+'] .item-district').html();
-		var type = $('[data-tr = '+tr+'] .item-type').html();
+		var district = $('[data-tr = '+tr+'] .item-district').attr('data-item-district');
+		var type = $('[data-tr = '+tr+'] .item-type').attr('data-item-type');
+
+
 
 		$('#input-address').attr("value",address);
 		$('#input-name').attr("value",name);
 		$('#input-area').attr("value",area);
-		$('#input-district').attr("value",district);
-		$('#input-type').attr("value",type);
+		$('#input-district').attr("data-input-district",district);
+		$('#input-type').attr("data-input-type",type);
 		$('#input-id').attr("value",id);
+		$('#input-tr').attr("value",tr);
 		$('#input-lat').attr("value",lat);
 		$('#input-lon').attr("value",lon);
 
-		// var geocoder = new google.maps.Geocoder;
-  //           geocoder.geocode({'location': latlng}, function(results, status) {
-  //           if (status === 'OK') {
-  //           	alert('ok');
-  //               //set address string to input
-  //               // $('#court-address').val(results[0].formatted_address);
-  //           //                        console.log(results);
-  //           }
-  //       });
-		// alert(id);
+		for(var i=1;i<19;i++)
+		{
+			if(i == district)
+				$('#input-district [value='+i+']').attr('selected',true);
+			else
+				$('#input-district [value='+i+']').removeAttr('selected');
+		}
 
-		// alert(idDistrict);
-		
+		for(var i=1;i<4;i++)
+		{
+			if(i == type)
+				$('#input-type [value='+i+']').attr('selected',true);
+			else
+				$('#input-type [value='+i+']').removeAttr('selected');
+		}
+		// $('#input-district [selected="selected"]').remove('selected');
+		// $('#input-type [selected="selected"]').remove('selected');
+
+		// $('#input-district [value = '+district+']').attr('selected',true);
+		// $('#input-type [value = '+type+']').attr('selected',true);
 
     });
 
+    $('#deleteCourt').click(function(){
+		
+		var trNum = $('#input-tr').attr('value');
+		var id = $('#input-id').attr('value');
+
+		// alert(id + ' ' + trNum);
+		
+			$.ajax({
+	          type: "POST",
+	          url: "/admin/delete_court",
+	          data: "id="+id+"&&tr="+trNum,
+	          success: function(data){    
+	          	if(data != 'ошибка')
+	          	$('[data-tr='+data+']').remove();
+			  else 
+			  	alert('ошибка');
+			  
+	          }
+	        });
+    });
+
+    $('#input-district').change(function(){
+		var val = $(this).val();
+		$(this).attr('data-input-district',val);	
+    });
+
+	$('#input-type').change(function(){
+		var val = $(this).val();
+		$(this).attr('data-input-type',val);	
+    });
+    $('#input-area').change(function(){
+		var val = $(this).val();
+		$(this).attr('value',val);	
+    });
+    $('#input-name').change(function(){
+		var val = $(this).val();
+		$(this).attr('value',val);	
+    });	
+    $('#input-address').change(function(){
+		var val = $(this).val();
+		$(this).attr('value',val);	
+    });
+
+    $('#addCourt').click(function(){
+		
+		var trNum = $('#input-tr').attr('value');
+		var id = $('#input-id').attr('value');
+		var address = $('#input-address').attr('value');
+		var name = $('#input-name').attr('value');
+		var area = $('#input-area').attr('value');
+		var district = $('#input-district').attr('data-input-district');
+		var type = $('#input-type').attr('data-input-type');
+		var lat = $('#input-lat').attr('value');
+		var lon = $('#input-lon').attr('value');
+
+		// alert(district);
+		
+			$.ajax({
+	          type: "POST",
+	          url: "/admin/add_court",
+	          data: "id="+id+"&&tr="+trNum+"&&address="+address+"&&name="+name+"&&area="+area+"&&district="+district+"&&type="+type+"&&lat="+lat+"&&lon="+lon,
+	          success: function(data){    
+	          if(data != 'ошибка')
+	          { 
+	          	$('[data-tr='+data+']').remove();
+	          }
+			  else 
+			  	alert('ошибка');
+			  
+	          }
+	        });
+    });
 	
 
 });

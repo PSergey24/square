@@ -179,8 +179,91 @@ class AdminController extends AdminController
         $court = Yii::createObject(Court::className());
         $courts = $court->find()->where('approved = 1')->all();
 
+        $distr = Yii::createObject(DistrictCity::className());
+        $districts = $distr->find()->all();
+
+        $sport = Yii::createObject(SportType::className());
+        $sportType = $sport->find()->all();
+
+        $courtsName = [];
+        $courtsSport = [];
+        $i = 0;
+        foreach ($courts as $item) {
+            $query = new Query;
+            $query->select('name')
+                  ->from('district_city')
+                  ->where(['id' => $item['district_city_id']]);
+            $row = $query->one();
+
+            $query->select('name')
+                  ->from('sport_type')
+                  ->where(['id' => $item['type_id']]);
+            $rowSport = $query->one();
+
+            $courtsName[$i] = $row['name'];
+            $courtsSport[$i] = $rowSport['name'];
+            $i++;
+        }
+
+// var_dump($courtsName);
+
+
         return $this->render('courtmod',[
             'courts' => $courts,
+            'districts' => $districts,
+            'sportType' => $sportType,
+            'courtsName' => $courtsName,
+            'courtsSport' => $courtsSport,
         ]);
+    }
+
+    public function actionDelete_court()
+    {
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        $tr = Yii::$app->getRequest()->getBodyParam("tr");
+
+        $court = Yii::createObject(Court::className());
+        $courtDel = $court->findOne(['id' => $id]);
+        
+        // echo $photo->delete();
+        if($courtDel->delete())
+        {
+            return $tr;
+        }
+        else
+            return 'ошибка';
+    }
+
+    public function actionAdd_court()
+    {
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        $tr = Yii::$app->getRequest()->getBodyParam("tr");
+        $address = Yii::$app->getRequest()->getBodyParam("address");
+        $name = Yii::$app->getRequest()->getBodyParam("name");
+        $area = Yii::$app->getRequest()->getBodyParam("area");
+        $district = Yii::$app->getRequest()->getBodyParam("district");
+        $type = Yii::$app->getRequest()->getBodyParam("type");
+        $lat = Yii::$app->getRequest()->getBodyParam("lat");
+        $lon = Yii::$app->getRequest()->getBodyParam("lon");
+        
+        $court = Yii::createObject(Court::className());
+        $courtAdd = $court->findOne(['id' => $id]);
+
+        $courtAdd->approved = 0;
+        $courtAdd->address = $address;
+        $courtAdd->lat = $lat;
+        $courtAdd->lon = $lon;
+        $courtAdd->name = $name;
+        $courtAdd->built_up_area = $area;
+        $courtAdd->district_city_id = $district;
+        $courtAdd->type_id = $type;
+
+
+        if($courtAdd->save())
+        {
+            return $tr;
+        }
+        else
+            return 'ошибка';
     }
 }
