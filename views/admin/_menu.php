@@ -36,12 +36,16 @@ use yii\bootstrap\Nav;
             'url'     => ['/admin/photo'],
         ],
         [
-            'label'   => Yii::t('user', 'Модерация сообщений'),
+            'label'   => Yii::t('user', 'Жалобы на сообщения'),
             'url'     => ['/admin/stat'],
         ],
         [
             'label'   => Yii::t('user', 'Модерация площадок'),
             'url'     => ['/admin/courtmod'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Модерация фотографий пользователей'),
+            'url'     => ['/admin/photouser'],
         ],
         // [
         //     'label'   => Yii::t('user', 'Roles'),

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Game;
+use app\models\Profile2;
 use app\models\Court;
 use app\models\SportType;
 use app\models\GameUser;
@@ -263,6 +264,38 @@ class AdminController extends AdminController
         {
             return $tr;
         }
+        else
+            return 'ошибка';
+    }
+
+    public function actionPhotouser()
+    {
+            $query = new Query;
+            $query->select('id, username, picture')
+                  ->from('user, profile')
+                  ->where('id = user_id');
+            $users = $query->all();
+
+        return $this->render('photouser',[
+            'users' => $users,
+        ]);
+    }
+
+    public function actionDelete_avatar()
+    {
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        $tr = Yii::$app->getRequest()->getBodyParam("tr");
+        $picture = Yii::$app->getRequest()->getBodyParam("picture");
+
+        $profile = Yii::createObject(Profile2::className());
+        $avatarDel = $profile->find()->where(['user_id' => $id])->one();
+
+        $avatarDel->picture = 'default_avatar.jpg';
+
+        // добавить удаление файла
+
+        if($avatarDel->save())
+            return $tr;
         else
             return 'ошибка';
     }

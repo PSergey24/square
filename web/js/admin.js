@@ -178,6 +178,28 @@ $( document ).ready(function() {
 	          }
 	        });
     });
+
+    $('.deleteAvatar').click(function(){
+		
+		var tr = $(this).attr('data-tr-num');
+		var picture = $('[data-tr = '+tr+'] img').attr('data-picture');
+		var id= $('[data-tr = '+tr+']').attr('data-id-user');
+		
+			$.ajax({
+	          type: "POST",
+	          url: "/admin/delete_avatar",
+	          data: "id="+id+"&&tr="+tr+"&&picture="+picture,
+	          success: function(data){    
+	          if(data != 'ошибка')
+	          {
+	          	$('[data-tr='+data+'] img').attr('src','/img/uploads/default_avatar.jpg');
+	          }
+			  else 
+			  	alert('ошибка');
+			  
+	          }
+	        });
+    });
 	
 
 });
