@@ -33,7 +33,6 @@ h1{
 
 .allCourts{
 	border-collapse: collapse;
-	margin-left:50px;
 	float:left;
 	margin-bottom:100px;
 }
@@ -46,11 +45,8 @@ h1{
 	border:1px solid black;
 }
 
-
 .courtDistrict{
 	border-collapse: collapse;
-	margin-left:50px;
-	float:left;
 	margin-bottom:100px;
 }
 

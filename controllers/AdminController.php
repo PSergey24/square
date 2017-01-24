@@ -90,27 +90,34 @@ class AdminController extends AdminController
     	$countB = array();
     	$countF = array();
     	$i = 0;
+        $totalBasketball = 0;
+        $totalFootball = 0;
     	foreach ($districts as $district) {
     		$query = new Query;
 	        $query->select('count(district_city_id) as count')
 	              ->from('court')
-	              ->where(['district_city_id' => $district['id']]);
+	              ->where(['district_city_id' => $district['id']])
+                  ->andWhere('approved = 0');
 	        $rows = $query->one();
 
 	        $query = new Query;
 	        $query->select('count(district_city_id) as count')
 	              ->from('court')
 	              ->where(['district_city_id' => $district['id']])
-	              ->andWhere('type_id = 1');
+	              ->andWhere('type_id = 1')
+                  ->andWhere('approved = 0');;
 	        $rowsB = $query->one();
 	        $query->select('count(district_city_id) as count')
 	              ->from('court')
 	              ->where(['district_city_id' => $district['id']])
-	              ->andWhere('type_id = 2');
+	              ->andWhere('type_id = 2')
+                  ->andWhere('approved = 0');
 	        $rowsF = $query->one();
 	        $count[$i] = $rows['count'];
 	        $countB[$i] = $rowsB['count'];
 	        $countF[$i] = $rowsF['count'];
+            $totalFootball = $totalFootball + $countF[$i];
+            $totalBasketball = $totalBasketball + $countB[$i];
     		// echo $district['id']." | ".$district['name']." | ".$rows['count']."</br>";
     		$i++;
     	}
@@ -120,6 +127,8 @@ class AdminController extends AdminController
             'count' => $count,
             'countB' => $countB,
             'countF' => $countF,
+            'totalBasketball' => $totalBasketball,
+            'totalFootball' => $totalFootball
         ]);
     }
 
@@ -133,9 +142,10 @@ class AdminController extends AdminController
 	              ->where(['id' => $id]);
 	        $distr = $query->one();
 
-	        $query->select('name, id')
+	        $query->select('name, id, type_id')
 	              ->from('court')
-	              ->where(['district_city_id' => $id]);
+	              ->where(['district_city_id' => $id])
+                  ->andWhere('approved = 0');
 	        $rows = $query->all();
 
 	        
@@ -143,11 +153,12 @@ class AdminController extends AdminController
 
 	    $string = '<tr>
 						<th>Название площадки</th>
+                        <th>Спорт</th>
 						<th>Число сыгранных игр</th>
 						<th>Подписанных участников</th>
 					</tr>
 					<tr>
-						<td colspan="3">'.$distr['name'].' район</td>
+						<td colspan="4">'.$distr['name'].' район</td>
 					</tr>';
 		$i = 0;
 	    foreach ($rows as $item) {
@@ -155,6 +166,13 @@ class AdminController extends AdminController
 	              ->from('court_bookmark')
 	              ->where(['court_id' => $item['id']]);
 	        $countBookmark = $query->all();
+
+            $queryS = new Query;
+            $queryS->select('name')
+                  ->from('sport_type')
+                  ->where(['id' => $item['type_id']]);
+            $sport_type = $queryS->one();
+
 
 	        $query->select('count(id) as count')
 	              ->from('game')
@@ -166,6 +184,7 @@ class AdminController extends AdminController
 
 	    	$string = $string.'<tr>
 									<td><a target="_blank" href="/court/'.$item['id'].'">'.$item['name'].'</a></td>
+                                    <td>'.$sport_type['name'].'</td>
 									<td>'.$countGame[0]['count'].'</td>
 									<td>'.$countBookmark[0]['count'].'</td>
 								</tr>';
