@@ -318,4 +318,123 @@ class AdminController extends AdminController
         else
             return 'ошибка';
     }
+
+    public function actionPopularcourts()
+    {
+        $queryBas = new Query;
+        $queryBas->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 1')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count desc')
+              ->limit(5);
+        $rowsBas = $queryBas->all();
+
+        $queryFoot = new Query;
+        $queryFoot->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 2')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count desc')
+              ->limit(5);
+        $rowsFoot = $queryFoot->all();
+
+        $queryBasLeast = new Query;
+        $queryBasLeast->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 1')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count')
+              ->limit(5);
+        $rowsBasLeast = $queryBasLeast->all();
+
+        $queryFootLeast = new Query;
+        $queryFootLeast->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 2')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count')
+              ->limit(5);
+        $rowsFootLeast = $queryFootLeast->all();
+        // var_dump($rowsBas);
+
+        return $this->render('popularcourts',[
+            'rowsBas' => $rowsBas,
+            'rowsFoot' => $rowsFoot,
+            'rowsBasLeast' => $rowsBasLeast,
+            'rowsFootLeast' => $rowsFootLeast,
+        ]);
+    }
+
+    public function actionActivity()
+    {
+        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+        $query = new Query;
+        $query->select('district_city.id as id, district_city.name as name, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->andWhere('district_city.id = district_city_id')
+              ->andWhere('court.id = court_id')
+              ->andWhere('approved = 0');
+
+        $query->andWhere(['<','time',$now])    
+              ->groupBy('district_city.id')
+              ->orderBy('count desc');
+        $rows = $query->all();
+
+        $queryBas = new Query;
+        $queryBas->select('district_city.id as id, district_city.name as name, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->andWhere('district_city.id = district_city_id')
+              ->andWhere('court.id = court_id')
+              ->andWhere('type_id = 1')
+              ->andWhere('approved = 0');
+
+        $queryBas->andWhere(['<','time',$now])    
+              ->groupBy('district_city.id')
+              ->orderBy('count desc');
+        $rowsBas = $queryBas->all();
+
+        $queryFoot = new Query;
+        $queryFoot->select('district_city.id as id, district_city.name as name, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->andWhere('district_city.id = district_city_id')
+              ->andWhere('court.id = court_id')
+              ->andWhere('type_id = 2')
+              ->andWhere('approved = 0');
+
+        $queryFoot->andWhere(['<','time',$now])    
+              ->groupBy('district_city.id')
+              ->orderBy('count desc');
+        $rowsFoot = $queryFoot->all();
+
+        return $this->render('activity',[
+            'rows' => $rows,
+            'rowsBas' => $rowsBas,
+            'rowsFoot' => $rowsFoot
+        ]);
+    }
+    public function actionActivityuser()
+    {
+        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+        $query = new Query;
+        $query->select('user.id as id, username, count(game_user.id) as count')
+              ->from('user, game_user')
+              ->andWhere('user.id = user_id')  
+              ->groupBy('user.id')
+              ->orderBy('count desc')
+              ->limit(10);
+        $rows = $query->all();
+
+        return $this->render('activityuser',[
+            'rows' => $rows
+        ]);
+    }
 }

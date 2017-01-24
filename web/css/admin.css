@@ -1,4 +1,4 @@
-h1{
+h1,h2{
 	text-align: center;
 }
 .menu-admin li{
@@ -133,4 +133,32 @@ h1{
 }
 .deleteAvatar{
 	cursor:pointer;
+}
+
+
+
+/* Самые популярные площадки */
+
+.popularBas{
+	border-collapse: collapse;
+}
+.popularBas th,.popularBas td{
+	text-align: center;
+	padding:10px;
+}
+.popularBas, .popularBas tr,.popularBas td, .popularBas th{
+	border:1px solid black;
+}
+
+/* Активность районов */
+
+.activity{
+	border-collapse: collapse;
+}
+.activity th,.activity td{
+	text-align: center;
+	padding:10px;
+}
+.activity, .activity tr,.activity td, .activity th{
+	border:1px solid black;
 }

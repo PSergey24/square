@@ -28,8 +28,12 @@ use yii\bootstrap\Nav;
             'url'     => ['/admin/courts'],
         ],
         [
-            'label'   => Yii::t('user', 'Статистика'),
-            'url'     => ['/admin/stat'],
+            'label'   => Yii::t('user', 'Популярность площадок'),
+            'url'     => ['/admin/popularcourts'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Активность районов'),
+            'url'     => ['/admin/activity'],
         ],
         [
             'label'   => Yii::t('user', 'Модерация картинок'),
@@ -46,6 +50,10 @@ use yii\bootstrap\Nav;
         [
             'label'   => Yii::t('user', 'Модерация фотографий пользователей'),
             'url'     => ['/admin/photouser'],
+        ],
+        [
+            'label'   => Yii::t('user', 'Активность пользователей'),
+            'url'     => ['/admin/activityuser'],
         ],
         // [
         //     'label'   => Yii::t('user', 'Roles'),

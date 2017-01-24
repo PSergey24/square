@@ -47,6 +47,7 @@ $this->registerJs("
 
             var chart = AmCharts.makeChart( \"chartdiv\", {
 				\"type\": \"pie\",
+				\"theme\": \"light\",
 				\"dataProvider\": [".$chartData."],
 				\"titleField\": \"district\",
 				\"valueField\": \"court\",
@@ -62,6 +63,7 @@ $this->registerJs("
 
             var chart = AmCharts.makeChart( \"chartsport\", {
 				\"type\": \"pie\",
+				\"theme\": \"light\",
 				\"dataProvider\": [ {
 					\"sport\": \"Баскетбол\",
 					\"num\": ".$totalBasketball."
@@ -84,6 +86,11 @@ $this->registerJsFile(
     '@web/js/plugins/export/export.min.js',
     ['depends' => [\yii\web\JqueryAsset::className()]]
 );
+$this->registerJsFile(
+    'https://www.amcharts.com/lib/3/themes/light.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+
 ?>
 
 
