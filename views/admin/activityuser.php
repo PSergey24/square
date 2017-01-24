@@ -24,6 +24,10 @@ use yii\widgets\Pjax;
 
 $this->registerCssFile('/css/admin.css');
 $this->registerCssFile('/css/export.css');
+$this->registerMetaTag([
+'name' => 'description',
+'content' => 'ваш текст'
+]);
 
 $this->registerJsFile(
     '@web/js/amcharts.js',
