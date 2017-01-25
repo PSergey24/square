@@ -324,71 +324,19 @@ $this->registerJs("
                     </div>
                 </div>
                 <div class="game-list">
+
                     <?php $i = 0;
                     foreach ($listGame as $listGame) { ?>
-
-                        <div class="col-xs-12 col-lg-6 first"  data-id-game="<?php echo $listGame['id']; ?>">
-                            <div class=<?php if($listGame['sport_type_id'] == 1) echo '"shadow box game-new basketball"'; elseif($listGame['sport_type_id'] == 2) echo '"shadow box game-new football"'; else echo '"shadow box game-new"'; ?> >
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="top">
-                                        <div class="square"><?php echo $nameAreaArr[$i]; ?></div>
-                                        <div class="onmap"><i class="fa fa-globe fa-lg" aria-hidden="true" onclick="setMapCenter(<?php echo $listGame['id']; ?>)"></i></div>
-                                    </div>
-                                    <div id="maps" class="visible-xs"><!--КАРТА ДЛЯ ТЕЛЕФОНА-->
-                                        
-                                    </div>
-                                    <div class="divider"></div>
-                                    <div class="people">
-                                        <p>Игроков: <span class="count"><?php echo $countUsersArr[$i]; ?></span></p>
-                                        <div class="scroll">
-                                            <div class="right"></div>
-                                            <div class="circle">
-                
-                                                <div class="plus man" data-id-game-plus="<?php echo $listGame['id']; ?>" onclick="people(<?php echo $listGame['id']; ?>,'<?php echo $plusMan[$i]; ?>')"><span><?php echo $plusMan[$i]; ?></span></div>
-                                                <?php
-                                                if(Yii::$app->user->identity)
-                                                    $userAuth = Yii::$app->user->identity->getId();
-                                                else
-                                                    $userAuth = 0;
-                                                    for($j=0;$j<$countUsersArr[$i];$j++)
-                                                    {
-                                                        // коммент не удаляем. в этой переменной id пользователя для ссылки
-                                                        // echo '<a href="#">'.$idUsersArr[$i][$j]['user_id'].'</a>';
-                                                        if($userAuth == $idUsersArr[$i][$j]['user_id'])
-                                                            $link = 'profile';
-                                                        else
-                                                            $link = 'users/'.$idUsersArr[$i][$j]['user_id'];
-                                                        echo '<a href="'.$link.'" target="_blank"><img src="/img/uploads/'.$pictureUsersArr[$i][$j]['picture'].'" class="man"></a>';
-                                                    }
-
-                                                ?>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="description col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <div class="type">
-                                        <span class="small"><i class="fa fa-dribbble" aria-hidden="true"></i>Игра</span><br>
-                                        <span class="big"><?php echo $nameSportArr[$i]; ?></span>
-                                    </div>
-                                    <div class="time">
-                                        <span class="small"><i class="fa fa-clock-o" aria-hidden="true"></i>Время</span><br>
-                                        <span class="big"><?php 
-                                        if(date_format(date_create($listGame['time']), 'd') == (date("d")+1))
-                                            echo 'завтра '.date_format(date_create($listGame['time']), 'H:i');
-                                        elseif(date_format(date_create($listGame['time']), 'd') == (date("d")))
-                                            echo 'сегодня '.date_format(date_create($listGame['time']), 'H:i');
-                                        else
-                                            echo date_format(date_create($listGame['time']), 'd-m H:i');
-  ?></span>
-                                    </div>
-                                    <div class="ball">
-                                        <span class="small"><i class="fa fa-futbol-o" aria-hidden="true"></i>Мяч</span><br>
-                                        <span class="big"><?php if($listGame['need_ball'] == 1) echo 'есть'; else echo 'нет'; ?></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <?= $this->render('_card', [
+                            'listGame' => $listGame,
+                            'i' => $i,
+                            'countUsersArr' => $countUsersArr,
+                            'plusMan' => $plusMan,
+                            'idUsersArr' => $idUsersArr,
+                            'nameSportArr' => $nameSportArr,
+                            'nameAreaArr' => $nameAreaArr,
+                            'pictureUsersArr' => $pictureUsersArr
+                        ]) ?>
                     <?php $i++; }  ?>
                     
         		</div>
