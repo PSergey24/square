@@ -284,7 +284,7 @@ $this->registerJs("
             <div class="header"><div class="menu">Чат площадки</div></div>
         </div>
     </div>
-    <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
+<!--     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
         <h2 class="h2-box">Ближайшие игры</h2>
         <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
         <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
@@ -313,7 +313,7 @@ $this->registerJs("
                     echo '<button class="mid-blue-btn" onclick="plus('.$game['id'].',\''.$game['plus'].'\')" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
                 }
             }
-        ?>
+        ?>  Это нужно было удалить-->
 
     <div class="gamesWrap">
         <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
@@ -385,19 +385,7 @@ $this->registerJs("
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
 
-        <div class="social">
-            <span>ПОЗОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
-            
-            <!-- Put this script tag to the <head> of your page -->
-            <script type="text/javascript" src="https://vk.com/js/api/share.js?94" charset="windows-1251"></script>
-            <!-- Put this script tag to the place, where the Share button will be -->
-            <script type="text/javascript">
-            document.write(VK.Share.button({url: 'http://kvadrat.local/court/<?= $court['id'] ?>'}, {type: 'custom', text: "<i class=\"fa fa-vk fa-lg\" aria-hidden=\"true\"></i>"})); 
-            </script>
-            <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
-
-        </div>
-        <?php Pjax::end(); ?>
+       <!--  <?php Pjax::end(); ?> Это тоже удалить-->
     </div>
 </div>
 
