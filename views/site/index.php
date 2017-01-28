@@ -16,7 +16,7 @@ $this->params['sport_types'] = $sport_types;
 ?>
 
 <div class="container mid" id="mid">
-    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12"><h1 class="h1-black">Квадрат поможет</h1></div>
+    <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12"><h1 class="h2-black">Квадрат поможет</h1></div>
     <div class="kv-is col-lg-3 col-md-3 col-sm-6 col-xs-12">
         <img src="img/4r.png">
         <p>Создать игру<br>на любой уличной площадке</p>

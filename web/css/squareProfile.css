@@ -3,59 +3,248 @@
 	background-image: url(/img/square.jpg);
 	background-size: cover;
 	box-shadow: 0 70px 120px 0px rgba(0, 0, 0, 0.33) inset;	
+	padding: 0 !important;
+	margin-bottom: 20px;
 }
 
-
+#map{
+	margin-top: 25px;
+	margin-bottom: -20px;
+	height: 170px;
+	border-radius: 3px;
+	border: 4px solid #fff;
+}
+.wrapper {
+	padding: 0 !important;
+	margin-top: 25px;
+	margin-bottom: -20px;
+	position: relative;
+	height: 170px;
+}
+.name {
+	font-size: 30px;
+	color: white;
+	margin-top: 40px;
+	font-weight: 500;
+}
+.name:hover .report{
+	opacity: 0.85;
+}
+.report{
+	opacity: .6;
+	cursor: pointer;
+	padding-left: 5px; 
+}
+.name:first-letter{
+	text-transform: uppercase;
+}
 .tag, .tag:visited, .tag:active {
 	color: rgba(255,255,255,0.85);
-	font-size: 1.125rem;
-	border-bottom: 0.125rem rgba(255,255,255,0.85) solid;
+	font-size: 16px;
+	border-bottom: 1px rgba(255,255,255,0.7) solid;
 	margin-right: 10px;
 	text-decoration: none;
 }
 .tag:hover{
 	color: rgb(255,255,255);
 	text-decoration: none;
-	border-bottom: 0.125rem rgba(255,255,255,1) solid;
+	border-bottom: 1px rgba(255,255,255,1) solid;
 }
-.s{
-	position: relative;
+.absolute{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	padding-right: 0px !important;
 }
-.social{
-	color: rgb(255,255,255);
-	font-size: 0.8125rem;
-	text-align: center;
-	color: rgba(0,0,0,.87);
-	margin-bottom: 1.5rem;
-	margin-top: -2rem;
+.buttons{
+	font-weight: 500;
+	font-size: 13px;
+	display: table;
+
+	background: #fff;
+	border-radius: 3px;
+	height: 50px;
 }
-.social i{
-	color: white;
-    opacity: 0.87;
-    background-color: #1565c0;
-    width: 2.65rem;
-    height: 2.6rem;
-    margin-left: 10px;
-    border-radius: 3px;
-    margin-top: 0.5125rem;
+.menu{
+	vertical-align: middle;
+	display: table-cell;
 }
-.social i:hover{
+.menu div {
+	display: inline-block;
+	color: rgba(0,0,0,.7);
+}
+.tab:hover {
+	color: rgba(0,0,0.87);
+	text-decoration: underline;
+}
+.selected{
+	color: #337ab7 !important;
+}
+.item{
+	border-right: 1px solid rgba(0,0,0,0.12);
+	padding: 0px 15px;
+	cursor: pointer;
+	margin-top: 2px;
+
+}
+#bookmark i, #like i {
+	color: #337ab7;
+	opacity: .7; 
+}
+#bookmark:hover i, #like:hover i{
 	opacity: 1;
 }
-.social .fa-facebook, .fa-vk {
-    line-height: 2.6rem !important;
+.item:first-child{
+	padding-left: 0px !important;
 }
-.description a{
+.social{
+	float: right;
+	margin-top: 2px;
+}
+.fa-facebook{
+	padding-left: 7px;
+	padding-right: 5px;
+}
+.fa-vk{
+	line-height: 0 !important;
+	padding: 5px 10px 5px 6px;
+	border-right: 1px solid rgba(0,0,0,0.12);
+}
 
-	font-size: 1.125rem;
-	color: rgba(255,255,255,0.85);
+
+.header{
+	height: 50px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+	background-color: #eef7e9;
+	border-bottom: 1px solid rgba(0,54,62,.1);
+	text-align: left;
+	padding-left: 15px;
+	display: table;
+	width: 100%;
+	font-size: 14px;
 }
-.description{
-	margin-top: 3rem;
-	margin-bottom:  1.5rem;
+.games{
+	margin-bottom: 30px;
 }
-.description p {
-	margin: 0;
+.game{
+	text-align: left;
+	padding-left: 30px;
+	padding-right: 15px;
+}
+.game:hover{
+	background-color: #f7fcfa;
+}
+.gameTop{
+	position: relative;
+	padding-top: 10px;
+}
+.number{
+	position: absolute;
+	left: -15px;
+	bottom: 2px;
+	font-size: 12px;
+	color: rgba(0,0,0,.54);
+}
+.time{
+	font-size: 18px;
+	font-weight: 500;
+	color: rgba(0,0,0,.87);
+}
+.people{
+	font-size: 12px;
+	color: rgba(0,0,0,.54);
+	margin-top: 7px;
+	padding-bottom: 15px;
+	border-bottom: 1px solid rgba(0,0,0,.13);
+}
+.people p{
+	margin-bottom: 7px !important;
+}
+.scroll{
+	width: 100%;
+	overflow-x: hidden;
+	position: relative;
+}
+.right{
+	position: absolute;
+	height: 100%;
+	right: 0;
+	width: 30px;
+	background: linear-gradient(to right,rgba(255,255,255,0) 40%,#fff 100%);
+}
+.circle{
+	overflow-y:hidden;
+	width: 140%;
+	max-height: 40px;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.man{
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	background: gray;
+	margin-right: 10px;
+	display: inline-block;
+	float: left;
+}
+
+.minus, .plus{
+	background: none !important;
+	height: 40px !important;
+	width: 40px !important;
+	text-align: center;
+	cursor: pointer;
+	-webkit-transition: ease-out 0.2s;
+    -moz-transition: ease-out 0.2s;
+    -o-transition: ease-out 0.2s;
+    transition: ease-out 0.2s;
+}
+.plus{
+	border: 2px solid #3F51B5;
+}
+.minus{
+	border: 2px solid #EF5350;
+}
+.plus:hover {
+	background: #3F51B5 !important;
+}
+.minus:hover {
+	background: #EF5350 !important;
+}
+.plus:hover span, .minus:hover span{
+	color: white;
+}
+.plus, .minus span{
+	line-height: 38px;
+	font-weight: 400;
+	font-size: 1.5rem;
+	transition-property:color;
+	-webkit-transition: ease-out 0.2s;
+    -moz-transition: ease-out 0.2s;
+    -o-transition: ease-out 0.2s;
+    transition: ease-out 0.2s;
+}
+.plus span{
+	color: #3F51B5;
+}
+.minus span{
+	color: #D32F2F;
+}
+.bottom {
+	font-size: 12px;
+	padding: 9px 0px;
+}
+.bottom div{
+	display: inline-block;
+}
+.bottom span{
+	margin-left: 4px;
+	margin-right: 9px;
+	color: #3F51B5;
+	font-weight: 400;
 }
 .arrow{
 	margin-top: -0.25rem;
@@ -72,9 +261,7 @@
 	background: rgba(0,0,0,0.4);
 	padding: 1rem;
 }
-.buttons{
-	margin-bottom: -1.16667rem;
-}
+
 .buttons button{
 	margin-left: 1.35rem;
 	z-index: 1;
@@ -102,55 +289,85 @@
 .h2-box{
 	margin-top:2.9rem;
 	font-size: 1.5625rem;
-	font-weight: 500;
+	font-weight: 400;
 	margin-bottom: -1.25rem; 
 }
 .games{
-	margin-bottom: 1rem !important;
-	margin-top:3.5rem !important;
+	padding: 0 !important;
 }
-.game{
-	text-align: right;
-	margin-top: 1.25rem;
-	float: initial;
-}
-.game .time{
-	text-align: left;
-}
+
 .box{
-	padding: 1.25rem 1.5625rem;
-	margin: 3rem 0;
-	margin-bottom: 5rem;
+	margin-top: 30px;
 }
-.games .game:nth-child(1){
-	margin-top: 0px;
-}
-.games .game:nth-last-child(2){
-	border-bottom: 1px rgba(0,0,0,0.1) solid;
-	padding-bottom: 1.25rem;
-}
+
 .games .mid-green-btn{
-	margin-top: 1.25rem;
+	margin-top: 15px;
+	padding:9px 22px !important;
+	font-size: 13px;
+	font-weight: 400;
+	margin-bottom: 12px;
 }
 .clear{
 	clear: both;
 }
-.time{
-	font-size: 1rem;
-	color: rgba(0,0,0,0.74);
-	float: left;
-	padding-top: 0.4rem;
-}
+
 .games .mid-blue-btn{
 	margin-left: 20px;
 	padding: 0.4rem 1.3rem;
 }
-.players{
-	font-weight: 500;
-	font-size: 1rem;
-	margin-left: 0.25rem;
-}
 
+
+#tab2{
+	padding-right: 0px;
+}
+#tab2 p{
+	margin: 0 !important;
+	font-size: 14px !important;
+}
+.description{
+	padding-right: 30px !important;
+}
+h3{
+	font-size: 25px !important;
+	font-weight: 300 !important;
+	margin-top: 30px !important;
+	margin-bottom: 20px !important;
+}
+.photoName	{
+	margin-bottom: 10px !important
+}
+.add, .red{
+	cursor: pointer;
+	font-size: 14px;
+	font-weight: 400;
+	margin-top: 10px;
+	color: #337ab7;
+	display: block;
+}
+.more{
+	text-align: center;
+	font-weight: 400;
+	cursor: pointer;
+	margin-bottom: 20px;
+}	
+.add{
+	float: right;
+}
+.add:hover, .red:hover, .more:hover{
+	color: #23527c;
+}
+.add i, .red i{
+	margin-right: 5px;
+}
+.photos{
+	padding: 0 !important;
+	padding-left: 2px !important;
+}
+.photo{
+	height: 170px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
 
 
 label{
@@ -287,37 +504,47 @@ input[type="checkbox"]:checked {
 	padding-left: 0.75rem 4rem;
 }
 @media (min-width: 1200px) { 
-	.s{
-		padding-left: 30px;
-	}
+
 }
 @media (min-width: 992px) and (max-width: 1199px) {
-	.s{
-		padding-left: 30px;
+	.photo{
+		height: 150px;
 	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
-	.s{
-		padding-left: 30px;
+	
+    h3 {
+    	font-size: 20px !important;
+    }
+    	.photo{
+		height: 155px;
+	}
+	.chatWrap{
+		padding-right: 30px !important;
+	}
+	.wrapper{
+		height: 70px;
 	}
 }
 @media (max-width: 767px) {
+    h3 {
+    	font-size: 20px !important;
+    }
+    .add{
+    	margin-top: 5px;
+    }
+	.container{
+		padding: 0 !important;
+	}
+	.photos{
+		padding: 0 !important;
+	}
 	.box{
 		margin-bottom: 2.5rem;
 	}
 	.h2-box{
 		margin-bottom: -1.25rem;
 		margin-top:0;
-	}
-
-	.buttons{
-		text-align: center;
-	}
-	.buttons .mid-blue-btn, .mid-green-btn{
-		padding: 0.625rem 2rem;
-	}
-	.buttons .mid-blue-btn:active, .mid-green-btn:active{
-		box-shadow: none;
 	}
 	.modal-sm{
 		width: auto;
@@ -328,7 +555,33 @@ input[type="checkbox"]:checked {
 	.chat{
 		height: 270px;
 	}
-	.social{
-
+	.chatWrap, .gamesWrap{
+		padding:0 10px !important;
+	}
+	.photo{
+		height: 160px;
+	}
+	.games{
+		margin-top: 0px !important;
+	}
+	.item{
+		padding-left: 0px;
+		border:none;
+	}
+	.absolute{
+		padding-left: 0 !important;
+	}
+	.buttons .fa-vk, .fa-facebook{
+		padding-right: 3px;
+		border: none;
+	}
+	.buttons{
+		text-align: center;
+	}
+	.wrapper{
+		height: 70px;
+	}
+	#map{
+		height: 220px;
 	}
 }
