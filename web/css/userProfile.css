@@ -102,6 +102,7 @@ h1.h1-white{
 }
 .contentUserImg{
 	background-size: cover;
+	background-position: center;
 	height: 150px;
 	border-radius: 5px;
 	-webkit-filter: contrast(1.3);

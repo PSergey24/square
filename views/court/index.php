@@ -75,7 +75,7 @@ $this->registerJs("
             }
 
             if(value['photo'] == 0)
-                var photoCourt = 'defaultCourt.jpg';
+                var photoCourt = 'defaultCourt.png';
             else
                 var photoCourt = value['photo'];
 
@@ -254,7 +254,7 @@ $this->registerJs("
         <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall forSmall margin">
                 <a href="<?= '/court/' . $popular[0]['id'] ?>" id="court_link">
-                <div style="background-image: url(../img/court_img_22.jpg);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
+                <div style="background-image: url(../img/court_img_22.png);" class="images"><div class="players"><i class="fa fa-male" aria-hidden="true"></i>34</div><span>Открыть площадку</span></div>
                 <div class="sliderTextPop"><?= $popular[0]['address'] ?></div></a>
             </div>
         </div>
@@ -278,7 +278,7 @@ $this->registerJs("
 <div class="container-fluid" id="notArena">
     <div class="container">
         <h2 class="h2-white col-lg-12 col-md-12 col-sm-12 col-xs-12">Не нашли площадку?</h2>
-        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Хочешь организовать игру на спортивной площадке, а её нет на карте? Не беда! :) Тебе нужно всего лишь отправить нам заявку на её добавление и в ближайшее время она появится на карте.</p>
+        <p class="col-lg-12 col-md-12 col-sm-12 col-xs-12">Хочешь организовать игру на спортивной площадке, а её нет на карте? Не беда! :) Тебе нужно всего лишь отправить нам заявку<br> на её добавление, и в ближайшее время она появится на карте.</p>
         <div class="center col-xs-12"><a class="big-green-btn shadow" href="court/create">Добавить площадку</a></div>
     </div>
 </div>

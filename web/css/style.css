@@ -2,9 +2,9 @@
 
 html,body{
 	font-family:'Roboto';
-	background-color: #f0f2f2;
-	font-size:1rem;
-	font-weight: 400;
+	background-color: #e9eeee;
+	font-size: 14px;
+	font-weight: 300;
 		/* для footer*/
 }
 .forSmall{
@@ -64,12 +64,14 @@ text-decoration: none;
 outline: none;
 }
 .big-green-btn, .big-blue-btn{
-	padding: 0.9375rem 2.5rem;
+	padding: 0.85rem 2.25rem;
 	font-size: 1.125rem;
-	font-weight: 400;
+	font-weight: 400 !important;
 }
 .mid-green-btn, .mid-blue-btn{
-	padding: 0.625rem 2rem;
+	padding: 0.5rem 1.85rem;
+	font-weight: 400 !important;
+	font-size: 13px !important;
 }
 .big-blue-btn, .mid-blue-btn{
 background:#03a9f4;
@@ -100,13 +102,13 @@ background:#00d12d;
 
 /* ТЕНЬ ---------------------------------------- box-shadow: 0 3px 9px rgba(0,0,0,.2); hover*/
 .shadow{
-	box-shadow: 0 1px 3px rgba(0,0,0,.28);
+	box-shadow: 0 1px 3px rgba(0,0,0,.2);
 }
 
 /* БОКСЫ ----------------------------------------*/
 .box{
 	background: rgb(255,255,255);
-	border-radius: 5px;
+	border-radius: 3px;
 	display: inline-block;
 	text-align: center;
 	/*margin: 2.8125rem 0;
@@ -127,7 +129,7 @@ background:#00d12d;
 .h1-black, .h1-white{
 font-size: 2.6rem;
 margin: 1.5rem 0px;
-font-weight:500;
+font-weight:300;
 line-height: 1.4;
 letter-spacing: 1px;
 }
@@ -140,7 +142,7 @@ color:rgba(255,255,255,1);
 
 .h2-black, .h2-white{
 font-size: 1.9rem;
-font-weight: 500;
+font-weight: 300;
 line-height: 1.5;
 }
 

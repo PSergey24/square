@@ -65,14 +65,14 @@ if (!Yii::$app->user->getIsGuest()) {
                     url: '/court/bookmark',
                     data: {court_id: id},
                     success: function(success) {
-                        if ($('#bookmark span').text() == 'Удалить из избранного') {
-                            $('.mid-green-btn i').removeClass('fa-star');
-                            $('.mid-green-btn i').addClass('fa-star-o');
-                            $('#bookmark span').text('Добавить в избранное');
+                        if ($('#bookmark span').text() == 'Удалить площадку') {
+                            $('#bookmark  i').removeClass('fa-star');
+                            $('#bookmark  i').addClass('fa-star-o');
+                            $('#bookmark span').text('Добавить площадку');
                         }else {
-                            $('.mid-green-btn i').removeClass('fa-star-o');
-                            $('.mid-green-btn i').addClass('fa-star');
-                            $('#bookmark span').text('Удалить из избранного');  
+                            $('#bookmark  i').removeClass('fa-star-o');
+                            $('#bookmark  i').addClass('fa-star');
+                            $('#bookmark span').text('Удалить площадку');  
                         }
                         
                     },
@@ -191,98 +191,168 @@ $this->registerJs("
 
 ?>
 
-<div class="container-fluid top">
-    <div class="container s">
-        <h2 class="h2-white" style="position:relative;"><?= $court['address'] ?></h2>
-        <div >
-            <?php
-            if ($court['type_id'] != 1)
-                echo Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), [
-                    'class' => 'tag'
-                ]);
-            else
-                echo Html::a('Баскетбол', Url::to(['/court', 'sport_type' => 1], true), [
-                    'class' => 'tag'
-                ]);;
-            ?>
+<div class="container-fluid top ">
+    <div class="container">
+        <h2 class="name visible-xs col-xs-12" style="position:relative;"><?= $court['address'] ?>
+        <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
+        <div class="visible-xs col-xs-12">
+            <a href="/court" class="tag">Футбол</a>
         </div>
-        <div class="description ">
-            <a id="description_link" href="javascript:void(0)" title="" rel="nofollow" class="link">Описание
-                площадки</a><?= Html::img('@web/img/down.png', ['class' => 'arrow', 'id' => '1']) ?>
-            <div class="description-text" id="description" style="display: none">
-                <p>Классная площадка, с искусстенным газоном. Есть хорошие баскетбольные кольца. Так же есть 2 беговые
-                    дорожки. Ворота без сетки, но игре это особо не мешает.</p>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-xs-12 shadow" id="map"></div>
+        </div>
+        <h2 class="name visible-sm col-sm-6" style="position:relative;"><?= $court['address'] ?>
+        <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
+        <div class="visible-sm col-sm-6">
+            <a href="/court" class="tag">Футбол</a>
+        </div>
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 wrapper">
+            <h2 class="name col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs" style="position:relative;"><?= $court['address'] ?>
+                <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
+            <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
+                <a href="/court" class="tag">Футбол</a>
             </div>
-        </div>
-        <div class="buttons">
-            <a class="mid-green-btn shadow" id="bookmark">
-                <?php if ($bookmarked) : ?>
-                    <i class="fa fa-star fa-lg" aria-hidden="true"></i>
-                    <span class="hidden-xs">Удалить из избранного</span>
-                <?php else:?>
-                    <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
-                    <span class="hidden-xs">Добавить в избранное</span>
-                <?php endif;?>
-            </a>
-            <button class="mid-blue-btn shadow" id="like">
-                <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i>
-                <span class="hidden-xs">Мне нравится</span>
-                <span class="players"><?= $likes_count ?></span>
-            </button>
+            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
+                    <div class="menu">
+                        <div class="item" id="bookmark">
+                                <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
+                                <span class="hidden-xs">Добавить площадку</span>
+                        </div>
+                        <div class="item" id="like">
+                            <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="players"><?= $likes_count ?></span>
+                        </div>
+                        <div class="item selected tab">
+                            <span>Площадка</span>
+                        </div>
+                        <div class="item tab">
+                            <span>Описание</span>
+                        </div>
+                        <div class="social">
+                            <span class="hidden-xs">Позови друзей:</span>
+                            <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
 </div>
 
+    
+<div class="container" id="tab2">
+    <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 description">
+        <h3>Краткое описание</h3>
+        <p>Классная площадка с двумя воротами и баскетбольными кольцами. Покрытие качественнное, кажется - искусвенный газон.
+            Народ собирается по выходным, но бывает и на буднях.</p>
+        <h3>Адрес</h3>
+        <p class="adress">Большой Казачий пер., уч. 2 (юго-восточнее дома 10, лит. А)</p>
+        <span class="red"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Редактировать площадку</span>
+    </div>
 
-<div class="container">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
-        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow" id="map">
+    
+    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии с игр 
+        <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
+        <div class="clear"></div>
+    </h3>
+    <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
+        <div class="more">Еще...</div>      
+    </div>
+</div>
 
+<div class="container" id="tab1">
+    <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 chatWrap">
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
+            <div class="header"><div class="menu">Чат площадки</div></div>
         </div>
     </div>
-    <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
-        <h2 class="h2-box">Ближайшие игры</h2>
-        <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
-        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
-            
-        <?php
-            if($games) {
-                foreach ($games as $game) {
-                    echo '<div class="game" data-block-game="'.$game['id'].'">
-                        <div class="time">';
-                    $tm = strtotime($game['time']);
-                    $current_datetime = new DateTime();
-                    $current_datetime = date_format($current_datetime, 'Y-m-d');
-                    $tm_current = strtotime($current_datetime);
-                    if (date("d", $tm) == date("d", $tm_current))
-                        echo 'Сегодня ' . date("H:i", $tm);
-                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
-                        echo 'Завтра ' . date("H:i", $tm);
-                    else
-                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
 
-                    echo '</div>';
-                    if (!$game['need_ball'] == 1)
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
-                    else
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                    echo '<button class="mid-blue-btn join" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
-
-                }
-            }
-            else echo '<p class="nogames">В ближайшее время игр нет :(</p>';
-            ?>
+    <div class="gamesWrap">
+        <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
+            <div class="header"><div class="menu">Ближайшие игры</div></div>
+                <div class="game">
+                    <div class="gameTop">
+                        <span class="number">1.</span>
+                        <span class="time">Сегодня, 18:45</span>
+                        <div class="social">
+                            <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="people">
+                        <p>Игроков:<span class="count"> 2</span></p>
+                        <div class="scroll">
+                            <div class="right"></div>
+                            <div class="circle">
+                                <div class="plus man"><span>+</span></div>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="gameType">Игра:<span>Футбол</span></div>
+                        <div class="ballType">Мяч:<span>Есть</span></div>
+                    </div>
+                </div>
+                <div class="game">
+                    <div class="gameTop">
+                        <span class="number">1.</span>
+                        <span class="time">Сегодня, 18:45</span>
+                        <div class="social">
+                            <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                    <div class="people">
+                        <p>Игроков:<span class="count"> 2</span></p>
+                        <div class="scroll">
+                            <div class="right"></div>
+                            <div class="circle">
+                                <div class="plus man"><span>+</span></div>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bottom">
+                        <div class="gameType">Игра:<span>Футбол</span></div>
+                        <div class="ballType">Мяч:<span>Есть</span></div>
+                    </div>
+                </div>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
-        <div class="social">
-            <span>ПОЗОВИ ДРУЗЕЙ НА ПЛОЩАДКУ</span><br> 
-            <a href="#"><i class="fa fa-vk fa-lg" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
-        </div>
-        <?php Pjax::end(); ?>
-
     </div>
+</div>
+
+
+
+
+
 
 <?php if (Yii::$app->user->isGuest): ?>
     <div class="modal fade bs-example-modal-lg needLogin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"

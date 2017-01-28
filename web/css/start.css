@@ -24,12 +24,12 @@ body{
 	margin-top: 9rem;
 }
 .text{
-	font-size: 1.5rem;
+	font-size: 1.25rem;
 	margin-top: 1rem;
 	color: rgb(255,255,255);
 	max-width: 800px;
 	display: inline-block;
-	line-height: 1.6;
+	line-height: 1.54;
 	padding: 0 1rem;
 	font-weight: 300;
 
@@ -97,8 +97,8 @@ i:hover{
 .mid{
 	text-align: center;
 }
-.mid .h1-black{
-	margin: 2rem ;
+.mid .h2-black{
+	margin: 2rem !important;
 }
 .kv-is{
 	font-size: 1.125rem;
@@ -118,7 +118,7 @@ i:hover{
 	background:url('../img/bg-join.png');
 	background-repeat:  repeat;
 }
-.bg .h1-white{
+.bg .h2-white{
 	margin-top: 2.5rem;
 	margin-bottom:1.5rem;
 }
