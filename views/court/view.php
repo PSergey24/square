@@ -28,7 +28,7 @@ $this->registerJs("
     function initMap() {
         var latlng = new google.maps.LatLng(court.lat, court.lon);
         var options = {
-            zoom: 15,
+            zoom: 11,
             center: latlng,
             mapTypeControl: true,
             mapTypeControlOptions: {
@@ -55,6 +55,12 @@ $this->registerJs("
         });
     }
 ", $this::POS_HEAD);
+
+$this->registerJsFile(
+    '@web/js/courtView.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
+
 if (!Yii::$app->user->getIsGuest()) {
     $this->registerJs("
         //Bookmark btn onclick change pic and text
@@ -197,14 +203,61 @@ $this->registerJs("
     }
 ");
 
+$this->registerJs("
+    function people(game,symbol){
+
+        $.ajax({
+            type: 'POST',
+            url: '/game/player',
+            data: 'game='+game+'&&symbol='+symbol,
+            success: function(data){
+                if(data == 'Вы не авторизованы')
+                    alert(data);
+                else{
+                    var result = data.split('|');
+                    if(result[1] == 0)
+                    {
+                        $('[data-id-game='+result[0]+']').remove();
+                        var n = $('[data-num-game]').attr('data-num-game');
+                        n = n - 1;
+                        $('[data-num-game]').attr('data-num-game',n);
+                    }
+                    else{
+                        $('[data-id-game='+result[0]+'] .circle a').remove();
+                        $('[data-id-game='+result[0]+'] .playersMap a').remove();
+                        if(result[2] == '-')
+                        {
+                            $('[data-id-game-plus='+result[0]+'] span').html('+');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'+\')');
+                        }
+                        else{
+                            $('[data-id-game-plus='+result[0]+'] span').html('-');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'-\')');
+                        }
+                        $('[data-id-game='+result[0]+'] .count').html(result[1]);
+                        
+                        
+                        $('[data-id-game='+result[0]+'] .circle').append(result[3]);
+                        
+                    }
+                }
+            },
+            error:  function(data){
+                    alert('Ошибка: '+data);
+            }
+        });
+    }
+
+", $this::POS_HEAD);
+
 ?>
 
-<div class="container-fluid top ">
+<div class="container-fluid top">
     <div class="container">
         <h2 class="name visible-xs col-xs-12" style="position:relative;"><?= $court['address'] ?>
         <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
         <div class="visible-xs col-xs-12">
-            <a href="/court" class="tag">Футбол</a>
+            <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-xs-12 shadow" id="map"></div>
@@ -212,13 +265,13 @@ $this->registerJs("
         <h2 class="name visible-sm col-sm-6" style="position:relative;"><?= $court['address'] ?>
         <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
         <div class="visible-sm col-sm-6">
-            <a href="/court" class="tag">Футбол</a>
+            <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 wrapper">
             <h2 class="name col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs" style="position:relative;"><?= $court['address'] ?>
                 <i class="fa fa-exclamation-triangle report" aria-hidden="true"></i></h2>
             <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
-                <a href="/court" class="tag">Футбол</a>
+                <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
             </div>
             <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
@@ -235,10 +288,10 @@ $this->registerJs("
                         <div class="item" id="like">
                             <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="players"><?= $likes_count ?></span>
                         </div>
-                        <div class="item selected tab">
+                        <div class="item selected tab" data-tab="1">
                             <span>Площадка</span>
                         </div>
-                        <div class="item tab">
+                        <div class="item tab" data-tab="2">
                             <span>Описание</span>
                         </div>
                         <div class="social">
@@ -255,7 +308,7 @@ $this->registerJs("
 </div>
 
     
-<div class="container" id="tab2">
+<div class="container tab-hidden" id="tab2">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 description">
         <h3>Краткое описание</h3>
         <p>Классная площадка с двумя воротами и баскетбольными кольцами. Покрытие качественнное, кажется - искусвенный газон.
@@ -289,108 +342,21 @@ $this->registerJs("
             <div class="header"><div class="menu">Чат площадки</div></div>
         </div>
     </div>
-<!--     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
-        <h2 class="h2-box">Ближайшие игры</h2>
-        <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
-        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
-            
-        <?php
-            if($games) {
-                foreach ($games as $game) {
-                    echo '<div class="game" data-block-game="'.$game['id'].'">
-                        <div class="time">';
-                    $tm = strtotime($game['time']);
-                    $current_datetime = new DateTime();
-                    $current_datetime = date_format($current_datetime, 'Y-m-d');
-                    $tm_current = strtotime($current_datetime);
-                    if (date("d", $tm) == date("d", $tm_current))
-                        echo 'Сегодня ' . date("H:i", $tm);
-                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
-                        echo 'Завтра ' . date("H:i", $tm);
-                    else
-                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
 
-                    echo '</div>';
-                    if (!$game['need_ball'] == 1)
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
-                    else
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                    echo '<button class="mid-blue-btn" onclick="plus('.$game['id'].',\''.$game['plus'].'\')" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
-                }
-            }
-        ?>  Это нужно было удалить-->
 
     <div class="gamesWrap">
         <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
             <div class="header"><div class="menu">Ближайшие игры</div></div>
-                <div class="game">
-                    <div class="gameTop">
-                        <span class="number">1.</span>
-                        <span class="time">Сегодня, 18:45</span>
-                        <div class="social">
-                            <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                    <div class="people">
-                        <p>Игроков:<span class="count"> 2</span></p>
-                        <div class="scroll">
-                            <div class="right"></div>
-                            <div class="circle">
-                                <div class="plus man"><span>+</span></div>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <div class="gameType">Игра:<span>Футбол</span></div>
-                        <div class="ballType">Мяч:<span>Есть</span></div>
-                    </div>
-                </div>
-                <div class="game">
-                    <div class="gameTop">
-                        <span class="number">1.</span>
-                        <span class="time">Сегодня, 18:45</span>
-                        <div class="social">
-                            <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                    <div class="people">
-                        <p>Игроков:<span class="count"> 2</span></p>
-                        <div class="scroll">
-                            <div class="right"></div>
-                            <div class="circle">
-                                <div class="plus man"><span>+</span></div>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bottom">
-                        <div class="gameType">Игра:<span>Футбол</span></div>
-                        <div class="ballType">Мяч:<span>Есть</span></div>
-                    </div>
-                </div>
+                    <?php 
+                    foreach ($games as $i => $game) { $i++; ?>
+                        <?= $this->render('_game', [
+                            'i' => $i,
+                            'game' => $game,
+                            'users' => $users
+                        ]) ?>
+                    <?php }  ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
-
-       <!--  <?php Pjax::end(); ?> Это тоже удалить-->
     </div>
 </div>
 

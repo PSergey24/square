@@ -361,7 +361,7 @@ input::-webkit-inner-spin-button {
 	background-color: #00AE2F !important;
 }
 .football .plus{
-	border: 2px solid #57C815 !important;
+	border: 2px solid #00AE2F !important;
 }
 .football .plus span{
 	color: #00AE2F !important;
@@ -373,7 +373,7 @@ input::-webkit-inner-spin-button {
 	background-color: #FF9800 !important;
 }
 .basketball .plus{
-	border: 2px solid #FAA225 !important;
+	border: 2px solid #FF9800 !important;
 }
 .basketball .plus span{
 	color: #FF9800 !important;

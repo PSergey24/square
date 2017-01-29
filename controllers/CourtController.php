@@ -135,6 +135,7 @@ class CourtController extends Controller
      */
     public function actionView($id)
     {
+        $users = array();
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
         // $id = 177;
         // получаем id авторизованного пользователя
@@ -147,22 +148,29 @@ class CourtController extends Controller
             ->select('id, address, type_id, name, lat, lon')
             ->where(['id' => $id])
             ->one();
+        $courtSport = SportType::find()
+            ->select('name')
+            ->where(['id' => $court['type_id']])
+            ->one();
 
         $query = new Query;
-        $query->select('game.id as id,time, need_ball,COUNT(game_id) as count')
-            ->from('game,game_user')
+        $query->select('game.id as id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count')
+            ->from('game,game_user,sport_type')
             ->where(['court_id' => $id])
             ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
-            ->andWhere('game.id = game_user.game_id');
+            ->andWhere('game.id = game_user.game_id')
+            ->andWhere('sport_type_id = sport_type.id');
         $games = $query->groupBy('game.id')->orderBy('time')->all();
 
         $i = 0;
         foreach ($games as $gameItem) {
                 $queryPlayer = new Query;
-                $queryPlayer->select('user_id')
-                    ->from('game_user')
-                    ->where(['game_id' => $gameItem['id']]);
-                $players = $queryPlayer->all();
+                $queryPlayer->select('game_user.user_id as user_id, picture')
+                    ->from('game_user, profile')
+                    ->where(['game_id' => $gameItem['id']])
+                    ->andWhere('game_user.user_id = profile.user_id');
+                $players = $queryPlayer->orderBy('game_user.id desc')->all();
+                array_push($users,$players);
                 $plus = '+';
                 foreach ($players as $player) {
                     if($player['user_id'] == $userAuth)
@@ -182,7 +190,9 @@ class CourtController extends Controller
             'model' => $this->findModel($id),
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
+            'users' => $users,
             'court' => $court->getAttributes(),
+            'courtSport' => $courtSport,
             'court_json' => json_encode($court->getAttributes()),
             'bookmarked' => $bookmarked,
             'likes_count' => $likes_count
