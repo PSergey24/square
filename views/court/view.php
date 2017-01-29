@@ -224,8 +224,13 @@ $this->registerJs("
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="menu">
                         <div class="item" id="bookmark">
+                            <?php if ($bookmarked) : ?>
+                                <i class="fa fa-star fa-lg" aria-hidden="true"></i>
+                                <span class="hidden-xs">Удалить площадку</span>
+                            <?php else:?>
                                 <i class="fa fa-star-o fa-lg" aria-hidden="true"></i>
                                 <span class="hidden-xs">Добавить площадку</span>
+                            <?php endif;?>
                         </div>
                         <div class="item" id="like">
                             <i class="fa fa-heart-o fa-lg" aria-hidden="true"></i><span class="players"><?= $likes_count ?></span>
