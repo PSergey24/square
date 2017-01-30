@@ -162,3 +162,17 @@ h1,h2{
 .activity, .activity tr,.activity td, .activity th{
 	border:1px solid black;
 }
+
+
+/* Жалобы на площадки */
+
+.tableReport{
+	border-collapse: collapse;
+}
+.tableReport th,.tableReport td{
+	text-align: center;
+	padding:10px;
+}
+.tableReport, .tableReport tr,.tableReport td, .tableReport th{
+	border:1px solid black;
+}

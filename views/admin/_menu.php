@@ -44,6 +44,10 @@ use yii\bootstrap\Nav;
             'url'     => ['/admin/stat'],
         ],
         [
+            'label'   => Yii::t('user', 'Жалобы на площадки'),
+            'url'     => ['/admin/report_courts'],
+        ],
+        [
             'label'   => Yii::t('user', 'Модерация площадок'),
             'url'     => ['/admin/courtmod'],
         ],

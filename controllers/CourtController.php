@@ -16,6 +16,7 @@ use app\models\CourtBookmark;
 use app\models\CourtType;
 use app\models\CourtPhoto;
 use app\models\Court;
+use app\models\Report;
 use app\models\Game;
 use app\models\GameUser;
 use app\models\DistrictCity;
@@ -136,6 +137,7 @@ class CourtController extends Controller
      */
     public function actionView($id)
     {
+        $modelReport = new Report();
         $users = array();
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
 
@@ -193,7 +195,9 @@ class CourtController extends Controller
             ->all())
         ;
         return $this->render('view', [
+            'id' => $id,
             'model' => $this->findModel($id),
+            'modelReport' => $modelReport,
             'model_form_game_create' => $model_form_game_create,
             'games' => $games,
             'users' => $users,

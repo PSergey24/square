@@ -6,6 +6,7 @@ use Yii;
 use app\models\Game;
 use app\models\Profile2;
 use app\models\Court;
+use app\models\Report;
 use app\models\SportType;
 use app\models\GameUser;
 use app\models\CourtPhoto;
@@ -435,6 +436,14 @@ class AdminController extends AdminController
 
         return $this->render('activityuser',[
             'rows' => $rows
+        ]);
+    }
+    public function actionReport_courts()
+    {
+        $reportObject = Yii::createObject(Report::className());
+        $report = $reportObject->find()->all();
+        return $this->render('report_courts',[
+            'report' => $report,
         ]);
     }
 }
