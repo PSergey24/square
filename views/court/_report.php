@@ -14,17 +14,17 @@ use yii\helpers\ArrayHelper;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($modelReport, 'court_id')->textInput(['readonly' => true, 'value' => $id])->hiddenInput()->label(false) ?>
+    <?php echo $form->field($modelReport, 'court_id')->hiddenInput(['value' => $id])->label(false); ?>
 
     <?= $form->field($modelReport, 'title')->textInput(['maxlength' => true,'placeholder' => 'Введите тему жалобы'])->label(false) ?>
 
     <?= $form->field($modelReport, 'description')->textArea(['rows' => 6,'placeholder' => 'Напишите суть жалобы'])->label(false) ?>
 
-    <?= $form->field($modelReport, 'user_id')->textInput(['readonly' => true, 'value' => Yii::$app->user->identity->getId()])->hiddenInput()->label(false) ?>
+    <?php echo $form->field($modelReport, 'user_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
 
-    <!-- <div class="form-group"> -->
+    <div class="form-group">
         <?= Html::submitButton('Пожаловаться',['class' => 'mid-green-btn']) ?>
-    <!-- </div> -->
+    </div>
 
     <?php ActiveForm::end(); ?>
 

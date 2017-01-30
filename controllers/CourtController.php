@@ -138,76 +138,82 @@ class CourtController extends Controller
     public function actionView($id)
     {
         $modelReport = new Report();
-        $users = array();
-        $model_form_game_create = Yii::createObject(GameCreateForm::className());
 
-        // получаем id авторизованного пользователя
-        if(Yii::$app->user->identity)
-            $userAuth = Yii::$app->user->identity->getId();
-        else
-            $userAuth = 0;
+        if ($modelReport->load(Yii::$app->request->post()) && $modelReport->save()) {
+            return $this->redirect(['view', 'id' => $modelReport->court_id]);
+        } else {
 
-        $court = Court::find()
-            ->select('id, address, type_id, name, lat, lon, description')
-            ->where(['id' => $id])
-            ->one();
-        $courtSport = SportType::find()
-            ->select('name')
-            ->where(['id' => $court['type_id']])
-            ->one();
-        $courtPhoto = courtPhoto::find()
-            ->select('photo')
-            ->where(['court_id' => $id])
-            ->andWhere('approved = 0')
-            ->all();
+            $users = array();
+            $model_form_game_create = Yii::createObject(GameCreateForm::className());
 
-        $query = new Query;
-        $query->select('game.id as id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count')
-            ->from('game,game_user,sport_type')
-            ->where(['court_id' => $id])
-            ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
-            ->andWhere('game.id = game_user.game_id')
-            ->andWhere('sport_type_id = sport_type.id');
-        $games = $query->groupBy('game.id')->orderBy('time')->all();
+            // получаем id авторизованного пользователя
+            if(Yii::$app->user->identity)
+                $userAuth = Yii::$app->user->identity->getId();
+            else
+                $userAuth = 0;
 
-        $i = 0;
-        foreach ($games as $gameItem) {
-                $queryPlayer = new Query;
-                $queryPlayer->select('game_user.user_id as user_id, picture')
-                    ->from('game_user, profile')
-                    ->where(['game_id' => $gameItem['id']])
-                    ->andWhere('game_user.user_id = profile.user_id');
-                $players = $queryPlayer->orderBy('game_user.id desc')->all();
-                array_push($users,$players);
-                $plus = '+';
-                foreach ($players as $player) {
-                    if($player['user_id'] == $userAuth)
-                        $plus = '-';
-                }
-                $games[$i]['plus'] = $plus;
-            $i++;
+            $court = Court::find()
+                ->select('id, address, type_id, name, lat, lon, description')
+                ->where(['id' => $id])
+                ->one();
+            $courtSport = SportType::find()
+                ->select('name')
+                ->where(['id' => $court['type_id']])
+                ->one();
+            $courtPhoto = courtPhoto::find()
+                ->select('photo')
+                ->where(['court_id' => $id])
+                ->andWhere('approved = 0')
+                ->all();
+
+            $query = new Query;
+            $query->select('game.id as id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count')
+                ->from('game,game_user,sport_type')
+                ->where(['court_id' => $id])
+                ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+                ->andWhere('game.id = game_user.game_id')
+                ->andWhere('sport_type_id = sport_type.id');
+            $games = $query->groupBy('game.id')->orderBy('time')->all();
+
+            $i = 0;
+            foreach ($games as $gameItem) {
+                    $queryPlayer = new Query;
+                    $queryPlayer->select('game_user.user_id as user_id, picture')
+                        ->from('game_user, profile')
+                        ->where(['game_id' => $gameItem['id']])
+                        ->andWhere('game_user.user_id = profile.user_id');
+                    $players = $queryPlayer->orderBy('game_user.id desc')->all();
+                    array_push($users,$players);
+                    $plus = '+';
+                    foreach ($players as $player) {
+                        if($player['user_id'] == $userAuth)
+                            $plus = '-';
+                    }
+                    $games[$i]['plus'] = $plus;
+                $i++;
+            }
+
+            $bookmarked = $this->isBookmarked($id) ? true : false;
+            $likes_count = count(Yii::createObject(CourtLikes::className())
+                ->find()
+                ->where(['court_id' => $id])
+                ->all())
+            ;
+            return $this->render('view', [
+                'id' => $id,
+                'model' => $this->findModel($id),
+                'modelReport' => $modelReport,
+                'model_form_game_create' => $model_form_game_create,
+                'games' => $games,
+                'users' => $users,
+                'court' => $court->getAttributes(),
+                'courtSport' => $courtSport,
+                'courtPhoto' => $courtPhoto,
+                'court_json' => json_encode($court->getAttributes()),
+                'bookmarked' => $bookmarked,
+                'likes_count' => $likes_count
+            ]);
         }
-
-        $bookmarked = $this->isBookmarked($id) ? true : false;
-        $likes_count = count(Yii::createObject(CourtLikes::className())
-            ->find()
-            ->where(['court_id' => $id])
-            ->all())
-        ;
-        return $this->render('view', [
-            'id' => $id,
-            'model' => $this->findModel($id),
-            'modelReport' => $modelReport,
-            'model_form_game_create' => $model_form_game_create,
-            'games' => $games,
-            'users' => $users,
-            'court' => $court->getAttributes(),
-            'courtSport' => $courtSport,
-            'courtPhoto' => $courtPhoto,
-            'court_json' => json_encode($court->getAttributes()),
-            'bookmarked' => $bookmarked,
-            'likes_count' => $likes_count
-        ]);
     }
 
     public function actionButton_plus()
