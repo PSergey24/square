@@ -391,9 +391,9 @@ h3{
 	padding-left: 2px !important;
 }
 .photo{
-	height: 170px;
-	padding-top: 15px;
-	padding-bottom: 15px;
+	height: 155px;
+	background-size: cover;
+	background-position: center;
 }
 
 
@@ -535,7 +535,7 @@ input[type="checkbox"]:checked {
 }
 @media (min-width: 992px) and (max-width: 1199px) {
 	.photo{
-		height: 150px;
+		height: 135px;
 	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
@@ -544,7 +544,7 @@ input[type="checkbox"]:checked {
     	font-size: 20px !important;
     }
     	.photo{
-		height: 155px;
+		height: 140px;
 	}
 	.chatWrap{
 		padding-right: 30px !important;

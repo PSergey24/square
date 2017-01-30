@@ -311,28 +311,35 @@ $this->registerJs("
 <div class="container tab-hidden" id="tab2">
     <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12 description">
         <h3>Краткое описание</h3>
-        <p>Классная площадка с двумя воротами и баскетбольными кольцами. Покрытие качественнное, кажется - искусвенный газон.
-            Народ собирается по выходным, но бывает и на буднях.</p>
+        <?php
+            if($court['description'] != NULL)
+                echo '<p>'.$court['description'].'</p>';
+            else
+                echo '<p>Описание у данной площадки отсутствует. Вы можете его написать.</p>'
+            
+        ?>
         <h3>Адрес</h3>
-        <p class="adress">Большой Казачий пер., уч. 2 (юго-восточнее дома 10, лит. А)</p>
+        <p class="address"><?= $court['address'] ?></p>
         <span class="red"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Редактировать площадку</span>
     </div>
 
     
-    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии с игр 
+    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии с площадок 
         <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
         <div class="clear"></div>
     </h3>
     <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <img src="/img/uploads/nick.jpg" class="photo col-lg-3 col-md-3 col-sm-4 col-xs-6">
-        <div class="more">Еще...</div>      
+        <?php
+        if(count($courtPhoto) > 0)
+        {
+            foreach ($courtPhoto as $photo) {
+                echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photo"></div></div>';
+           }
+        }else{
+            echo '<p>Фотографии на данной площадке отсутсвуют. Стань первым, кто их добавит!</p>';
+        }
+        ?>
+        <!-- <div class="more">Еще...</div>       -->
     </div>
 </div>
 

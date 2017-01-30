@@ -14,6 +14,7 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use app\models\CourtBookmark;
 use app\models\CourtType;
+use app\models\CourtPhoto;
 use app\models\Court;
 use app\models\Game;
 use app\models\GameUser;
@@ -137,7 +138,7 @@ class CourtController extends Controller
     {
         $users = array();
         $model_form_game_create = Yii::createObject(GameCreateForm::className());
-        // $id = 177;
+
         // получаем id авторизованного пользователя
         if(Yii::$app->user->identity)
             $userAuth = Yii::$app->user->identity->getId();
@@ -145,13 +146,18 @@ class CourtController extends Controller
             $userAuth = 0;
 
         $court = Court::find()
-            ->select('id, address, type_id, name, lat, lon')
+            ->select('id, address, type_id, name, lat, lon, description')
             ->where(['id' => $id])
             ->one();
         $courtSport = SportType::find()
             ->select('name')
             ->where(['id' => $court['type_id']])
             ->one();
+        $courtPhoto = courtPhoto::find()
+            ->select('photo')
+            ->where(['court_id' => $id])
+            ->andWhere('approved = 0')
+            ->all();
 
         $query = new Query;
         $query->select('game.id as id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count')
@@ -193,6 +199,7 @@ class CourtController extends Controller
             'users' => $users,
             'court' => $court->getAttributes(),
             'courtSport' => $courtSport,
+            'courtPhoto' => $courtPhoto,
             'court_json' => json_encode($court->getAttributes()),
             'bookmarked' => $bookmarked,
             'likes_count' => $likes_count

@@ -52,7 +52,7 @@ class Court extends \yii\db\ActiveRecord
             [['lat', 'lon', 'creator_id', 'approved'], 'required'],
             ['address', 'required', 'message' => 'Установите маркер на карте'],
             ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
-            ['name', 'required', 'message' => 'Опишите площадку'],
+            ['name', 'required', 'message' => 'Напишите название площадки'],
             ['type_id', 'required', 'message' => 'Не выбран тип площадки'],
             ['district_city_id', 'required', 'message' => 'Не выбран район города'],
             [['lat', 'lon'], 'number'],
@@ -80,6 +80,7 @@ class Court extends \yii\db\ActiveRecord
             'district_city_id' => 'Район',
             'type_id' => 'Тип площадки',
             'approved' => 'Approved',
+            'description' => 'Описание'
         ];
     }
 
