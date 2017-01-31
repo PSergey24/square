@@ -203,13 +203,13 @@
     transition: ease-out 0.2s;
 }
 .plus{
-	border: 2px solid #3F51B5;
+	border: 2px solid #004CA3;
 }
 .minus{
 	border: 2px solid #EF5350;
 }
 .plus:hover {
-	background: #3F51B5 !important;
+	background: #004CA3 !important;
 }
 .minus:hover {
 	background: #EF5350 !important;
@@ -228,7 +228,7 @@
     transition: ease-out 0.2s;
 }
 .plus span{
-	color: #3F51B5;
+	color: #004CA3;
 }
 .minus span{
 	color: #D32F2F;
@@ -236,6 +236,9 @@
 .bottom {
 	font-size: 12px;
 	padding: 9px 0px;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .bottom div{
 	display: inline-block;
@@ -243,7 +246,7 @@
 .bottom span{
 	margin-left: 4px;
 	margin-right: 9px;
-	color: #3F51B5;
+	color: #004CA3;
 	font-weight: 400;
 }
 .arrow{
@@ -302,7 +305,6 @@
 
 .games .mid-green-btn{
 	margin-top: 15px;
-	padding:9px 22px !important;
 	font-size: 13px;
 	font-weight: 400;
 	margin-bottom: 12px;
