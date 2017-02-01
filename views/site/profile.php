@@ -5,6 +5,7 @@ use app\assets\AppAsset;
 use yii\helpers\Url;
 use app\models\Profile;
 
+$this->title = 'Личный профиль пользователя. '.$username;
 $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
