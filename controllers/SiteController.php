@@ -55,6 +55,13 @@ class SiteController extends Controller
     public function actionProfile() {
         if(!Yii::$app->user->identity)
             die('Вы не авторизованы');
+
+        $users = array();
+        // получаем id авторизованного пользователя
+            if(Yii::$app->user->identity)
+                $userAuth = Yii::$app->user->identity->getId();
+            else
+                $userAuth = 0;
         $query = new Query();
         $query_games = new Query();
         $user_id = Yii::$app->user->getId();
@@ -80,34 +87,77 @@ class SiteController extends Controller
                 $photo[$i]['photo'] = 'defaultCourt.jpg';
             $i++;
         }
-        $games = [];
 
-            $query_games->select('court.id as court_id, address, time, need_ball')
-                ->from('court,game,game_user')
-                ->where(['user_id' => $user_id])
-                ->andWhere('game_id = game.id')
-                ->andWhere('court_id = court.id')
-                ->andWhere(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
-                ->orderBy('time');
-            $game_rows = $query_games->all();
+        // выборка игр, в которых участвует пользователь
+        $query = new Query;
+        $query->select('game.id as id,game_id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count,address,court_id')
+              ->from('game_user,game,sport_type,court')
+              ->where(['user_id' => $userAuth])
+              ->andWhere('game_id = game.id')
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+              ->andWhere('court_id = court.id')
+              ->andWhere('sport_type_id = sport_type.id');
+        $games = $query->groupBy('game.id')->orderBy('time')->all();
 
-            foreach ($game_rows as $row) {
-                $tm = strtotime($row['time']);
-                $current_datetime = new DateTime();
-                $current_datetime = date_format($current_datetime, 'Y-m-d');
-                $tm_current = strtotime($current_datetime);
-                if (date("d", $tm) == date("d", $tm_current))
-                    $row['time'] = 'Сегодня ' . date("H:i", $tm);
-                elseif(date("d", $tm) == date(date("d")+1, $tm_current))
-                    $row['time'] = 'Завтра ' . date("H:i", $tm);
-                else
-                    $row['time'] = date("d.m.Y", $tm) ." ".date("H:i", $tm);
-                array_push($games, $row);
+            $i = 0;
+            foreach ($games as $gameItem) {
+                    $queryPlayer = new Query;
+                    $queryPlayer->select('game_user.user_id as user_id, picture')
+                        ->from('game_user, profile')
+                        ->where(['game_id' => $gameItem['id']])
+                        ->andWhere('game_user.user_id = profile.user_id');
+                    $players = $queryPlayer->orderBy('game_user.id desc')->all();
+                    array_push($users,$players);
+                    $plus = '+';
+                    foreach ($players as $player) {
+                        if($player['user_id'] == $userAuth)
+                            $plus = '-';
+                    }
+                    $games[$i]['plus'] = $plus;
+                $i++;
             }
+        // конец выборки игр, в которых участвует пользователь
+
+        // выборка игр с площадок пользователя. Но в них он еще не участвует
+        $query2 = new Query;
+        $query2->select('game.id as id,game_id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count,address,game.court_id as court_id')
+              ->from('game_user,game,sport_type,court,court_bookmark')
+              ->where(['court_bookmark.user_id' => $userAuth])
+              ->andWhere('court_bookmark.court_id = game.court_id')
+              ->andWhere('game_id = game.id')
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+              ->andWhere('game.court_id = court.id')
+              ->andWhere('sport_type_id = sport_type.id');
+        $games2 = $query2->groupBy('game.id')->orderBy('time')->all();
+
+            foreach ($games2 as $gameItem) {
+                    $queryPlayer = new Query;
+                    $queryPlayer->select('game_user.user_id as user_id, picture')
+                        ->from('game_user, profile')
+                        ->where(['game_id' => $gameItem['id']])
+                        ->andWhere('game_user.user_id = profile.user_id');
+                    $players = $queryPlayer->orderBy('game_user.id desc')->all();
+
+                    $flag = 0;
+                    foreach ($players as $player) {
+                        if($player['user_id'] == $userAuth)
+                            $flag = 1;
+                    }
+                    if($flag == 0)
+                    {
+                        array_push($users,$players);
+                        $games[$i] = $gameItem;
+                        $games[$i]['plus'] = '+';
+                    }
+                $i++;
+            }
+        // конец выборки игр с площадок пользователя. Но в них он еще не участвует
+
              
         return $this->render('profile.php', [
             'courts' => $courts,
             'games' => $games,
+            'users' => $users,
             'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
             'photo' => $photo,
         ]);

@@ -1,16 +1,18 @@
-<!-- страница карточек с играми-->
+<!-- страница карточек с играми в профиле-->
 
 <div class="game <?php if($game["sport_type_id"] == 1){ echo 'basketball 1'; }elseif($game["sport_type_id"] == 2){ echo 'football';} ?>"  data-id-game="<?= $game['id']; ?>">
     <div class="gameTop">
-        <span class="number"><?= $i ?>.</span>
-        <span class="time"><?php 
+        <span class="number"><?= $n ?>.</span>
+        <span class="time">
+            <?php 
                     if(date_format(date_create($game['time']), 'd') == (date("d")+1))
                         echo 'Завтра, '.date_format(date_create($game['time']), 'H:i');
                     elseif(date_format(date_create($game['time']), 'd') == (date("d")))
                         echo 'Сегодня, '.date_format(date_create($game['time']), 'H:i');
                     else
                         echo date_format(date_create($game['time']), 'd-m H:i');
-        ?></span>
+            ?>
+        </span>
         <div class="social">
             <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
             <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
@@ -21,13 +23,13 @@
         <div class="scroll">
             <div class="right"></div>
             <div class="circle">
-                <div class="plus man" data-id-game-plus="<?= $game['id']; ?>" onclick="people(<?= $game['id']; ?>,'<?= $game['plus'] ?>')"><span><?= $game['plus'] ?></span></div>
+                <div class="plus man"  data-id-game-plus="<?= $game['id']; ?>" onclick="people(<?= $game['id']; ?>,'<?= $game['plus'] ?>')"><span><?= $game['plus'] ?></span></div>
                 <?php
                     if(Yii::$app->user->identity)
                         $userAuth = Yii::$app->user->identity->getId();
                     else
                         $userAuth = 0;
-                    foreach ($users[$i-1] as $j => $user) {
+                    foreach ($users[$n-1] as $j => $user) {
                         if($userAuth == $user['user_id'])
                             $link = '/profile';
                         else
@@ -42,5 +44,6 @@
     <div class="bottom">
         <div class="gameType">Игра:<span><?= $game['sport'] ?></span></div>
         <div class="ballType">Мяч:<span><?php if($game['need_ball'] == 1) echo 'Есть'; else echo 'Нет'; ?></span></div>
+        <a href="/court/<?= $game['court_id'] ?>" target="_blank"><span><?= $game['address'] ?></span></a>
     </div>
 </div>

@@ -19,6 +19,54 @@ $this->registerJsFile(
 
     $this->params['picture_href'] = Profile::getAvatar();
 
+
+$this->registerJs("
+    function people(game,symbol){
+
+        $.ajax({
+            type: 'POST',
+            url: '/game/player',
+            data: 'game='+game+'&&symbol='+symbol,
+            success: function(data){
+                if(data == 'Вы не авторизованы')
+                    alert(data);
+                else{
+                    var result = data.split('|');
+                    if(result[1] == 0)
+                    {
+                        $('[data-id-game='+result[0]+']').remove();
+                        var n = $('[data-num-game]').attr('data-num-game');
+                        n = n - 1;
+                        $('[data-num-game]').attr('data-num-game',n);
+                    }
+                    else{
+                        $('[data-id-game='+result[0]+'] .circle a').remove();
+                        $('[data-id-game='+result[0]+'] .playersMap a').remove();
+                        if(result[2] == '-')
+                        {
+                            $('[data-id-game-plus='+result[0]+'] span').html('+');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'+\')');
+                        }
+                        else{
+                            $('[data-id-game-plus='+result[0]+'] span').html('-');
+                            $('[data-id-game-plus='+result[0]+']').attr('onclick','people('+result[0]+',\'-\')');
+                        }
+                        $('[data-id-game='+result[0]+'] .count').html(result[1]);
+                        
+                        
+                        $('[data-id-game='+result[0]+'] .circle').append(result[3]);
+                        
+                    }
+                }
+            },
+            error:  function(data){
+                    alert('Ошибка: '+data);
+            }
+        });
+    }
+
+", $this::POS_HEAD);
+
 ?>
 
 <div class="container-fluid top">
@@ -81,82 +129,34 @@ $this->registerJsFile(
             <div class="gamesWrap col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-6 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box games shadow" id="game_list">
                     <div class="header"><div class="menu">Ближайшие игры</div></div>
+                    <?php 
+                    if(count($games) > 0)
+                    {
+                        $n = 0;
+                        foreach ($games as $game) { $n++;?>
+                            <?= $this->render('_game_profile', [
+                                'n' => $n,
+                                'game' => $game,
+                                'users' => $users
+                            ]) ?>
+                    <?php 
+                        }
+                    }else{
+                    ?>
                     <p class="noinfo">
                         <i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
                         <br>Пока что игр на твоих площадках нет,<br> так что создай игру сам :)
                     </p>
+                    <?php
+                    }
+                    ?>
                     <a href="/court" class="mid-green-btn find">Создать игру</a>
     <!--                 <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
                         <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
                     </p> -->
                         
-    <!--                     <div class="game">
-                            <div class="gameTop">
-                                <span class="number">1.</span>
-                                <span class="time">Сегодня, 18:45</span>
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
-                                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </div>
-                            </div>
-                            <div class="people">
-                                <p>Игроков:<span class="count"> 2</span></p>
-                                <div class="scroll">
-                                    <div class="right"></div>
-                                    <div class="circle">
-                                        <div class="plus man"><span>+</span></div>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bottom">
-                                <div class="gameType">Игра:<span>Футбол</span></div>
-                                <div class="ballType">Мяч:<span>Есть</span></div>
-                                <a href="#"><span>Большой Казачий пер., уч. 2</span></a>
-                            </div>
-                        </div>
-                        <div class="game">
-                            <div class="gameTop">
-                                <span class="number">1.</span>
-                                <span class="time">Сегодня, 18:45</span>
-                                <div class="social">
-                                    <a href="#"><i class="fa fa-vk" aria-hidden="true"></i></a>
-                                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                                </div>
-                            </div>
-                            <div class="people">
-                                <p>Игроков:<span class="count"> 2</span></p>
-                                <div class="scroll">
-                                    <div class="right"></div>
-                                    <div class="circle">
-                                        <div class="plus man"><span>+</span></div>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                        <a href="#"><img src="/img/uploads/nick.jpg" class="man"></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="bottom">
-                                <div class="gameType">Игра:<span>Футбол</span></div>
-                                <div class="ballType">Мяч:<span>Есть</span></div>
-                                <a href="#"><span>Большой Казачий пер., уч. 2</span></a>
-                            </div>
-                        </div> -->
+                        
                 </div>
             </div>
         </div>
