@@ -181,10 +181,12 @@ $this->registerJs("
 $this->registerJs("$('#description_link').click(function () {
         $('#description').toggle(300);
     });");
+
 //refresh games block after create new game
 $this->registerJs('$("#game-create").on("pjax:end", function() {
            $.pjax.reload({container: "#games"});
        });');
+
 $this->registerJs("
     function collapsElement(id) {
         if (document.getElementsByClassName(id)[0].style.display != \"none\") {
@@ -220,6 +222,7 @@ $this->registerJs("
                         var n = $('[data-num-game]').attr('data-num-game');
                         n = n - 1;
                         $('[data-num-game]').attr('data-num-game',n);
+                        $.pjax.reload({container: \"#games\"});
                     }
                     else{
                         $('[data-id-game='+result[0]+'] .circle a').remove();
@@ -381,6 +384,7 @@ $this->registerJs("
 
 
     <div class="gamesWrap">
+    <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
         <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
             <div class="header"><div class="menu">Ближайшие игры</div></div>
                     <?php 
@@ -393,8 +397,7 @@ $this->registerJs("
                     <?php }  ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
-
-       <!--  <?php Pjax::end(); ?> Это тоже удвлть-->
+    <?php Pjax::end(); ?>
     </div>
 </div>
 
