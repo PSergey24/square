@@ -273,7 +273,7 @@ $this->registerJs("
             <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
                 <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
             </div>
-            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px 2px !important;">
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="menu">
                         <div class="item" id="bookmark">
@@ -349,6 +349,36 @@ $this->registerJs("
             <div class="header"><div class="menu">Чат площадки</div></div>
         </div>
     </div>
+<!--     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
+        <h2 class="h2-box">Ближайшие игры</h2>
+        <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
+        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
+            
+        <?php
+            if($games) {
+                foreach ($games as $game) {
+                    echo '<div class="game" data-block-game="'.$game['id'].'">
+                        <div class="time">';
+                    $tm = strtotime($game['time']);
+                    $current_datetime = new DateTime();
+                    $current_datetime = date_format($current_datetime, 'Y-m-d');
+                    $tm_current = strtotime($current_datetime);
+                    if (date("d", $tm) == date("d", $tm_current))
+                        echo 'Сегодня ' . date("H:i", $tm);
+                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
+                        echo 'Завтра ' . date("H:i", $tm);
+                    else
+                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
+
+                    echo '</div>';
+                    if (!$game['need_ball'] == 1)
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
+                    else
+                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
+                    echo '<button class="mid-blue-btn" onclick="plus('.$game['id'].',\''.$game['plus'].'\')" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
+                }
+            }
+        ?>  Это нужно было удалить-->
 
 
     <div class="gamesWrap">
@@ -364,6 +394,8 @@ $this->registerJs("
                     <?php }  ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
+
+       <!--  <?php Pjax::end(); ?> Это тоже удвлть-->
     </div>
 </div>
 
