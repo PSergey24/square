@@ -38,13 +38,11 @@ AppAsset::register($this);
             <!--Footer-->
             <div class="container-fluid footer helper">
                     <a href="#">Обратная связь</a>
-                    <a href="#">О компании</a>
                     <a href="#">Пользовательское соглашение</a>
                     <p>Квадрат 2016</p>
             </div>
             <div class="container-fluid footer">
                 <a href="#">Обратная связь</a>
-                <a href="#">О компании</a>
                 <a href="#">Пользовательское соглашение</a>
                 <p><a href="/">Квадрат 2016-2017</a></p>
             </div>

@@ -220,7 +220,7 @@ $this->registerJs("
             <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
                 <a href="/court" class="tag">Футбол</a>
             </div>
-            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px 2px !important;">
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="menu">
                         <div class="item" id="bookmark">
