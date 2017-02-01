@@ -6,6 +6,7 @@ use app\custom\HTMLSelectData;
 use app\models\DistrictCity;
 use app\models\LoginForm;
 use app\models\SportType;
+use app\models\CourtBookmark;
 use Yii;
 use yii\db\Query;
 use yii\web\Controller;
@@ -110,6 +111,18 @@ class SiteController extends Controller
             'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
             'photo' => $photo,
         ]);
+    }
+
+    public function actionDelete_court()
+    {
+        $id = Yii::$app->getRequest()->getBodyParam("id");
+        $court = Yii::createObject(CourtBookmark::className());
+        $courtDelete = $court->findOne(['court_id' => $id, 'user_id' => Yii::$app->user->getId()]);
+        
+        if($courtDelete->delete())
+            return $id;
+        else
+            return 'ошибка';
     }
 
     public function actionUsers($id) {

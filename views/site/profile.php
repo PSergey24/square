@@ -11,6 +11,10 @@ $this->registerCssFile('/css/userProfile.css',[
 $this->registerCssFile('/css/squareProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
+$this->registerJsFile(
+    '@web/js/profile.js',
+    ['depends' => [\yii\web\JqueryAsset::className()]]
+);
 
     $this->params['picture_href'] = Profile::getAvatar();
 
@@ -48,13 +52,13 @@ $this->registerCssFile('/css/squareProfile.css',[
                             if ($courts){
                                 $i = 0;
                                 foreach ($courts as $court) {
-                                    echo '<a href=/court/' . $court["id"] . '>
-                                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 wrap">
-                                            <div class="contentUserImg" style="background-image: url(/img/courts/'.$photo[$i]['photo'].')">
-                                                <p>'. $court["address"] . '</p><a href="#"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                    </a>'
+                                    echo '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 wrap" data-court="' . $court["id"] . '">
+                                            <a href=/court/' . $court["id"] . '>
+                                                <div class="contentUserImg" style="background-image: url(/img/courts/'.$photo[$i]['photo'].')">
+                                                    <p>'. $court["address"] . '</p><a href="#" data-court-id="' . $court["id"] . '"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                                </div>
+                                            </a>
+                                        </div>'
                                     ;
                                     $i++;
                                 }
