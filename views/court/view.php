@@ -65,8 +65,7 @@ if (!Yii::$app->user->getIsGuest()) {
     $this->registerJs("
         //Bookmark btn onclick change pic and text
         $('#bookmark').click(function () {
-                var url = document.URL;
-                var id = url.substring(url.lastIndexOf('/') + 1);
+                var id = $(this).attr('data-id-court-bookmark');
                 $.ajax({
                     url: '/court/bookmark',
                     data: {court_id: id},
@@ -276,7 +275,7 @@ $this->registerJs("
             <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px 2px !important;">
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="menu">
-                        <div class="item" id="bookmark">
+                        <div class="item" id="bookmark" data-id-court-bookmark="<?= $id ?>">
                             <?php if ($bookmarked) : ?>
                                 <i class="fa fa-star fa-lg" aria-hidden="true"></i>
                                 <span class="hidden-xs">Удалить площадку</span>
