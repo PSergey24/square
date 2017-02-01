@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use app\assets\AppAsset;
 use yii\helpers\Url;
 use app\models\Profile;
+use yii\widgets\Pjax;
 
 $this->title = 'Личный профиль пользователя. '.$username;
 $this->registerCssFile('/css/userProfile.css',[
@@ -38,6 +39,7 @@ $this->registerJs("
                         var n = $('[data-num-game]').attr('data-num-game');
                         n = n - 1;
                         $('[data-num-game]').attr('data-num-game',n);
+                        $.pjax.reload({container: \"#gamesPjax\"});
                     }
                     else{
                         $('[data-id-game='+result[0]+'] .circle a').remove();
@@ -66,6 +68,11 @@ $this->registerJs("
     }
 
 ", $this::POS_HEAD);
+
+//refresh games block after create new game
+$this->registerJs('$("#game-create").on("pjax:end", function() {
+           $.pjax.reload({container: "#gamesPjax"});
+       });');
 
 ?>
 
@@ -128,6 +135,7 @@ $this->registerJs("
             </div>
             <div class="gamesWrap col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-6 col-xs-12">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box games shadow" id="game_list">
+                <?php Pjax::begin(['enablePushState' => false, 'id' => 'gamesPjax']); ?>
                     <div class="header"><div class="menu">Ближайшие игры</div></div>
                     <?php 
                     if(count($games) > 0)
@@ -150,15 +158,31 @@ $this->registerJs("
                     <?php
                     }
                     ?>
-                    <a href="/court" class="mid-green-btn find">Создать игру</a>
+                    <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
     <!--                 <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
                         <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
                     </p> -->
                         
-                        
+                <?php Pjax::end(); ?>      
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php if (Yii::$app->user->isGuest): ?>
+    <div class="modal fade bs-example-modal-lg needLogin" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-sm ">
+            <div class="modal-content game-create create-game">
+                <i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+                <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
+                <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
+            </div>
+
+        </div>
+    </div>
+<?php else: ?>
+    <?= $this->render('/site/forms/_form_create', ['model' => $model_form_game_create,'courts' => $courts]) ?>
+<?php endif; ?>

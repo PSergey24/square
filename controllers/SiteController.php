@@ -2,21 +2,32 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\custom\HTMLSelectData;
 use app\models\DistrictCity;
 use app\models\LoginForm;
 use app\models\SportType;
 use app\models\CourtBookmark;
-use Yii;
 use yii\db\Query;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use DateTime;
+use DateInterval;
 use app\models\User;
+use app\models\Game;
+use app\models\GameUser;
 use app\models\Profile;
 use app\models\MapFilters;
+use app\models\forms\GameCreateForm;
 
 class SiteController extends Controller
 {
+    const SUCCESS_CREATE_BOX =
+        '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-check fa-4x ok" aria-hidden="true"></i>';
+    const ERROR_CREATE_BOX =
+        '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
+            <i class="fa fa-times fa-4x" aria-hidden="true"></i>';
 
     public function actions()
     {
@@ -56,6 +67,7 @@ class SiteController extends Controller
         if(!Yii::$app->user->identity)
             die('Вы не авторизованы');
 
+        $model_form_game_create = Yii::createObject(GameCreateForm::className());
         $users = array();
         // получаем id авторизованного пользователя
             if(Yii::$app->user->identity)
@@ -160,6 +172,7 @@ class SiteController extends Controller
             'users' => $users,
             'username' => User::find('username')->where(['id' => Yii::$app->user->getId()])->one()->username,
             'photo' => $photo,
+            'model_form_game_create' => $model_form_game_create
         ]);
     }
 
@@ -240,6 +253,59 @@ class SiteController extends Controller
             'picture' => $picture,
             'photo' => $photo,
         ]);
+    }
+
+    public function actionCreate()
+    {
+        if (Yii::$app->request->isPjax) {
+
+            $model = Yii::createObject(GameCreateForm::className());
+
+            $model->load(Yii::$app->request->post());
+
+            if (Yii::$app->user->isGuest)
+                throw new UserException('Для того чтобы создать игру необходимо авторизоваться');
+
+            $model->creator_id = Yii::$app->user->getId();
+
+            $date = new DateTime();
+            if ($model->day) {
+                $date->add(new DateInterval('P1D'));
+            }
+
+            $time = $model->time_digit;
+            $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'));
+            
+            if($datetime < $now)
+                return self::ERROR_CREATE_BOX . '<p id="warning">Данное время уже прошло. Исправьте время.</p>';
+
+            $model->time = $datetime;
+
+            $query = new Query();
+            $query->select('type_id')
+                ->from('court')
+                ->where(['id' => $model->court_id]);
+            $type = $query->one();
+
+            $model->sport_type_id = $type['type_id'];
+
+            //check if game already exist
+            if (Game::findOne(['court_id' => $model->court_id,'time' => $model->time]))
+                return self::ERROR_CREATE_BOX . '<p id="warning">Игра уже существует</p>';
+
+            $model->save();
+
+            // Создается запись в таблице game_user
+            $model2 = Yii::createObject(GameUser::className());
+            $model2->user_id = $model->creator_id;
+            $model2->game_id = $model->id;
+            $model2->save();
+
+            return self::SUCCESS_CREATE_BOX  . '<p id="warning">Игра успешно создана</p>';
+
+        }
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
     
     public function actionAbout()
