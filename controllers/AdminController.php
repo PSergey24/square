@@ -27,7 +27,6 @@ use DateInterval;
  */
 class AdminController extends BaseAdminController
 {
-    const TIME_NOW = ' + 3 hour';
     public function actionStat()
     {
     	$a = 778;
@@ -179,7 +178,7 @@ class AdminController extends BaseAdminController
 	        $query->select('count(id) as count')
 	              ->from('game')
 	              ->where(['court_id' => $item['id']])
-	              ->andWhere(['<','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+	              ->andWhere(['<','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
 	        $countGame = $query->all();
 
 	        // var_dump($countBookmark);
@@ -378,7 +377,7 @@ class AdminController extends BaseAdminController
 
     public function actionActivity()
     {
-        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
         $query = new Query;
         $query->select('district_city.id as id, district_city.name as name, count(game.id) as count')
               ->from('court, game, district_city')
@@ -425,7 +424,7 @@ class AdminController extends BaseAdminController
     }
     public function actionActivityuser()
     {
-        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
         $query = new Query;
         $query->select('user.id as id, username, count(game_user.id) as count')
               ->from('user, game_user')

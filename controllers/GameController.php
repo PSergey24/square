@@ -28,8 +28,6 @@ class GameController extends Controller
     const ERROR_CREATE_BOX =
         '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
             <i class="fa fa-times fa-4x" aria-hidden="true"></i>';
-
-    const TIME_NOW = ' + 3 hour';
     /**
      * @inheritdoc
      */
@@ -69,7 +67,7 @@ class GameController extends Controller
             'query' => Game::find(),
         ]);
 
-        $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])->limit(6)->orderBy('time')->all();
+        $listGame = Game::find()->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))])->limit(6)->orderBy('time')->all();
         $numGame = sizeof($listGame);
         $gameArray = '';
         foreach ($listGame as $itemGame) {
@@ -283,9 +281,9 @@ class GameController extends Controller
                     $query->andWhere(['sport_type_id' => $dataSport]);
 
                     if($timeFilter == 'no')
-                        $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+                        $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
                     elseif($timeFilter == 'Сегодня'){
-                        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+                        $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
                         $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
                         $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
                     }
@@ -323,9 +321,9 @@ class GameController extends Controller
                     }
            
                 if($timeFilter == 'no')
-                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
                 elseif($timeFilter == 'Сегодня'){
-                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
                     $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
                     $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
                 }
@@ -355,7 +353,7 @@ class GameController extends Controller
         $query = new Query;
         $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id')
               ->from('game')
-              ->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])
+              ->where(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))])
               ->limit(6)
               ->orderBy('time');
         $gameList = $query->all();
@@ -385,7 +383,7 @@ class GameController extends Controller
         $query->select('game.id as gameId, time, need_ball, sport_type_id, court_id, court.id as courtId, address, lat, lon, name, district_city_id')
               ->from('game,court')
               ->andWhere('court.id = game.court_id')
-              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
 
         $listGame = $query->orderBy('time')->all();
 
@@ -527,9 +525,9 @@ class GameController extends Controller
                     $query->andWhere(['sport_type_id' => $typeSport]);
 
                 if($timeFilter == 'no')
-                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+                    $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
                 elseif($timeFilter == 'Сегодня'){
-                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+                    $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
                     $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
                     $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
                 }
@@ -570,9 +568,9 @@ class GameController extends Controller
 
        
             if($timeFilter == 'no')
-                $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))]);
+                $query->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))]);
             elseif($timeFilter == 'Сегодня'){
-                $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+                $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
                 $tomorrow  = date("Y-m-d H:i:s", mktime(0, 0, 0, date("m"), date("d")+1, date("Y")));
                 $query->andWhere(['>=','time',$now])->andWhere(['<','time',$tomorrow]);
             }
@@ -680,7 +678,7 @@ class GameController extends Controller
 
             $time = $model->time_digit;
             $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
-            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
             if($datetime < $now)
                 return self::ERROR_CREATE_BOX . '<p id="warning">Данное время уже прошло. Исправьте время.</p>';
 

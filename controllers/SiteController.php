@@ -28,7 +28,6 @@ class SiteController extends Controller
     const ERROR_CREATE_BOX =
         '<i class="fa fa-times close fa-lg" aria-hidden="true" data-dismiss="modal" ></i>
             <i class="fa fa-times fa-4x" aria-hidden="true"></i>';
-    const TIME_NOW = ' + 3 hour';
 
     public function actions()
     {
@@ -107,7 +106,7 @@ class SiteController extends Controller
               ->from('game_user,game,sport_type,court')
               ->where(['user_id' => $userAuth])
               ->andWhere('game_id = game.id')
-              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))])
               ->andWhere('court_id = court.id')
               ->andWhere('sport_type_id = sport_type.id');
         $games = $query->groupBy('game.id')->orderBy('time')->all();
@@ -138,7 +137,7 @@ class SiteController extends Controller
               ->where(['court_bookmark.user_id' => $userAuth])
               ->andWhere('court_bookmark.court_id = game.court_id')
               ->andWhere('game_id = game.id')
-              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])
+              ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))])
               ->andWhere('game.court_id = court.id')
               ->andWhere('sport_type_id = sport_type.id');
         $games2 = $query2->groupBy('game.id')->orderBy('time')->all();
@@ -224,7 +223,7 @@ class SiteController extends Controller
                 ->where(['user_id' => $id])
                 ->andWhere('game_id = game.id')
                 ->andWhere('court_id = court.id')
-                ->andWhere(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])
+                ->andWhere(['>=', 'time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')))])
                 ->orderBy('time');
             $game_rows = $query_games->all();
 
@@ -276,7 +275,7 @@ class SiteController extends Controller
 
             $time = $model->time_digit;
             $datetime = date_format($date, 'Y-m-d') . ' ' . $time;
-            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW));
+            $now = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s')));
             
             if($datetime < $now)
                 return self::ERROR_CREATE_BOX . '<p id="warning">Данное время уже прошло. Исправьте время.</p>';
