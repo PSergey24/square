@@ -338,7 +338,12 @@ $this->registerJs("
                             'pictureUsersArr' => $pictureUsersArr
                         ]) ?>
                     <?php $i++; }  ?>
-                    
+                 <div class="nophoto">
+                        <i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>
+                        Игры не найдены.<br>
+                        Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>
+                        <a href="/court" class="mid-blue-btn">Найти площадку</a>
+                    </p>   
         		</div>
                 <button class="mid-blue-btn" id="more" data-near="no" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
             </div>

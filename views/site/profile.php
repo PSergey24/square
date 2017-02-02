@@ -100,7 +100,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
 <div class="container-fluid contentUser forSmall">
     <div class="container">
         <div class="row reorder">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 gamesWrap">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="header"><div class="menu">Мои площадки</div></div>
                     <div class="squares">
@@ -124,7 +124,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                                             <span>Добавить</span>
                                         </div>
                                     </div>';
-                            } else echo '<p class="noinfo"><i class="fa fa-futbol-o fa-4x" aria-hidden="true"></i><br>Добавь себе площадки, на которых ты играешь,<br> чтобы видеть на них ближайшие игры.</p>
+                            } else echo '<p class="noinfo"><i class="fa fa-futbol-o fa-4x" aria-hidden="true"></i><br>Добавь себе площадки, на которых<br class="visible-sm"> ты играешь,<br class="visible-md visible-lg"> чтобы видеть на них<br class="visible-sm"> ближайшие игры.</p>
                         <a href="/court" class="mid-blue-btn find">Найти площадку</a>';
                         ?>
                     </div>
@@ -153,7 +153,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     ?>
                     <p class="noinfo">
                         <i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
-                        <br>Пока что игр на твоих площадках нет,<br> так что создай игру сам :)
+                        <br>Пока что игр на твоих площадках нет,<br class="hidden-xs"> так что создай игру сам :)
                     </p>
                     <?php
                     }

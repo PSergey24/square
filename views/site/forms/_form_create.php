@@ -67,7 +67,7 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
                
             </p>
             <p class="ball">
-                <?= Html::activeCheckbox($model, 'need_ball', ['label'   => 'Мяч есть']); ?>
+                <?= Html::activeCheckbox($model, 'need_ball', ['label'   => 'Возьму мяч']); ?>
 
 
             </p>

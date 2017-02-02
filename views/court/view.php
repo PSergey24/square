@@ -275,7 +275,7 @@ $this->registerJs("
             <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
                 <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
             </div>
-            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding: 0px 2px !important;">
+            <div class="absolute col-lg-12 col-md-12 col-sm-12 col-xs-12" id="menuWrap">
                 <div class="buttons col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                     <div class="menu">
                         <div class="item" id="bookmark" data-id-court-bookmark="<?= $id ?>">
@@ -326,7 +326,7 @@ $this->registerJs("
     </div>
 
     
-    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии с площадок 
+    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии c площадки 
         <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
         <div class="clear"></div>
     </h3>
@@ -338,7 +338,11 @@ $this->registerJs("
                 echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photo"></div></div>';
            }
         }else{
-            echo '<p>Фотографии на данной площадке отсутсвуют. Стань первым, кто их добавит!</p>';
+            echo '<div class="nophoto">
+                    <i class="fa  fa-camera-retro fa-4x"></i><br>
+                    Выкладывай сюда фотографии площадки<br> и со своих игр<br>
+                    <div class="mid-blue-btn">Добавить фото</div>
+                </div>';
         }
         ?>
         <!-- <div class="more">Еще...</div>       -->
@@ -349,6 +353,10 @@ $this->registerJs("
     <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 chatWrap">
         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
             <div class="header"><div class="menu">Чат площадки</div></div>
+            <p class="noinfo">
+                <i class="fa fa-cog fa-spin fa-4x fa-fw"></i><br>
+                Чат находится<br> в процессе разработки
+            </p>
         </div>
     </div>
 <!--     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
@@ -395,6 +403,10 @@ $this->registerJs("
                             'users' => $users
                         ]) ?>
                     <?php }  ?>
+                <p class="noinfo">
+                    <i class="fa  fa-futbol-o fa-4x"></i><br>
+                    В ближайшее время игр нет<br> Создай игру сам!
+                </p>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
     <?php Pjax::end(); ?>

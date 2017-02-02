@@ -311,9 +311,9 @@
 	margin-right: 5px;
 }
 .chat{
-	height: 300px;
 	z-index: 2;
 	padding: 0 !important;
+	padding-bottom: 20px !important;
 }
 
 
@@ -332,10 +332,10 @@
 }
 
 .games .mid-green-btn{
-	margin-top: 15px;
+	margin-top: 17px;
 	font-size: 13px;
 	font-weight: 400;
-	margin-bottom: 12px;
+	margin-bottom: 15px;
 }
 .clear{
 	clear: both;
@@ -495,6 +495,9 @@ label{
 	float: left !important;
 	margin-right: 5%;
 }
+label {
+	font-weight: 400 !important;
+}
 .ball{
 	color: rgba(0,0,0,0.74);
 	text-align: center;
@@ -524,6 +527,15 @@ width: 20px; /* Ширина картинки */
 -webkit-appearance: none; /* Прячем чекбокс */
 cursor: pointer; /* Курсор в виде руки */
 margin-bottom: -4px;
+margin-right: 4px;
+}
+.form-horizontal .form-group {
+    margin-right: 0px;
+    margin-left: 0px;
+}
+#time{
+	margin-right: 0 !important;
+	margin-left: 5% !important;
 }
 input[type="checkbox"]:checked {
     background: url(../../img/checked.png); /* Переключатель включен */
@@ -535,6 +547,9 @@ input[type="checkbox"]:checked {
 .game-create .mid-green-btn{
 	padding-left: 0.75rem 4rem;
 }
+
+
+
 @media (min-width: 1200px) { 
 
 }
@@ -637,5 +652,8 @@ input[type="checkbox"]:checked {
 	}
 	#map{
 		height: 220px;
+	}
+	#menuWrap{
+		padding: 0px 2px !important;
 	}
 }

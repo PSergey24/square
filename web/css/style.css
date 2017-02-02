@@ -145,6 +145,34 @@ font-size: 1.9rem;
 font-weight: 300;
 line-height: 1.5;
 }
+/*ЗАГЛУШКИ ---------------------------------------*/
+
+.noinfo{
+	font-size: 14px;
+	line-height: 1.7;
+	margin-top: 15px;
+	margin-bottom: 0px !important;
+	padding: 0px 20px;
+	text-align: center;
+}
+.noinfo i{
+	color: 	#DFEFE0;
+	margin-top: 10px;
+	margin-bottom: 17px;
+}
+/*На темном фоне -----------------------------*/
+.nophoto{
+	text-align: center;
+	line-height: 1.7;
+}
+.nophoto i{
+	margin-top: 20px;
+	margin-bottom: 17px;
+	color: #BBC4DC;
+}
+.nophoto .mid-blue-btn{
+	margin: 17px 0;
+}
 
 /* Шапка */
 

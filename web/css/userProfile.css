@@ -178,18 +178,10 @@
 #game_list{
 	padding-bottom: 5px !important;
 }
-.noinfo{
-	font-size: 14px;
-	line-height: 1.7;
-	margin: 15px 0px;
-}
-.noinfo i{
-	color: 	#DFEFE0;
-	margin-top: 10px;
-	margin-bottom: 15px;
-}
+
 .find{
-	margin-top: 0 !important;
+	margin-top: 17px !important;
+	margin-bottom: 0px !important;
 }
 
 
@@ -244,6 +236,9 @@
 .gamesWrap {
 	padding: 0px !important;
 }
+	.row{
+		margin: 0 !important;
+	}
 @media (min-width: 768px) and (max-width: 991px) { 
 
 	.top-info{
@@ -270,13 +265,14 @@
 	.contentUserBox{
 		margin-top: 0px !important;
 	}
-	.row{
-		margin: 0 !important;
+	.top{
+		margin-bottom: 40px !important;
 	}
+
 }
 
 /* ЦВЕТА В ЗАВИСИМОСТИ ОТ СПОРТА*/
-.football .plus:hover span,  .basketball .plus:hover span{
+/*.football .plus:hover span,  .basketball .plus:hover span{
 	color: white !important;
 }
 .football .plus{
@@ -296,5 +292,5 @@
 }
 .basketball .plus:hover {
 	background: #FF9800 !important;
-}
+}*/
 /*-------------------------------------------------------*/
