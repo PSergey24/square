@@ -413,7 +413,8 @@ $this->registerJs("
                         Игры не найдены.<br>
                         Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>
                         <a href="/court" class="mid-blue-btn">Найти площадку</a>
-                    </div>   
+                    </div>
+                </div>       
                     <?php
                     }
                     ?>
