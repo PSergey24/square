@@ -18,14 +18,14 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\forms\GameCreateForm;
-use dektrium\user\controllers\AdminController;
+use dektrium\user\controllers\AdminController as BaseAdminController;
 use DateTime;
 use DateInterval;
 
 /**
  * GameController implements the CRUD actions for Game model.
  */
-class AdminController extends AdminController
+class AdminController extends BaseAdminController
 {
     const TIME_NOW = ' + 3 hour';
     public function actionStat()
