@@ -30,6 +30,10 @@ use yii\web\UploadedFile;
  */
 class CourtController extends Controller
 {
+    const SUCCESS_CREATE_BOX =
+        '<i class="fa fa-check fa-4x ok" aria-hidden="true"></i>';
+    const ERROR_CREATE_BOX =
+        '<i class="fa fa-times fa-4x" aria-hidden="true"></i>';
     /**
      * {@inheritdoc}
      */
@@ -163,12 +167,17 @@ class CourtController extends Controller
                         $photo->approved = '1';
                         $photo->save();
                     }
-                    
-                    return $this->redirect(['view', 'id' => $id]);
+                    return self::SUCCESS_CREATE_BOX  . '<p id="warning">Фотографии успешно загружены. Псоле модерации они будут показаны.</p>';
+                }else{
+                    return self::ERROR_CREATE_BOX  . '<p id="warning">Фотографии не загрузились. Попробуйте позже.</p>';
                 }
+                
             }
-        }elseif ($modelReport->load(Yii::$app->request->post()) && $modelReport->save()) {
-            return $this->redirect(['view', 'id' => $modelReport->court_id]);
+        }elseif($modelReport->load(Yii::$app->request->post())) {
+            if($modelReport->save())
+                return self::SUCCESS_CREATE_BOX  . '<p id="warning">Ваша жалоба успешно принята</p>';
+            else
+                return self::ERROR_CREATE_BOX  . '<p id="warning">Ошибка. Попробуйте еще раз.</p>';
         } else {
 
             $users = array();
@@ -328,23 +337,6 @@ class CourtController extends Controller
             ]);
         }
     }
-
-
-    public function actionUpload()
-    {
-        $model = new UploadForm();
-
-        if (Yii::$app->request->isPost) {
-            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
-            if ($model->upload()) {
-                // file is uploaded successfully
-                return;
-            }
-        }
-
-        return $this->render('upload', ['model' => $model]);
-    }
-
 
     /**
      * Updates an existing Court model.

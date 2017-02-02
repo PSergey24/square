@@ -447,7 +447,8 @@ $this->registerJs("
             </div>
             <div class="modal-body">
                 <?= $this->render('_upload', [
-                    'model' => $modelUpload
+                    'model' => $modelUpload,
+                    'id' => $id
                 ]) ?>
             </div>
         </div>

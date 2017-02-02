@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\Report;
 use yii\helpers\ArrayHelper;
+use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Court */
@@ -12,7 +13,19 @@ use yii\helpers\ArrayHelper;
 
 <div class="report-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php  Pjax::begin([
+                    'id' => 'report-create',
+                    'enablePushState' => false
+                ]);
+    ?>
+    <?php 
+    $string = '/court/'.$id;
+    $form = ActiveForm::begin([
+                    'options' => ['class' => 'form-horizontal', 'data-pjax' => ''
+                    ],
+                    'id' => 'report-create-form',
+                    'action' => $string
+                ]); ?>
 
     <?php echo $form->field($modelReport, 'court_id')->hiddenInput(['value' => $id])->label(false); ?>
 
@@ -27,5 +40,7 @@ use yii\helpers\ArrayHelper;
     </div>
 
     <?php ActiveForm::end(); ?>
+
+    <?php  Pjax::end();  ?>
 
 </div>
