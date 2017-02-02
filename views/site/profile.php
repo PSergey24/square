@@ -36,9 +36,6 @@ $this->registerJs("
                     if(result[1] == 0)
                     {
                         $('[data-id-game='+result[0]+']').remove();
-                        var n = $('[data-num-game]').attr('data-num-game');
-                        n = n - 1;
-                        $('[data-num-game]').attr('data-num-game',n);
                         $.pjax.reload({container: \"#gamesPjax\"});
                     }
                     else{
@@ -90,9 +87,9 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
 
         </div>
         <div class="options">
-            <div class="mid-green-btn"><i class="fa fa-pencil" aria-hidden="true"></i>
+            <a class="mid-green-btn" href="/settings/profile"><i class="fa fa-pencil" aria-hidden="true"></i>
                 <span class="">Редактировать профиль</span>
-            </div>
+            </a>
         </div>
     </div>
 </div>
@@ -149,21 +146,23 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                             ]) ?>
                     <?php 
                         }
-                    }else{
+                    }elseif(count($courts) > 0){
                     ?>
                     <p class="noinfo">
                         <i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
                         <br>Пока что игр на твоих площадках нет,<br class="hidden-xs"> так что создай игру сам :)
                     </p>
                     <?php
+                    }else{
+                    ?>
+                    <p class="noinfo">
+                        <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
+                        <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
+                    </p>
+                    <?php
                     }
                     ?>
                     <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
-    <!--                 <p class="noinfo">
-                        <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
-                        <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
-                    </p> -->
-                        
                 <?php Pjax::end(); ?>      
                 </div>
             </div>
@@ -180,7 +179,6 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                 <a href="/login"><i class="fa fa-sign-out fa-lg login fa-4x" aria-hidden="true"></a></i>
                 <p id="warning">Чтобы выполнить это действие вам нужно <a href="/login">авторизоваться</a>.</p>
             </div>
-
         </div>
     </div>
 <?php else: ?>

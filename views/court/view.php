@@ -327,7 +327,7 @@ $this->registerJs("
 
     
     <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии c площадки 
-        <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
+        <span class="add" data-toggle="modal" data-target="#modal-photo"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
         <div class="clear"></div>
     </h3>
     <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -396,17 +396,25 @@ $this->registerJs("
         <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
             <div class="header"><div class="menu">Ближайшие игры</div></div>
                     <?php 
-                    foreach ($games as $i => $game) { $i++; ?>
-                        <?= $this->render('_game', [
-                            'i' => $i,
-                            'game' => $game,
-                            'users' => $users
-                        ]) ?>
-                    <?php }  ?>
-                <p class="noinfo">
-                    <i class="fa  fa-futbol-o fa-4x"></i><br>
-                    В ближайшее время игр нет<br> Создай игру сам!
-                </p>
+                    if(count($games) > 0)
+                    {
+                        foreach ($games as $i => $game) { $i++; ?>
+                            <?= $this->render('_game', [
+                                'i' => $i,
+                                'game' => $game,
+                                'users' => $users
+                            ]) ?>
+                    <?php 
+                        }  
+                    }else{
+                    ?>
+                    <p class="noinfo">
+                        <i class="fa  fa-futbol-o fa-4x"></i><br>
+                        В ближайшее время игр нет<br> Создай игру сам!
+                    </p>
+                    <?php 
+                    }  
+                    ?>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
         </div>
     <?php Pjax::end(); ?>
@@ -429,6 +437,23 @@ $this->registerJs("
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-photo">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close" type="button" data-dismiss="modal"><i class="fa fa-close"></i></button>
+                <p class="modal-title">Новое фото</p>
+            </div>
+            <div class="modal-body">
+                <?= $this->render('_upload', [
+                    'model' => $modelUpload
+                ]) ?>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 <?php if (Yii::$app->user->isGuest): ?>

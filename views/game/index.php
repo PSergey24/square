@@ -8,7 +8,7 @@ $par = require('../config/params.php');
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Games';
+$this->title = 'Поиск игр';
 $this->registerCssFile('/css/games.css');
 $this->params['breadcrumbs'][] = $this->title;
 
@@ -245,6 +245,66 @@ $this->registerJs("
 
 ", $this::POS_HEAD);
 
+$this->registerJs("
+    function more(){
+        var numGame = $('[data-num-game]').attr('data-num-game');
+        var dataSport = $('[data-sport]').attr('data-sport');
+        var timeFilter = $('[data-time]').attr('data-time');
+        var nearFilter = $('[data-near]').attr('data-near');
+        var min = $('#min').val();
+        var max = $('#max').val();
+        var districtFilter = $('[data-district]').attr('data-district');
+
+        $('#more').remove();
+
+        if((max<min)&&(max != ''))
+            $('#errorPeople').html('Не правильно');
+        else{
+            $('#errorPeople').html('');
+
+            if((min == '')&&(max == ''))
+                $('[data-people]').attr(\"data-people\", 'no');
+            else
+            {
+                if(min == '')
+                    min = 0;
+
+                if(max == '')
+                    max = 0;
+
+                $('[data-people]').attr(\"data-people\", min+'-'+max);
+            }
+
+            var peopleFilter = $('[data-people]').attr('data-people');
+
+            $.ajax({
+              type: \"POST\",
+              url: \"/game/more\",
+              data: \"numGame=\"+numGame+\"&&dataSport=\"+dataSport+\"&&timeFilter=\"+timeFilter+\"&&peopleFilter=\"+peopleFilter+\"&&districtFilter=\"+districtFilter+\"&&nearFilter=\"+nearFilter,
+              success: function(data){
+                var result = data.split(' | ');
+                $('.game-list').append(result[1]);
+                $('.game-list').append('<button class=\"mid-blue-btn\" id=\"more\" onclick=\"more()\">Еще</button>');
+                var num = $('[data-num-game]').attr('data-num-game');
+                num = Number(num) + Number(result[0]);
+                $('[data-num-game]').attr(\"data-num-game\", num);
+
+
+                var gameId = result[2].split(' ');
+
+                for (var i = 0; i < gameId.length; i++) {
+                    $.each(markers, function (index, value) {
+                        if(value['id'] == gameId[i])
+                            markers[index].setVisible(true);
+                    })
+                }
+              }
+            });
+        }
+    }
+
+", $this::POS_HEAD);
+
 
 ?>
 
@@ -320,32 +380,43 @@ $this->registerJs("
                                 <span id="errorPeople"></span>
                             </div>
                         </div>
-                        <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply">Применить</button></div>
+                        <div class="buttons col-lg-12"><div class="reset">Сбросить</div><button class="mid-green-btn" id="toApply" data-near="no" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Применить</button></div>
                     </div>
                 </div>
                 <div class="game-list">
-
-                    <?php $i = 0;
-                    foreach ($listGame as $listGame) { ?>
-                        <?= $this->render('_card', [
-                            'listGame' => $listGame,
-                            'i' => $i,
-                            'countUsersArr' => $countUsersArr,
-                            'plusMan' => $plusMan,
-                            'idUsersArr' => $idUsersArr,
-                            'nameSportArr' => $nameSportArr,
-                            'nameAreaArr' => $nameAreaArr,
-                            'pictureUsersArr' => $pictureUsersArr
-                        ]) ?>
-                    <?php $i++; }  ?>
-                 <div class="nophoto">
+                    <?php 
+                    if(count($listGame) > 0)
+                    {
+                        $i = 0;
+                        foreach ($listGame as $listGame) { ?>
+                            <?= $this->render('_card', [
+                                'listGame' => $listGame,
+                                'i' => $i,
+                                'countUsersArr' => $countUsersArr,
+                                'plusMan' => $plusMan,
+                                'idUsersArr' => $idUsersArr,
+                                'nameSportArr' => $nameSportArr,
+                                'nameAreaArr' => $nameAreaArr,
+                                'pictureUsersArr' => $pictureUsersArr
+                            ]) ?>
+                        <?php 
+                        $i++; 
+                        }  
+                    ?>
+        		  <button class="mid-blue-btn" id="more" onclick="more()">Еще</button>
+                </div>  
+                <?php
+                    }else{
+                    ?>
+                    <div class="nophoto">
                         <i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>
                         Игры не найдены.<br>
                         Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>
                         <a href="/court" class="mid-blue-btn">Найти площадку</a>
-                    </p>   
-        		</div>
-                <button class="mid-blue-btn" id="more" data-near="no" data-district="no" data-people="no" data-time="no" data-sport="no" data-num-game="<?= $numGame ?>">Еще</button>
+                    </div>   
+                    <?php
+                    }
+                    ?>
             </div>
     		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
     	</div>

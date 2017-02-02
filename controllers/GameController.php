@@ -489,7 +489,8 @@ class GameController extends Controller
             }
         } 
         $gameArray = trim($gameArray); 
-        return $string." | ".$gameArray;
+        $count = count($listGame);
+        return $count." | ".$string." | ".$gameArray;
     }
 
     public function actionApply()

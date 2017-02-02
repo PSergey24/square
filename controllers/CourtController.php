@@ -22,6 +22,8 @@ use app\models\GameUser;
 use app\models\DistrictCity;
 use app\models\forms\GameCreateForm;
 use app\custom\HTMLSelectData;
+use app\models\UploadForm;
+use yii\web\UploadedFile;
 
 /**
  * CourtController implements the CRUD actions for Court model.
@@ -138,8 +140,34 @@ class CourtController extends Controller
     public function actionView($id)
     {
         $modelReport = new Report();
+        $modelUpload = new UploadForm();
+        if($modelUpload->load(Yii::$app->request->post())){
+            $model = new UploadForm();
 
-        if ($modelReport->load(Yii::$app->request->post()) && $modelReport->save()) {
+            if (Yii::$app->request->isPost) {
+                $model->imageFiles = UploadedFile::getInstances($model, 'imageFiles');
+                $countPhoto = courtPhoto::find()
+                    ->select('photo')
+                    ->where(['court_id' => $id])
+                    ->all();
+                $i = count($countPhoto);
+                if($model->upload($id,$i)){
+                    
+                    foreach($model->imageFiles as $file) {
+                        $i++;
+                        $photo = Yii::createObject(CourtPhoto::className());
+                        $photo->court_id = $id;
+                        $name = 'court_'.$id.'-'.$i. '.' . $file->extension;
+                        $photo->photo = $name;
+                        $photo->avatar = '0';
+                        $photo->approved = '1';
+                        $photo->save();
+                    }
+                    
+                    return $this->redirect(['view', 'id' => $id]);
+                }
+            }
+        }elseif ($modelReport->load(Yii::$app->request->post()) && $modelReport->save()) {
             return $this->redirect(['view', 'id' => $modelReport->court_id]);
         } else {
 
@@ -203,6 +231,7 @@ class CourtController extends Controller
                 'id' => $id,
                 'model' => $this->findModel($id),
                 'modelReport' => $modelReport,
+                'modelUpload' => $modelUpload,
                 'model_form_game_create' => $model_form_game_create,
                 'games' => $games,
                 'users' => $users,
@@ -299,6 +328,23 @@ class CourtController extends Controller
             ]);
         }
     }
+
+
+    public function actionUpload()
+    {
+        $model = new UploadForm();
+
+        if (Yii::$app->request->isPost) {
+            $model->imageFile = UploadedFile::getInstance($model, 'imageFile');
+            if ($model->upload()) {
+                // file is uploaded successfully
+                return;
+            }
+        }
+
+        return $this->render('upload', ['model' => $model]);
+    }
+
 
     /**
      * Updates an existing Court model.

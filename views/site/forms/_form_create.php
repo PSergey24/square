@@ -19,6 +19,8 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
             <p class="h2-black">Создание игры</p>
 
             <?php 
+            if(count($courts) > 0)
+            {
                 Pjax::begin([
                     'id' => 'game-create',
                     'enablePushState' => false
@@ -33,14 +35,14 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
             ?>
             <p>
             <?php
-                $items = ArrayHelper::map($courts,'id','address');
+                    $items = ArrayHelper::map($courts,'id','address');
             ?>
             <p class="little">Выберите площадку</p>
             <?php
-            echo $form->field($model,'court_id')->dropDownList($items,[
-                    'class' => 'selectpicker .form-control date',
-                    'id' => '1'
-                ])->label(false);
+                echo $form->field($model,'court_id')->dropDownList($items,[
+                        'class' => 'selectpicker .form-control date',
+                        'id' => '1'
+                    ])->label(false);
             ?>
             </p>
             <p class="little">Выберите время игры</p>
@@ -76,6 +78,9 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
             <?php ActiveForm::end();
                 Pjax::end();
+            }else{
+                echo "У вас нет площадок";
+            }
             ?>
 
         </div>

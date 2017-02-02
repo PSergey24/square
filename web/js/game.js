@@ -31,82 +31,40 @@ $( document ).ready(function() {
 	          type: "POST",
 	          url: "/game/apply",
 	          data: "typeSport="+typeSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter,
-	          success: function(data){  
-	          // alert(data);   
+	          success: function(data){   
 	          	var result = data.split(' | ');
-	          	$('.game-list').html(result[1]);
 	          	num = Number(result[0]);
-	            $('[data-num-game]').attr("data-num-game", num);
+	          	if(num == 0)
+	          	{
+	          		$('.game-list').html('<div class="nophoto">'+
+                        '<i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>'+
+                        'Игры не найдены.<br>'+
+                        'Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>'+
+                        '<a href="/court" class="mid-blue-btn">Найти площадку</a>'+
+                    '</div>');
+                    	$.each(markers, function (index, value) {
+			            		markers[index].setVisible(false);
+			            })
+	          	}else{
+	          		$('.game-list').html(result[1]);
+	          		$('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
 
-	            $.each(markers, function (index, value) {
-	            	markers[index].setVisible(false);
-	            })
-
-	            var gameId = result[2].split(' ');
-
-	            for (var i = 0; i < gameId.length; i++) {
-	            	$.each(markers, function (index, value) {
-		            	if(value['id'] == gameId[i])
-		            		markers[index].setVisible(true);
+		            $('[data-num-game]').attr("data-num-game", num);
+		            $.each(markers, function (index, value) {
+		            	markers[index].setVisible(false);
 		            })
-	            }
+
+		            var gameId = result[2].split(' ');
+		            for (var i = 0; i < gameId.length; i++) {
+		            	$.each(markers, function (index, value) {
+			            	if(value['id'] == gameId[i])
+			            		markers[index].setVisible(true);
+			            })
+		            }
+	          	}
 	          }
 	        });
 
-		}
-    });
-
-	$('#more').click(function(){
-		var numGame = $('[data-num-game]').attr('data-num-game');
-		var dataSport = $('[data-sport]').attr('data-sport');
-		var timeFilter = $('[data-time]').attr('data-time');
-		var nearFilter = $('[data-near]').attr('data-near');
-		var min = $('#min').val();
-		var max = $('#max').val();
-		var districtFilter = $('[data-district]').attr('data-district');
-
-		if((max<min)&&(max != ''))
-			$('#errorPeople').html('Не правильно');
-		else{
-			$('#errorPeople').html('');
-
-			if((min == '')&&(max == ''))
-				$('[data-people]').attr("data-people", 'no');
-			else
-			{
-				if(min == '')
-					min = 0;
-
-				if(max == '')
-					max = 0;
-
-				$('[data-people]').attr("data-people", min+'-'+max);
-			}
-
-			var peopleFilter = $('[data-people]').attr('data-people');
-
-			$.ajax({
-	          type: "POST",
-	          url: "/game/more",
-	          data: "numGame="+numGame+"&&dataSport="+dataSport+"&&timeFilter="+timeFilter+"&&peopleFilter="+peopleFilter+"&&districtFilter="+districtFilter+"&&nearFilter="+nearFilter,
-	          success: function(data){
-	          	var result = data.split(' | ');
-	          	$('.game-list').append(result[1]);
-	          	var num = $('[data-num-game]').attr('data-num-game');
-	          	num = Number(num) + Number(result[0]);
-	            $('[data-num-game]').attr("data-num-game", num);
-
-
-	            var gameId = result[2].split(' ');
-
-	            for (var i = 0; i < gameId.length; i++) {
-	            	$.each(markers, function (index, value) {
-		            	if(value['id'] == gameId[i])
-		            		markers[index].setVisible(true);
-		            })
-	            }
-	          }
-	        });
 		}
     });
 
@@ -125,20 +83,31 @@ $( document ).ready(function() {
 		          	data: "lat="+lat+"&&lon="+lon,
 			          success: function(data){
 			          	var result = data.split(' | ');
-			          	$('.game-list').html(result[0]);
+			          	num = Number(result[0]);
+		          		if(num == 0)
+			          	{
+			          		$('.game-list').html('<div class="nophoto">'+
+		                        '<i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>'+
+		                        'Игры не найдены.<br>'+
+		                        'Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>'+
+		                        '<a href="/court" class="mid-blue-btn">Найти площадку</a>'+
+		                    '</div>');
+			          	}else{
+				          	$('.game-list').html(result[1]);
 
-			          	$.each(markers, function (index, value) {
-			            	markers[index].setVisible(false);
-			            })
-
-			            var gameId = result[1].split(' ');
-
-			            for (var i = 0; i < gameId.length; i++) {
-			            	$.each(markers, function (index, value) {
-				            	if(value['id'] == gameId[i])
-				            		markers[index].setVisible(true);
+				          	$.each(markers, function (index, value) {
+				            	markers[index].setVisible(false);
 				            })
-			            }
+
+				            var gameId = result[2].split(' ');
+
+				            for (var i = 0; i < gameId.length; i++) {
+				            	$.each(markers, function (index, value) {
+					            	if(value['id'] == gameId[i])
+					            		markers[index].setVisible(true);
+					            })
+				            }
+				        }
 			          }
 		        });
 
@@ -169,22 +138,34 @@ $( document ).ready(function() {
           url: "/game/reset",
           success: function(data){
           	var result = data.split(' | ');
-          	$('.game-list').html(result[1]);
           	num = Number(result[0]);
-            $('[data-num-game]').attr("data-num-game", num);
-           
-            $.each(markers, function (index, value) {
-            	markers[index].setVisible(false);
-            })
+          		if(num == 0)
+	          	{
+	          		$('.game-list').html('<div class="nophoto">'+
+                        '<i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>'+
+                        'Игры не найдены.<br>'+
+                        'Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>'+
+                        '<a href="/court" class="mid-blue-btn">Найти площадку</a>'+
+                    '</div>');
+	          	}else{
+		          	$('.game-list').html(result[1]);
+		          	$('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
+		          	
+		            $('[data-num-game]').attr("data-num-game", num);
+		           
+		            $.each(markers, function (index, value) {
+		            	markers[index].setVisible(false);
+		            })
 
-            var gameId = result[2].split(' ');
+		            var gameId = result[2].split(' ');
 
-            for (var i = 0; i < gameId.length; i++) {
-            	$.each(markers, function (index, value) {
-	            	if(value['id'] == gameId[i])
-	            		markers[index].setVisible(true);
-	            })
-            }
+		            for (var i = 0; i < gameId.length; i++) {
+		            	$.each(markers, function (index, value) {
+			            	if(value['id'] == gameId[i])
+			            		markers[index].setVisible(true);
+			            })
+		            }
+		        }
 
           }
         });
