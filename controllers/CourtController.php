@@ -34,6 +34,8 @@ class CourtController extends Controller
         '<i class="fa fa-check fa-4x ok" aria-hidden="true"></i>';
     const ERROR_CREATE_BOX =
         '<i class="fa fa-times fa-4x" aria-hidden="true"></i>';
+
+    const TIME_NOW = ' + 3 hour';
     /**
      * {@inheritdoc}
      */
@@ -207,7 +209,7 @@ class CourtController extends Controller
             $query->select('game.id as id,time, sport_type.name as sport,sport_type_id,need_ball,COUNT(game_id) as count')
                 ->from('game,game_user,sport_type')
                 ->where(['court_id' => $id])
-                ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').' + 2 hour'))])
+                ->andWhere(['>=','time',date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s').self::TIME_NOW))])
                 ->andWhere('game.id = game_user.game_id')
                 ->andWhere('sport_type_id = sport_type.id');
             $games = $query->groupBy('game.id')->orderBy('time')->all();
