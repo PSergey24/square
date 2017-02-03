@@ -2,6 +2,7 @@
 
 namespace app\controllers\user;
 
+use Yii;
 use dektrium\user\controllers\SettingsController as BaseSettings;
 use app\models\Profile;
 use yii\web\UploadedFile;
@@ -40,11 +41,15 @@ class SettingsController extends BaseSettings {
                     if (file_exists($file_to_remove))
                         unlink($file_to_remove);
                 }
-                $filename = $model->picture->name;
-                //rename if file with filename = $model_picture already exist
-                for ($i = 1; file_exists(getcwd() . '/img/uploads/' . $filename); $i++){
-                    $filename =  $model->picture->getBaseName() . '_' . $i . '.' .$model->picture->getExtension();
-                }
+
+
+                // $filename = $model->picture->name;
+
+                // //rename if file with filename = $model_picture already exist
+                // for ($i = 1; file_exists(getcwd() . '/img/uploads/' . $filename); $i++){
+                //     $filename =  $model->picture->getBaseName() . '_' . $i . '.' .$model->picture->getExtension();
+                // }
+                $filename = 'user_img_'.Yii::$app->user->identity->getId(). '.' .$model->picture->getExtension();
                 $model->picture->name = $filename;
 //                update picture field value in db
                 $model_old->setAttribute('picture', $filename);
