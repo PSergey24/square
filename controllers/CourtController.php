@@ -76,7 +76,6 @@ class CourtController extends Controller
      */
     public function actionIndex()
     {
-        // $popular = Court::find()->limit(3)->all();
 
         $img = array();
         $query = new Query;
@@ -109,13 +108,17 @@ class CourtController extends Controller
 
         $districts = HTMLSelectData::get_list_for_select(new DistrictCity());
         $sport_types = HTMLSelectData::get_list_for_select(new SportType());
+        $ro = $this->markersAll(0);
+        $countMarker = count($ro);
 
         return $this->render('index', [
             'popular' => $popular,
             'filters' => $filters,
             'districts' => $districts,
             'sport_types' => $sport_types,
-            'img' =>$img
+            'img' =>$img,
+            'markerAll' => $ro,
+            'countMarker' => $countMarker
 
         ]);
 //        $filters = $this->get_map_filter_params();
@@ -396,10 +399,22 @@ class CourtController extends Controller
     public function actionGet_points()
     {
         Yii::$app->response->format = Response::FORMAT_JSON;
+        $id = Yii::$app->getRequest()->getBodyParam("typeId");
+        $rows = $this->markersAll($id);
+        $count = count($rows);
+        return $rows;
+    }
+
+    function markersAll($id)
+    {
+        // Yii::$app->response->format = Response::FORMAT_JSON;
+        
         $query = new Query;
         $query->select('id, lat, lon, name, address, type_id')
               ->from('court')
               ->where('approved = 0');
+        if($id != 0)
+            $query->andWhere(['type_id' => $id]);
         $rows = $query->all();
         $i = 0;
         foreach ($rows as $row) {
