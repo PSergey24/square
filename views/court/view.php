@@ -30,14 +30,14 @@ $this->registerJs("
         var options = {
             zoom: 11,
             center: latlng,
-            mapTypeControl: true,
+            mapTypeControl: false,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
             },
             navigationControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             zoomControl: true,
-            scaleControl: true
+            scaleControl: false
         };
 
         map = new google.maps.Map(document.getElementById('map'), options);
@@ -327,7 +327,10 @@ $this->registerJs("
 
     
     <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии c площадки 
-        <span class="add" data-toggle="modal" data-target="#modal-photo"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
+        <?php
+        if(count($courtPhoto) > 0)
+            echo '<span class="add" data-toggle="modal" data-target="#modal-photo"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>';
+        ?>
         <div class="clear"></div>
     </h3>
     <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
@@ -341,7 +344,7 @@ $this->registerJs("
             echo '<div class="nophoto">
                     <i class="fa  fa-camera-retro fa-4x"></i><br>
                     Выкладывай сюда фотографии площадки<br> и со своих игр<br>
-                    <div class="mid-blue-btn">Добавить фото</div>
+                    <div class="mid-blue-btn" data-toggle="modal" data-target="#modal-photo">Добавить фото</div>
                 </div>';
         }
         ?>

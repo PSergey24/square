@@ -162,7 +162,10 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     <?php
                     }
                     ?>
-                    <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
+                    <?php 
+                        if(count($courts) > 0)
+                            echo '<button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>';
+                    ?>
                 <?php Pjax::end(); ?>      
                 </div>
             </div>

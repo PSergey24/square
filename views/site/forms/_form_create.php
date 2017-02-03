@@ -19,8 +19,6 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
             <p class="h2-black">Создание игры</p>
 
             <?php 
-            if(count($courts) > 0)
-            {
                 Pjax::begin([
                     'id' => 'game-create',
                     'enablePushState' => false
@@ -78,9 +76,6 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
             <?php ActiveForm::end();
                 Pjax::end();
-            }else{
-                echo "У вас нет площадок";
-            }
             ?>
 
         </div>

@@ -34,14 +34,15 @@ $this->registerJs("
         var options = {
             zoom: 11,
             center: latlng,
-            mapTypeControl: true,
+            mapTypeControl: false,
             mapTypeControlOptions: {
                 style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
             },
             navigationControl: true,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             zoomControl: true,
-            scaleControl: true
+            scaleControl: false,
+            streetViewControl:false
         };
 
         map = new google.maps.Map(document.getElementById('map'), options);
