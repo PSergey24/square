@@ -256,7 +256,7 @@ $this->registerJs("
 
 <div class="container-fluid top">
     <div class="container">
-        <h2 class="name visible-xs col-xs-12" style="position:relative;"><?= $court['address'] ?>
+        <h2 class="name visible-xs col-xs-12" style="position:relative;"><?= preg_replace('/\\s*\\([^()]*\\)\\s*/', '', $court['address']) ?>
         <i class="fa fa-exclamation-triangle report" data-toggle="modal" data-target="#modal-report" aria-hidden="true"></i></h2>
         <div class="visible-xs col-xs-12">
             <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
@@ -264,13 +264,13 @@ $this->registerJs("
         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
             <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-xs-12 shadow" id="map"></div>
         </div>
-        <h2 class="name visible-sm col-sm-6" style="position:relative;"><?= $court['address'] ?>
+        <h2 class="name visible-sm col-sm-6" style="position:relative;"><?= preg_replace('/\\s*\\([^()]*\\)\\s*/', '', $court['address']) ?>
         <i class="fa fa-exclamation-triangle report" data-toggle="modal" data-target="#modal-report" aria-hidden="true"></i></h2>
         <div class="visible-sm col-sm-6">
             <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 wrapper">
-            <h2 class="name col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs" style="position:relative;"><?= $court['address'] ?>
+            <h2 class="name col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs" style="position:relative;"><?= preg_replace('/\\s*\\([^()]*\\)\\s*/', '', $court['address']) ?>
                 <i class="fa fa-exclamation-triangle report" data-toggle="modal" data-target="#modal-report" aria-hidden="true"></i></h2>
             <div class="col-lg-12 col-md-12 col-xs-12 hidden-sm hidden-xs">
                 <a href="/court" class="tag"><?= $courtSport['name'] ?></a>
