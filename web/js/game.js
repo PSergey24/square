@@ -47,7 +47,7 @@ $( document ).ready(function() {
 			            })
 	          	}else{
 	          		$('.game-list').html(result[1]);
-	          		$('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
+	          		// $('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
 
 		            $('[data-num-game]').attr("data-num-game", num);
 		            $.each(markers, function (index, value) {
@@ -149,7 +149,7 @@ $( document ).ready(function() {
                     '</div>');
 	          	}else{
 		          	$('.game-list').html(result[1]);
-		          	$('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
+		          	// $('.game-list').append('<button class="mid-blue-btn" id="more" onclick="more()">Еще</button>');
 		          	
 		            $('[data-num-game]').attr("data-num-game", num);
 		           
@@ -171,7 +171,6 @@ $( document ).ready(function() {
         });
     });
 
-
     $('.gameTime').click(function(){
     	if($(this).hasClass('timeSelected'))
     	{
@@ -184,18 +183,22 @@ $( document ).ready(function() {
     		$('[data-time]').attr("data-time", time);
     	}
     	
-    });
-    
+    }); 
     $('.openFilters').click(function(){
     	if($(".filters").hasClass("filterHidden"))
     		$(".filters").removeClass("filterHidden");
   		else
   			$(".filters").addClass("filterHidden");
 	});	
-
-
-
-
+	$('.games').scroll(function() {
+		var div = $('.games'),
+	    div_sh = $(div)[0].scrollHeight,
+	    div_h = div.height();
+	    if ($(this).scrollTop() >= div_sh - div_h) {
+	        // console.log('конец');
+	        more();
+	    }		 
+	});
 });
 
 

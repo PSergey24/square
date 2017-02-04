@@ -285,7 +285,7 @@ $this->registerJs("
               success: function(data){
                 var result = data.split(' | ');
                 $('.game-list').append(result[1]);
-                $('.game-list').append('<button class=\"mid-blue-btn\" id=\"more\" onclick=\"more()\">Еще</button>');
+                // $('.game-list').append('<button class=\"mid-blue-btn\" id=\"more\" onclick=\"more()\">Еще</button>');
                 var num = $('[data-num-game]').attr('data-num-game');
                 num = Number(num) + Number(result[0]);
                 $('[data-num-game]').attr(\"data-num-game\", num);
@@ -404,7 +404,7 @@ $this->registerJs("
                         $i++; 
                         }  
                     ?>
-        		  <button class="mid-blue-btn" id="more" onclick="more()">Еще</button>
+        		  <!-- <button class="mid-blue-btn" id="more" onclick="more()">Еще</button> -->
                 </div>  
                 <?php
                     }else{
@@ -420,7 +420,7 @@ $this->registerJs("
                     }
                     ?>
             </div>
-    		<div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
-    	</div>
+    	   <div class="col-lg-6 col-md-7 col-sm-6 col-xs-12 hidden-xs" id="map"></div>
+        </div>
     </div>
 
