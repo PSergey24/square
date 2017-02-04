@@ -8,7 +8,7 @@ use yii\helpers\Html;
 /* @var $map dosamigos\google\maps\Map
 */
 
-$this->title = 'Create Court';
+$this->title = 'Добавление новой площадки';
 $this->params['breadcrumbs'][] = ['label' => 'Courts', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('/css/create.css');

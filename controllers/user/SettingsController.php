@@ -5,10 +5,42 @@ namespace app\controllers\user;
 use Yii;
 use dektrium\user\controllers\SettingsController as BaseSettings;
 use app\models\Profile;
+use app\models\User;
 use yii\web\UploadedFile;
+use yii\filters\VerbFilter;
+use yii\filters\AccessControl;
 use dektrium\user\models\SettingsForm;
+use yii\db\Query;
 
 class SettingsController extends BaseSettings {
+
+    public function behaviors()
+    {
+        return [
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'disconnect' => ['post'],
+                    'delete'     => ['post']
+                ],
+            ],
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow'   => true,
+                        'actions' => ['profile', 'rename', 'account', 'networks', 'disconnect', 'delete'],
+                        'roles'   => ['@'],
+                    ],
+                    [
+                        'allow'   => true,
+                        'actions' => ['confirm'],
+                        'roles'   => ['?', '@'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionProfile()
     {
@@ -41,14 +73,7 @@ class SettingsController extends BaseSettings {
                     if (file_exists($file_to_remove))
                         unlink($file_to_remove);
                 }
-
-
-                // $filename = $model->picture->name;
-
-                // //rename if file with filename = $model_picture already exist
-                // for ($i = 1; file_exists(getcwd() . '/img/uploads/' . $filename); $i++){
-                //     $filename =  $model->picture->getBaseName() . '_' . $i . '.' .$model->picture->getExtension();
-                // }
+                
                 $filename = 'user_img_'.Yii::$app->user->identity->getId(). '.' .$model->picture->getExtension();
                 $model->picture->name = $filename;
 //                update picture field value in db
@@ -69,5 +94,58 @@ class SettingsController extends BaseSettings {
             'model' => $model,
             'model_account' => $model_account
         ]);
+    }
+
+    public function actionRename()
+    {
+        $model = $this->finder->findProfileById(\Yii::$app->user->identity->getId());
+
+        if ($model == null) {
+            $model = \Yii::createObject(Profile::className());
+            $model->link('user', \Yii::$app->user->identity);
+        }
+
+        $event = $this->getProfileEvent($model);
+
+        $this->performAjaxValidation($model);
+
+        $this->trigger(self::EVENT_BEFORE_PROFILE_UPDATE, $event);
+
+        if (\Yii::$app->request->post()) {
+            $modelRe = \Yii::createObject(User::className());
+            $modelRename = \Yii::$app->request->getBodyParams('username');
+                $id = Yii::$app->user->identity->getId();
+                
+                $query = new Query;
+                    $query->select('*')
+                    ->from('user')
+                    ->where(['username' => $modelRename['User']['username']]);
+                $name = $query->all();
+
+                if(count($name)==0)
+                {
+                    $modelRe = User::findOne($id);
+                    $modelRe->username = $modelRename['User']['username'];
+                    if($modelRe->update())
+                    {
+                        if($model->save($runValidation = false))
+                        {
+                            \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'Ваше имя изменено'));
+                            $this->trigger(self::EVENT_AFTER_PROFILE_UPDATE, $event);
+                            return $this->refresh();
+                        }
+                    }else{
+                        \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'Ваше имя не изменено. Русские символы нельзя'));
+                        $this->trigger(self::EVENT_AFTER_PROFILE_UPDATE, $event);
+                        return $this->refresh();
+                    }
+                }else{
+                    \Yii::$app->getSession()->setFlash('success', \Yii::t('user', 'Данное имя уже занято. Выберите другое.'));
+                    $this->trigger(self::EVENT_AFTER_PROFILE_UPDATE, $event);
+                    return $this->refresh();
+                }
+                
+        }
+        return $this->redirect(['profile']);
     }
 }

@@ -11,6 +11,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\User;
 /**
  * @var yii\web\View $this
  * @var yii\widgets\ActiveForm $form
@@ -20,6 +21,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('user', 'Profile settings');
 $this->params['breadcrumbs'][] = $this->title;
 $this->registerCssFile('/css/settings.css');
+$modelRename = Yii::createObject(User::className());
 ?>
 
 <?= $this->render('/_alert', ['module' => Yii::$app->getModule('user')]) ?>
@@ -59,22 +61,20 @@ $this->registerCssFile('/css/settings.css');
                         <?php \yii\widgets\ActiveForm::end(); ?>
 
                         <?php $form_account = ActiveForm::begin([
-                            'id'          => 'account-form',
+                            'id'          => 'rename-form',
+                            'action' => '/settings/rename',
                             'options'     => ['class' => 'form-horizontal'],
                             'fieldConfig' => [
                                 'template'     => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
                                 'labelOptions' => ['class' => 'col-lg-3 control-label'],
                             ],
-                            'enableAjaxValidation'   => true,
+                            'enableAjaxValidation'   => false,
                             'enableClientValidation' => false,
+                            'validateOnBlur'         => false,
                         ]); ?>
 
-                        <?= $form_account->field($model_account, 'username') ?>
+                        <?= $form_account->field($modelRename, 'username') ?>
 
-                        <?= $form_account->field($model_account, 'new_password')->passwordInput() ?>
-
-                        <?= $form_account->field($model_account, 'current_password')->passwordInput() ?>
-                        <?php \yii\widgets\ActiveForm::end(); ?>
                         <div class="form-group">
                             <div class="col-lg-offset-3 col-lg-9">
                                 <?= \yii\helpers\Html::submitButton(
@@ -83,6 +83,37 @@ $this->registerCssFile('/css/settings.css');
                                 ) ?><br>
                             </div>
                         </div>
+
+                        <?php \yii\widgets\ActiveForm::end(); ?>
+
+                        <?php $form_account = ActiveForm::begin([
+                            'id'          => 'password-form',
+                            'action' => '/settings/changepassword',
+                            'options'     => ['class' => 'form-horizontal'],
+                            'fieldConfig' => [
+                                'template'     => "{label}\n<div class=\"col-lg-9\">{input}</div>\n<div class=\"col-sm-offset-3 col-lg-9\">{error}\n{hint}</div>",
+                                'labelOptions' => ['class' => 'col-lg-3 control-label'],
+                            ],
+                            'enableAjaxValidation'   => false,
+                            'enableClientValidation' => false,
+                            'validateOnBlur'         => false,
+                        ]); ?>
+
+                        <?= $form_account->field($model_account, 'new_password')->passwordInput() ?>
+
+                        <?= $form_account->field($model_account, 'current_password')->passwordInput() ?>
+
+                        <div class="form-group">
+                            <div class="col-lg-offset-3 col-lg-9">
+                                <?= \yii\helpers\Html::submitButton(
+                                    Yii::t('user', 'Save'),
+                                    ['class' => 'btn btn-block btn-success']
+                                ) ?><br>
+                            </div>
+                        </div>
+
+                        <?php \yii\widgets\ActiveForm::end(); ?>
+                        
                     </div>
                 </div>
 

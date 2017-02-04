@@ -26,6 +26,11 @@ cakebake\bootstrap\select\BootstrapSelectAsset::register($this);
 
     <?= $form->field($model, 'name')->textInput([
         'maxlength' => true,
+        'placeholder' => 'Введите название площадки'
+    ]) ?>
+
+    <?= $form->field($model, 'description')->textInput([
+        'maxlength' => true,
         'placeholder' => 'Введите описание площадки'
     ]) ?>
 
