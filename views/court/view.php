@@ -324,27 +324,48 @@ $this->registerJs("
         <p class="address"><?= $court['address'] ?></p>
         <span class="red"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Редактировать площадку</span>
     </div>
-
-    
-    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии c площадки 
-        <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
-        <div class="clear"></div>
-    </h3>
     <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
-        <?php
-        if(count($courtPhoto) > 0)
-        {
-            foreach ($courtPhoto as $photo) {
-                echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photo"></div></div>';
-           }
-        }else{
-            echo '<div class="nophoto">
-                    <i class="fa  fa-camera-retro fa-4x"></i><br>
-                    Выкладывай сюда фотографии площадки<br> и со своих игр<br>
-                    <div class="mid-blue-btn">Добавить фото</div>
-                </div>';
-        }
-        ?>
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
+            <div class="header">
+                <div class="menu">Фотографии c площадки</div>
+                <span class="add"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
+                <div class="clear"></div>
+            </div>
+            <div class="photoWrap">
+<!--             <?php
+            if(count($courtPhoto) > 0)
+            {
+                foreach ($courtPhoto as $photo) {
+                    echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photo"></div></div>';
+               }
+            }else{
+                echo '<div class="nophoto">
+                        <i class="fa  fa-camera-retro fa-2x blue"></i><br>
+                        Выкладывай сюда фотографии площадки<br> и со своих игр<br>
+                        <div class="mid-blue-btn">Добавить фото</div>
+                    </div>';
+            }
+            ?> -->
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo">
+                <div style="background-image: url(/img/courts/court_198a.jpg);" class="photoSize"></div>
+            </div>
+            </div>
+        </div>
         <!-- <div class="more">Еще...</div>       -->
     </div>
 </div>
@@ -354,7 +375,7 @@ $this->registerJs("
         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
             <div class="header"><div class="menu">Чат площадки</div></div>
             <p class="noinfo">
-                <i class="fa fa-cog fa-spin fa-4x fa-fw"></i><br>
+                <i class="fa fa-cog fa-spin fa-3x fa-fw blue"></i><br>
                 Чат находится<br> в процессе разработки
             </p>
         </div>
@@ -404,7 +425,7 @@ $this->registerJs("
                         ]) ?>
                     <?php }  ?>
                 <p class="noinfo">
-                    <i class="fa  fa-futbol-o fa-4x"></i><br>
+                    <i class="fa  fa-futbol-o fa-2x green"></i><br>
                     В ближайшее время игр нет<br> Создай игру сам!
                 </p>
             <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>

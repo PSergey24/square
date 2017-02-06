@@ -124,7 +124,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                                             <span>Добавить</span>
                                         </div>
                                     </div>';
-                            } else echo '<p class="noinfo"><i class="fa fa-futbol-o fa-4x" aria-hidden="true"></i><br>Добавь себе площадки, на которых<br class="visible-sm"> ты играешь,<br class="visible-md visible-lg"> чтобы видеть на них<br class="visible-sm"> ближайшие игры.</p>
+                            } else echo '<p class="noinfo"><i class="fa fa-futbol-o fa-2x blue" aria-hidden="true"></i><br>Добавь себе площадки, на которых<br class="visible-sm"> ты играешь,<br class="visible-md visible-lg"> чтобы видеть на них<br class="visible-sm"> ближайшие игры.</p>
                         <a href="/court" class="mid-blue-btn find">Найти площадку</a>';
                         ?>
                     </div>
@@ -152,7 +152,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     }else{
                     ?>
                     <p class="noinfo">
-                        <i class="fa fa-calendar-times-o fa-4x" aria-hidden="true"></i>
+                        <i class="fa fa-calendar-times-o fa-2x green" aria-hidden="true"></i>
                         <br>Пока что игр на твоих площадках нет,<br class="hidden-xs"> так что создай игру сам :)
                     </p>
                     <?php
@@ -160,7 +160,7 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     ?>
                     <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
     <!--                 <p class="noinfo">
-                        <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
+                        <i class="fa fa-hand-peace-o fa-2x green" aria-hidden="true"></i>
                         <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
                     </p> -->
                         

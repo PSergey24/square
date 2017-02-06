@@ -339,7 +339,7 @@ $this->registerJs("
                         ]) ?>
                     <?php $i++; }  ?>
                  <div class="nophoto">
-                        <i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>
+                        <i class="fa fa-futbol-o fa-spin fa-2x fa-fw" aria-hidden="true"></i><br>
                         Игры не найдены.<br>
                         Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>
                         <a href="/court" class="mid-blue-btn">Найти площадку</a>

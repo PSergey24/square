@@ -4,6 +4,7 @@ html,body{
 	font-family:'Roboto';
 	background-color: #e9eeee;
 	font-size: 14px;
+	line-height: 20px;
 	font-weight: 300;
 		/* для footer*/
 }
@@ -69,7 +70,7 @@ outline: none;
 	font-weight: 400 !important;
 }
 .mid-green-btn, .mid-blue-btn{
-	padding: 8px 22px !important;
+	padding: 9px 30px;
 	font-weight: 400 !important;
 	font-size: 13px !important;
 }
@@ -148,41 +149,70 @@ line-height: 1.5;
 /*ЗАГЛУШКИ ---------------------------------------*/
 
 .noinfo{
-	font-size: 14px;
-	line-height: 1.7;
+	font-size: 16px;
+	line-height: 1.54;
 	margin-top: 15px;
 	margin-bottom: 0px !important;
 	padding: 0px 20px;
 	text-align: center;
+	font-weight: 400;
 }
 .noinfo i{
-	color: 	#DFEFE0;
 	margin-top: 10px;
 	margin-bottom: 17px;
 }
+.noinfo .green{
+	color: #00CA2C;
+}
+.noinfo .blue{
+	color: #03A3ED;
+}
 /*На темном фоне -----------------------------*/
 .nophoto{
+	font-size: 16px;
 	text-align: center;
-	line-height: 1.7;
+	line-height: 1.54;
+	font-weight: 400;
 }
 .nophoto i{
 	margin-top: 20px;
 	margin-bottom: 17px;
-	color: #BBC4DC;
+	color: #03A3ED;
 }
 .nophoto .mid-blue-btn{
 	margin: 17px 0;
 }
 
 /* Шапка */
-
+.squareTop{
+	display: inline-block;
+	padding-left: 15px;
+	border-left: 1px solid rgba(255,255,255,.13);
+	margin-left: -3px;
+	color: rgba(255,255,255,.7);
+	font-weight: 400;
+}
+.squareTop a{
+	margin-left: 15px;
+	background: #00d12d;
+	padding: 5px 15px;
+	color: white;
+	border-radius: 3px;
+	font-size: 12px;
+}
+.squareTop a:hover{
+	background: #00CA2C;
+}
+.squareTop a:active{
+	background: #00C32A;
+}
 .border{
 border:1px solid green;
 }
 #menu{
-	height:65px;
+	height:50px;
 	background-color: #004CA3;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.26);
 	position: relative;
 	z-index: 1;
 	min-width: 100%;
@@ -190,10 +220,7 @@ border:1px solid green;
 	#logo{
 		float: left;
 	}
-	.navbar-toggle{
-		margin-top:16px;
-		z-index: 2;
-	}
+
 		.icon-bar{
 			width:20px;
 			border-bottom:2px solid white;
@@ -206,23 +233,23 @@ border:1px solid green;
 		margin:0;
 	}
 		#menu ul.main-menu a li{
-			display:block;
-			float:left;
+			display:inline-block;
 			position: relative;
 			height:100%;
 		}
 			#menu ul.main-menu a li{
 				height:100%;
 				color:rgba(255,255,255,0.7);
-				font-size: 0.8125rem;  /* 13px на большом */
+				font-size: 14px;
 				text-align: center;
-				text-transform: uppercase;
-				line-height: 65px;
+				line-height: 50px;
 				padding: 0px 15px;
 				cursor: pointer;
+				font-weight: 400;
 			}
 			#logo{
-				margin-right: 15px;
+				height: 50px;
+				line-height: 50px;
 			}
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
@@ -234,13 +261,13 @@ border:1px solid green;
 		z-index: 100;
 	}
 		#enter{
+			line-height: 50px;
 			float:right;
-			border-radius: 5px;
-			text-transform: uppercase;
 			color:rgba(255,255,255,0.7);
 			text-decoration: none;
-			font-size: 0.8125rem;
-			padding:9px 20px;
+			font-size: 14px;
+			padding:0px 20px;
+			font-weight: 400;
 		}
 			#enter:hover{
 				text-decoration: none;
@@ -271,7 +298,15 @@ border:1px solid green;
 			
 		}
 		#registration{
+			margin-top: 11px;
 			float:right;
+			padding: 5px 15px;
+			padding-bottom: 6px;
+			background: #00d12d;
+			font-size: 12px;
+			font-weight: 400;
+			border-radius: 3px;
+			color: rgb(255,255,255); 
 		}
 			#registration:hover{
 				text-decoration: none;
@@ -280,7 +315,7 @@ border:1px solid green;
 /* Шапка для авторизованных*/ 
 	#responsive-menu2 { 
 	float:right; 
-	line-height: 65px; 
+	line-height: 50px; 
 	/* border:1px solid red;*/ 
 	position: relative; 
 	z-index: 100;
@@ -310,7 +345,7 @@ border:1px solid green;
 	font-size: 0.8125rem; 
 	text-align: center; 
 	width:60px; 
-	line-height: 65px; 
+	line-height: 50px; 
 	/*border:1px solid green;*/ 
 	} 
 	ul.dropdown:hover{ 
@@ -320,6 +355,7 @@ border:1px solid green;
 	ul.dropdown, ul.dropdown-inside { 
 	list-style-type: none; 
 	padding: 0; 
+	padding-right: 3px;
 	} 
 	ul.dropdown-inside { 
 	position: absolute; 
@@ -332,29 +368,26 @@ border:1px solid green;
 	margin-right: 3px;
 	} 
 	.imgPolygon{ 
-	width:10px; 
-	height: 10px;
+	color: rgb(255,255,255);
 	opacity: .7; 
 	} 
 	ul.dropdown > a { 
 	color:rgba(255,255,255,1); 
 	padding: 3px 5px; 
-	/* border:1px solid red;*/ 
-	/*float:left;*/ 
-	/* display: block;*/ 
+	padding-right: 2px;
 	} 
 	ul.dropdown a:hover{ 
 	text-decoration: none; 
 	} 
 	ul.dropdown:hover .dropdown-inside { 
 	display: block; 
-	left: -100px; 
+	left: -95px; 
 	}
 	ul.dropdown:hover .imgPolygon{
 	opacity: 1;			
 	}
 	ul.dropdown .dropdown-inside { 
-	width:160px; 
+	width:155px; 
 	background: #005BC3; 
 	border-bottom-left-radius: 3px; 
 	border-bottom-right-radius: 3px; 
@@ -364,7 +397,7 @@ border:1px solid green;
 	ul.dropdown .dropdown-inside a{ 
 	float: left; 
 	width:100%;
-	padding-left: 40px;
+	padding-left: 35px;
 	position: relative;
 	color:rgba(255,255,255,1); 
 	text-align: left; 
@@ -374,7 +407,7 @@ border:1px solid green;
 	.menu-icon{
 		position: absolute;
 		left: 0;
-		top: 35%;
+		top: 12px;
 	}
 	.fa-bell{
 		left: -2px;
@@ -589,13 +622,12 @@ position: relative;
 	}
 	#responsive-menu{
 		position: absolute;
-		top:65px;
+		top:50px;
 		padding-top:10px;
 		right:0;
 		width: 150px;
 	}
 	#logo{
-		margin-top:14px;
 		margin-right: 0px;
 	}
 	.navbar-toggle{
@@ -605,7 +637,6 @@ position: relative;
 		margin:0 20px 0 0;
 		}
 	#enter{
-		margin:10px 20px 0 0;
 			border-radius: 5px;
 			text-transform: uppercase;
 			color:rgba(255,255,255,1);
@@ -631,27 +662,20 @@ position: relative;
 		#menu ul.main-menu a li{
 			display: inline-block;
   			float: none;
-  			width: 70px;
-  			line-height: 2em;
+  			line-height: 22px;
   			margin: 0px 0px;
-  			padding: 8px 5px;
-  			padding-top: 10px;
-    		padding-bottom: 6px;
+  			padding: 8px 15px;
+    		padding-bottom: 4px;
 			text-transform: none;
-  			font-weight: 500;
+			font-size: 10px !important;
+			height: 50px;
 		}
 
 				
 			#menu ul.main-menu a li:hover{
 				text-decoration: none;
 			}
-				#menu ul.main-menu a li img{
-					width: 30px;
-					height: 30px;
-					margin:0;
-					text-align: center;
-					margin-left: 15px;
-				}
+
 			
 
 
@@ -678,17 +702,12 @@ position: relative;
 	/* Шапка */
 
 	#responsive-menu{
-		height:65px;
+		height:50px;
 	}
 		#menu a img{
 			height: 100%;
 		}
-		#enter{
-			margin-top:15px;
-		}
-		#registration{	
-			margin-top:15px;
-		}
+
 
 		/*форма*/
 
@@ -701,7 +720,7 @@ position: relative;
 	/* Шапка */
 
 	#responsive-menu{
-		height:65px;
+		height:50px;
 	}
 	#menu ul.main-menu{
 		
@@ -709,12 +728,7 @@ position: relative;
 		#menu a img{
 			height: 100%;
 		}
-		#enter{
-			margin-top:15px;
-		}
-		#registration{	
-			margin-top:15px;
-		}
+
 
 	/*форма*/
 
@@ -725,17 +739,12 @@ position: relative;
 	/* Шапка */
 
 	#responsive-menu{
-		height:65px;
+		height:50px;
 	}
 		#menu a img{
 			height: 100%;
 		}
-		#enter{
-			margin-top:16px;
-		}
-		#registration{	
-			margin-top:16px;
-		}
+
 
 	/*форма*/
 

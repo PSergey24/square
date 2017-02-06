@@ -15,21 +15,11 @@ use yii\helpers\Url;
                 <a href="/" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?></a>
                 <a href="/" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?></a>
                 <ul class="main-menu">
-                    <a href="/court">
-                        <li id="court">
-                            <?= Html::img('@web/img/field2.png', ['class' => 'visible-xs']) ?><span>Площадки</span>
-                        </li>
-                    </a>
-                    <a href="/game">
-                        <li id="game"><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?>
-                            <span>Игры</span>
-                        </li>
-                    </a>
-                </ul>
-                <div class="collapse" id="responsive-menu">
+                    <a href="/court"><li id="court"><i class="fa fa-map visible-xs fa-2x" aria-hidden="true"></i><span>Площадки</span></li></a>
+                    <a href="/game"><li id="game"><i class="fa fa-futbol-o visible-xs fa-2x" aria-hidden="true"></i><span>Игры</span></li></a>
+                    <div class="collapse" id="responsive-menu">
 
                     <?= Html::a('Регистрация', Url::to(['/login', 'action' => 'register']),[
-                        'class' => 'blue-big-button',
                         'id' => 'registration',
                     ])
                     ?>
@@ -38,5 +28,7 @@ use yii\helpers\Url;
                     ])
                     ?>
                 </div>
+                </ul>
+                
             </div>
         </div>
