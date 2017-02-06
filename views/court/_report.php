@@ -33,7 +33,10 @@ use yii\widgets\Pjax;
 
     <?= $form->field($modelReport, 'description')->textArea(['rows' => 6,'placeholder' => 'Напишите суть жалобы'])->label(false) ?>
 
-    <?php echo $form->field($modelReport, 'user_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false); ?>
+    <?php 
+    if(Yii::$app->user->identity)
+        echo $form->field($modelReport, 'user_id')->hiddenInput(['value' => Yii::$app->user->identity->getId()])->label(false);
+    ?>
 
     <div class="form-group">
         <?= Html::submitButton('Пожаловаться',['class' => 'mid-green-btn']) ?>
