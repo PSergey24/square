@@ -46,7 +46,7 @@ $this->registerJs("
                  var markerImage = '/img/foot.png';
             }
             else if(value['type_id'] == 3){
-                 var markerImage = '/img/volleball.png';
+                 var markerImage = '/img/volleyball.png';
             }
 
             if(value['photo'] == 0)
