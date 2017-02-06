@@ -85,6 +85,33 @@ $this->registerCssFile('/css/admin.css');
 		</table> 	
 </div>
 
+<p class="h2-black">Волейбол</p>
+<div class="court-create container">
+		<table class="popularBas col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<tr>
+				<th>Название</th>
+				<th>Адрес</th>
+				<th>Район</th>
+				<th>Число игр</th>
+			</tr>
+		<?php 
+		// var_dump($districts);
+			$i = 0;
+			foreach ($rowsVball as $Vball) {
+		?>	
+		<tr>
+			<td><a target="_blank" href="/court/<?= $Foot['id']; ?>"><?= $Vball['name']; ?></a></td>	
+			<td><?= $Vball['address']; ?></td>
+			<td><?= $Vball['nameDistrict']; ?></td>
+			<td><?= $Vball['count']; ?></td>	
+		</tr>
+		<?php 
+				$i++;
+			}
+		?>		
+		</table> 	
+</div>
+
 <h2>Наименее популярные площадки</h2>
 <p class="h2-black">Баскетбол</p>
 <div class="court-create container">
@@ -132,6 +159,33 @@ $this->registerCssFile('/css/admin.css');
 			<td><?= $FootLeast['address']; ?></td>
 			<td><?= $FootLeast['nameDistrict']; ?></td>
 			<td><?= $FootLeast['count']; ?></td>	
+		</tr>
+		<?php 
+				$i++;
+			}
+		?>		
+		</table> 	
+</div>
+
+<p class="h2-black">Волейбол</p>
+<div class="court-create container">
+		<table class="popularBas col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			<tr>
+				<th>Название</th>
+				<th>Адрес</th>
+				<th>Район</th>
+				<th>Число игр</th>
+			</tr>
+		<?php 
+		// var_dump($districts);
+			$i = 0;
+			foreach ($rowsVballLeast as $VballLeast) {
+		?>	
+		<tr>
+			<td><a target="_blank" href="/court/<?= $Foot['id']; ?>"><?= $VballLeast['name']; ?></a></td>	
+			<td><?= $VballLeast['address']; ?></td>
+			<td><?= $VballLeast['nameDistrict']; ?></td>
+			<td><?= $VballLeast['count']; ?></td>	
 		</tr>
 		<?php 
 				$i++;

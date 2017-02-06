@@ -90,9 +90,11 @@ class AdminController extends BaseAdminController
     	$count = array();
     	$countB = array();
     	$countF = array();
+      $countV = array();
     	$i = 0;
         $totalBasketball = 0;
         $totalFootball = 0;
+        $totalVolleyball = 0;
     	foreach ($districts as $district) {
     		$query = new Query;
 	        $query->select('count(district_city_id) as count')
@@ -114,11 +116,19 @@ class AdminController extends BaseAdminController
 	              ->andWhere('type_id = 2')
                   ->andWhere('approved = 0');
 	        $rowsF = $query->one();
+          $query->select('count(district_city_id) as count')
+                ->from('court')
+                ->where(['district_city_id' => $district['id']])
+                ->andWhere('type_id = 3')
+                  ->andWhere('approved = 0');
+          $rowsV = $query->one();
 	        $count[$i] = $rows['count'];
 	        $countB[$i] = $rowsB['count'];
 	        $countF[$i] = $rowsF['count'];
+          $countV[$i] = $rowsV['count'];
             $totalFootball = $totalFootball + $countF[$i];
             $totalBasketball = $totalBasketball + $countB[$i];
+            $totalVolleyball = $totalVolleyball + $countV[$i];
     		// echo $district['id']." | ".$district['name']." | ".$rows['count']."</br>";
     		$i++;
     	}
@@ -128,8 +138,10 @@ class AdminController extends BaseAdminController
             'count' => $count,
             'countB' => $countB,
             'countF' => $countF,
+            'countV' => $countV,
             'totalBasketball' => $totalBasketball,
-            'totalFootball' => $totalFootball
+            'totalFootball' => $totalFootball,
+            'totalVolleyball' => $totalVolleyball
         ]);
     }
 
@@ -344,6 +356,17 @@ class AdminController extends BaseAdminController
               ->limit(5);
         $rowsFoot = $queryFoot->all();
 
+        $queryVball = new Query;
+        $queryVball->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 3')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count desc')
+              ->limit(5);
+        $rowsVball = $queryVball->all();
+
         $queryBasLeast = new Query;
         $queryBasLeast->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
               ->from('court, game, district_city')
@@ -365,13 +388,26 @@ class AdminController extends BaseAdminController
               ->orderBy('count')
               ->limit(5);
         $rowsFootLeast = $queryFootLeast->all();
+
+        $queryVballLeast = new Query;
+        $queryVballLeast->select('court.id as id, address, court.name as name, district_city.name as nameDistrict, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->where('type_id = 3')
+              ->andWhere('court.id = court_id')
+              ->andWhere('district_city.id = district_city_id')
+              ->groupBy('court.id')
+              ->orderBy('count')
+              ->limit(5);
+        $rowsVballLeast = $queryVballLeast->all();
         // var_dump($rowsBas);
 
         return $this->render('popularcourts',[
             'rowsBas' => $rowsBas,
             'rowsFoot' => $rowsFoot,
+            'rowsVball' => $rowsVball,
             'rowsBasLeast' => $rowsBasLeast,
             'rowsFootLeast' => $rowsFootLeast,
+            'rowsVballLeast' => $rowsVballLeast
         ]);
     }
 
@@ -416,10 +452,24 @@ class AdminController extends BaseAdminController
               ->orderBy('count desc');
         $rowsFoot = $queryFoot->all();
 
+        $queryVball = new Query;
+        $queryVball->select('district_city.id as id, district_city.name as name, count(game.id) as count')
+              ->from('court, game, district_city')
+              ->andWhere('district_city.id = district_city_id')
+              ->andWhere('court.id = court_id')
+              ->andWhere('type_id = 3')
+              ->andWhere('approved = 0');
+
+        $queryVball->andWhere(['<','time',$now])    
+              ->groupBy('district_city.id')
+              ->orderBy('count desc');
+        $rowsVball = $queryVball->all();
+
         return $this->render('activity',[
             'rows' => $rows,
             'rowsBas' => $rowsBas,
-            'rowsFoot' => $rowsFoot
+            'rowsFoot' => $rowsFoot,
+            'rowsVball' => $rowsVball
         ]);
     }
     public function actionActivityuser()

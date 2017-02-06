@@ -70,6 +70,9 @@ $this->registerJs("
 				}, {
 					\"sport\": \"Футбол\",
 					\"num\": ".$totalFootball."
+				}, {
+					\"sport\": \"Волейбол\",
+					\"num\": ".$totalVolleyball."
 				}],
 				\"titleField\": \"sport\",
 				\"valueField\": \"num\",
@@ -108,6 +111,7 @@ $this->registerJsFile(
 				<th>Число</br> плащадок</th>
 				<th>Баскетбольных</br> плащадок</th>
 				<th>Футбольных</br> плащадок</th>
+				<th>Волейбольных</br> плащадок</th>
 				<th></th>
 			</tr>
 		<?php 
@@ -119,7 +123,8 @@ $this->registerJsFile(
 			<td><?= $district['name']; ?></td>	
 			<td><?= $count[$i]; ?></td>
 			<td><?= $countB[$i]; ?></td>	
-			<td><?= $countF[$i]; ?></td>		
+			<td><?= $countF[$i]; ?></td>
+			<td><?= $countV[$i]; ?></td>		
 			<td><button class="show" data-district-id="<?= $district['id']; ?>">Показать все площадки</button></td>	
 		</tr>
 		<?php 
