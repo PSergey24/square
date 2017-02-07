@@ -8,7 +8,9 @@ use app\models\Profile;
 $this->registerCssFile('/css/userProfile.css',[
     'depends' => [AppAsset::className()]
 ]);
-
+$this->registerCssFile('/css/squareProfile.css',[
+    'depends' => [AppAsset::className()]
+]);
 if(Yii::$app->user->identity)
     $userAuth = Yii::$app->user->identity->getId();
 else
@@ -21,19 +23,28 @@ else
         <div class="top-info">
             <img class="userPhoto" src="../../img/uploads/<?= $picture['picture'] ?>">
 
-            <h1 class="h1-white"><?= $username ?></h1>
+            <h1 class="userName"><?= $username ?></h1>
             <p>
                 <?= Html::a('Футбол', Url::to(['/court', 'sport_type' => 2], true), ['class' => 'tag']); ?>
                 <?= Html::a('Баскетбол', Url::to(['/court', 'sport_type' => 1], true), ['class' => 'tag']); ?>
             </p>
 
         </div>
+        <div class="options">
+            <div class="col-xs-12 visible-xs call">Позвать <?= $username ?> на: </div>
+            <div class="mid-green-btn"><i class="fa fa-user-plus" aria-hidden="true"></i>
+                <span class=""><span class="hidden-xs">Пригласить на</span> игру</span>
+            </div>
+            <div class="mid-blue-btn"><i class="fa fa-map-marker" aria-hidden="true"></i>
+                <span class=""><span class="hidden-xs">Пригласить на</span> площадку</span>
+            </div>
+        </div>
     </div>
 </div>
 
 <div class="container-fluid contentUser">
     <div class="container">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
+<!--         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
             <div class="box contentUserBox col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
                 <h2 class="h2-black">Площадки <?= $username ?> <span><?= count($courts) ?></span></h2>
                 <div class="divider"></div>
@@ -54,25 +65,29 @@ else
                         echo '<p class="noinfo">Данный игрок ещё не подписан ни на одну площадку ツ</p>'; 
                 ?>
             </div>
+        </div> -->
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 usersSquares">
+            <div class="box usersSquare con col-lg-12 col-md-12 col-sm-12 col-xs-12 shadow">
+                <div class="header"><div class="menu">Площадки <?= $username ?><span> <?= count($courts) ?></span></div></div>
+                <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 col-xs-12" id="map">
+                    Я карта с метками площадок пользователя, если карты нет, то заглушка, она закомменчена снизу
+                </div>
+<!--                 <div class="noinfo">
+                    <i class="fa fa-street-view fa-2x blue" aria-hidden="true"></i>
+                    <br><?= $username ?> еще добавил <br class="hidden-xs"> в свой профиль площадки<br>
+                </div> -->
+            </div>
+
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 forSmall">
-            <div class="box col-lg-12 col-md-12 col-sm-12 col-xs-12 soonGame shadow" id="games">
-                <h2 class="h2-black">Ближайшие игры/тренировки</h2>
-                <div class="divider"></div>
-                <?php
-                    if($games){
-                        foreach ($games as $game){
-                            if($game['need_ball'])
-                                $ballImg = '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
-                            else
-                                $ballImg = '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                            echo '<div class="timeBox">
-                                    <p class="timeGame">'.$game['time'].'</p>'.$ballImg.'<a class="timeGameAddress" href="/court/' . $game['court_id'] . '">'.$game['address'].'</a>
-                                </div>';
-                        }
-                    }else echo '<p class="noinfo">Присоединись к игре, и ты увидишь ее здесь</p>';
-                ?>
+        <div class="gamesWrap col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-6 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 box games shadow" id="game_list">
+                    <div class="header"><div class="menu">Игры <?= $username ?></div></div>
+                    <p class="noinfo" style="padding-bottom:15px;">
+                        <i class="fa fa-user-times fa-2x green" aria-hidden="true"></i>
+                        <br>В ближайшее время <?= $username ?> <br class="hidden-xs">не участвует ни в одной игре
+                    </p>
             </div>
         </div>
+
     </div>
 </div>

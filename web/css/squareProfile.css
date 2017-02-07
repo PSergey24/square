@@ -129,6 +129,11 @@
 	font-size: 14px;
 	position: relative;
 }
+.header span{
+	color: rgba(0,0,0,.37);
+	font-weight: 400;
+	margin-left: 1px;
+}
 .games{
 	margin-bottom: 30px;
 }
@@ -139,6 +144,9 @@
 }
 .game:hover{
 	background-color: #f7fcfa;
+}
+.game:hover .right{
+	background: linear-gradient(to right,rgba(247,252,250,0) 40%,#f7fcfa 100%);
 }
 .gameTop{
 	position: relative;

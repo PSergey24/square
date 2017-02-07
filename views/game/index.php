@@ -338,6 +338,7 @@ $this->registerJs("
                             'pictureUsersArr' => $pictureUsersArr
                         ]) ?>
                     <?php $i++; }  ?>
+                </div>
                  <div class="nophoto">
                         <i class="fa fa-futbol-o fa-spin fa-2x fa-fw" aria-hidden="true"></i><br>
                         Игры не найдены.<br>

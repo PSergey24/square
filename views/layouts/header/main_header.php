@@ -27,7 +27,7 @@ $this->registerJs("
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?></a>
+                <a href="/" id="logo" class="hidden-xs"><?= Html::img('@web/img/logon.png') ?></a>
                 <a href="/" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?></a>
                 <ul class="main-menu">
                     <a href="/court"><li id="court"><i class="fa fa-map visible-xs fa-2x" aria-hidden="true"></i><span>Площадки</span></li></a>

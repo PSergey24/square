@@ -145,6 +145,7 @@ color:rgba(255,255,255,1);
 font-size: 1.9rem;
 font-weight: 300;
 line-height: 1.5;
+padding: 0px 20px;
 }
 /*ЗАГЛУШКИ ---------------------------------------*/
 
@@ -166,6 +167,10 @@ line-height: 1.5;
 }
 .noinfo .blue{
 	color: #03A3ED;
+}
+.noinfo .mid-green-btn, .noinfo .mid-blue-btn{
+	margin: 20px 0px;
+	margin-top: 17px;
 }
 /*На темном фоне -----------------------------*/
 .nophoto{

@@ -9,12 +9,12 @@ $this->params['picture_href'] = Profile::getAvatar();
 
 <div id="menu" class="container-fluid">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <a href="/court" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?></a>
+            <a href="/court" id="logo" class="hidden-xs"><?= Html::img('@web/img/logon.png') ?></a>
             <a href="/court" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?>
             <ul class="main-menu">
                 <a href="/court"><li id="court"><i class="fa fa-map visible-xs fa-2x" aria-hidden="true"></i><span>Площадки</span></li></a>
                 <a href="/game"><li id="game"><i class="fa fa-futbol-o visible-xs fa-2x" aria-hidden="true"></i><span>Игры</span></li></a>
-                <div class="squareTop xs-hidden"><span>Не нашел площадку?</span><a href="court/create">Добавь свою</a></div>
+                <div class="squareTop hidden-xs"><span>Не нашел площадку?</span><a href="court/create">Добавь свою</a></div>
                 <div id="responsive-menu2">
                     <ul class="dropdown">
                         <a href="/profile"><img class="imgProfile" src="<?= $this->params['picture_href'] ?>"></a>
