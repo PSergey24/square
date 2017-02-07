@@ -120,6 +120,9 @@ $this->registerJs("
  			<div class="group-field">
  				<label for="input-area" class="col-lg-3">Площадь</label><input class="col-lg-7 col-lg-offset-2" id="input-area" type="text" value="">
  			</div>
+            <div class="group-field">
+                <label for="input-description" class="col-lg-3">Описание</label><input class="col-lg-7 col-lg-offset-2" id="input-description" type="text" value="">
+            </div>
  			<div class="group-field">
  				<label for="input-district" class="col-lg-3">Район</label>
  				<select class="col-lg-7 col-lg-offset-2" id="input-district" data-input-district="">
@@ -179,6 +182,7 @@ $this->registerJs("
  			<th>id</th>
  			<th>Адрес</th>
  			<th>Имя</th>
+            <th>Описание</th>
  			<th>Площадь</th>
  			<th>Район</th>
  			<th>Тип</th>
@@ -194,6 +198,7 @@ $this->registerJs("
  			<td class="item-id"><?php echo $item['id']; ?></td>
  			<td class="item-address"><?php echo $item['address']; ?></td>
  			<td class="item-name"><?php echo $item['name']; ?></td>
+            <td class="item-description"><?php echo $item['description']; ?></td>
  			<td class="item-area"><?php echo $item['built_up_area']; ?></td>
  			<td class="item-district" data-item-district="<?php echo $item['district_city_id']; ?>" ><?php echo $courtsName[$i]; ?></td>
  			<td class="item-type" data-item-type="<?php echo $item['type_id']; ?>" ><?php echo $courtsSport[$i]; ?></td>

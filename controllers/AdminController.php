@@ -278,6 +278,7 @@ class AdminController extends BaseAdminController
         $type = Yii::$app->getRequest()->getBodyParam("type");
         $lat = Yii::$app->getRequest()->getBodyParam("lat");
         $lon = Yii::$app->getRequest()->getBodyParam("lon");
+        $description = Yii::$app->getRequest()->getBodyParam("description");
         
         $court = Yii::createObject(Court::className());
         $courtAdd = $court->findOne(['id' => $id]);
@@ -290,6 +291,7 @@ class AdminController extends BaseAdminController
         $courtAdd->built_up_area = $area;
         $courtAdd->district_city_id = $district;
         $courtAdd->type_id = $type;
+        $courtAdd->description = $description;
 
 
         if($courtAdd->save())

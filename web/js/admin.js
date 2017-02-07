@@ -68,14 +68,17 @@ $( document ).ready(function() {
 		var address = $('[data-tr = '+tr+'] .item-address').html();
 		var name = $('[data-tr = '+tr+'] .item-name').html();
 		var area = $('[data-tr = '+tr+'] .item-area').html();
+		var description = $('[data-tr = '+tr+'] .item-description').html();
 		var district = $('[data-tr = '+tr+'] .item-district').attr('data-item-district');
 		var type = $('[data-tr = '+tr+'] .item-type').attr('data-item-type');
+
 
 
 
 		$('#input-address').attr("value",address);
 		$('#input-name').attr("value",name);
 		$('#input-area').attr("value",area);
+		$('#input-description').attr("value",description);
 		$('#input-district').attr("data-input-district",district);
 		$('#input-type').attr("data-input-type",type);
 		$('#input-id').attr("value",id);
@@ -160,13 +163,14 @@ $( document ).ready(function() {
 		var type = $('#input-type').attr('data-input-type');
 		var lat = $('#input-lat').attr('value');
 		var lon = $('#input-lon').attr('value');
+		var description = $('#input-description').attr('value');
 
 		// alert(district);
 		
 			$.ajax({
 	          type: "POST",
 	          url: "/admin/add_court",
-	          data: "id="+id+"&&tr="+trNum+"&&address="+address+"&&name="+name+"&&area="+area+"&&district="+district+"&&type="+type+"&&lat="+lat+"&&lon="+lon,
+	          data: "id="+id+"&&tr="+trNum+"&&address="+address+"&&name="+name+"&&area="+area+"&&district="+district+"&&type="+type+"&&lat="+lat+"&&lon="+lon+"&&description="+description,
 	          success: function(data){    
 	          if(data != 'ошибка')
 	          { 
