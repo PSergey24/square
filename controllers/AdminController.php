@@ -294,7 +294,7 @@ class AdminController extends BaseAdminController
         $courtAdd->description = $description;
 
 
-        if($courtAdd->save())
+        if($courtAdd->update())
         {
             return $tr;
         }
