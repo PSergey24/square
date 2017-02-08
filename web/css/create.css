@@ -55,6 +55,7 @@ label{
 .box .col-sm-3{
 	width: 35% !important; 
 }
+
 .features .box{
 	padding: 2rem;
 	padding-bottom: 1.5rem;
@@ -79,5 +80,11 @@ label{
 	}
 	#gmap0-map-canvas{
 		height: 400px !important;
+	}
+	.features{
+		padding: 0px 10px !important;
+	}
+	.court-create{
+		padding: 0px !important;
 	}
 }

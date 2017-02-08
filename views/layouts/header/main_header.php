@@ -20,33 +20,32 @@ $this->registerJs("
 ?>
 
 <div  class="container-fluid top">
-    <div class="row" id="menu">
-        <div class="container">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="container" id="menu">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#responsive-menu">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?>
+                <a href="/" id="logo" class="hidden-xs"><?= Html::img('@web/img/logon.png') ?></a>
                 <a href="/" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?></a>
                 <ul class="main-menu">
-                    <a href="/court"><li><?= Html::img('@web/img/field2.png', ['class' => 'visible-xs']) ?><span>Площадки</span></li></a>
-                    <a href="/game"><li><?= Html::img('@web/img/ball2.png', ['class' => 'visible-xs']) ?><span>Игры</span></li></a>
-                </ul>
-                <div class="collapse" id="responsive-menu">
-                    <?= Html::a('Регистрация', Url::to(['/login']),[
-                            'class' => 'blue-big-button',
-                            'id' => 'registration',
-                        ])
+                    <a href="/court"><li id="court"><i class="fa fa-map visible-xs fa-2x" aria-hidden="true"></i><span>Площадки</span></li></a>
+                    <a href="/game"><li id="game"><i class="fa fa-futbol-o visible-xs fa-2x" aria-hidden="true"></i><span>Игры</span></li></a>
+                    <div class="collapse" id="responsive-menu">
+
+                    <?= Html::a('Регистрация', Url::to(['/login', 'action' => 'register']),[
+                        'id' => 'registration',
+                    ])
                     ?>
                     <?= Html::a('Вход', Url::to(['/login', 'action' => 'login']),[
                         'id' => 'enter',
                     ])
                     ?>
                 </div>
+                </ul>
+                
             </div>
-        </div>
     </div>
     <h1 class="h1-white big"><span class="hello">Привет!</span> Я - Квадрат :)</h1>
     <p class="text">С моей помощью ты можешь организовать<br>игру или тренировку на любой площадке своего города</p>

@@ -324,30 +324,35 @@ $this->registerJs("
         <p class="address"><?= $court['address'] ?></p>
         <span class="red"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Редактировать площадку</span>
     </div>
-
-    
-    <h3 class="col-lg-8 col-md-8 col-sm-8 col-xs-12 photoName">Фотографии c площадки 
-        <?php
-        if(count($courtPhoto) > 0)
-            echo '<span class="add" data-toggle="modal" data-target="#modal-photo"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>';
-        ?>
-        <div class="clear"></div>
-    </h3>
     <div class="photos col-lg-8 col-md-8 col-sm-8 col-xs-12">
-        <?php
-        if(count($courtPhoto) > 0)
-        {
-            foreach ($courtPhoto as $photo) {
-                echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photo"></div></div>';
-           }
-        }else{
-            echo '<div class="nophoto">
-                    <i class="fa  fa-camera-retro fa-4x"></i><br>
-                    Выкладывай сюда фотографии площадки<br> и со своих игр<br>
-                    <div class="mid-blue-btn" data-toggle="modal" data-target="#modal-photo">Добавить фото</div>
-                </div>';
-        }
-        ?>
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
+            <div class="header">
+                <div class="menu">Фотографии c площадки</div>
+                <?php
+                if(count($courtPhoto) > 0)
+                { ?>
+                <span class="add" data-toggle="modal" data-target="#modal-photo"><i class="fa fa-camera" aria-hidden="true"></i>Добавить</span>
+                <?php } ?>
+                <div class="clear"></div>
+            </div>
+            <div class="photoWrap">
+            <?php
+            if(count($courtPhoto) > 0)
+            {
+                foreach ($courtPhoto as $photo) {
+                    echo '<div class="col-lg-3 col-md-3 col-sm-4 col-xs-6 photo"><div style="background-image: url(/img/courts/'.$photo['photo'].');" class="photoSize"></div></div>';
+               }
+            }else{
+                echo '<div class="nophoto">
+                        <i class="fa  fa-camera-retro fa-2x blue"></i><br>
+                        Выкладывай сюда фотографии площадки<br> и со своих игр<br>
+                        <div class="mid-blue-btn" data-toggle="modal" data-target="#modal-photo">Добавить фото</div>
+                    </div>';
+            }
+            ?>
+            
+            </div>
+        </div>
         <!-- <div class="more">Еще...</div>       -->
     </div>
 </div>
@@ -357,43 +362,11 @@ $this->registerJs("
         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
             <div class="header"><div class="menu">Чат площадки</div></div>
             <p class="noinfo">
-                <i class="fa fa-cog fa-spin fa-4x fa-fw"></i><br>
+                <i class="fa fa-cog fa-spin fa-3x fa-fw blue"></i><br>
                 Чат находится<br> в процессе разработки
             </p>
         </div>
     </div>
-<!--     <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-4 col-sm-6 col-xs-12">
-        <h2 class="h2-box">Ближайшие игры</h2>
-        <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
-        <div class="col-lg-12 col-xs-12 box games shadow" id="game_list">
-            
-        <?php
-            if($games) {
-                foreach ($games as $game) {
-                    echo '<div class="game" data-block-game="'.$game['id'].'">
-                        <div class="time">';
-                    $tm = strtotime($game['time']);
-                    $current_datetime = new DateTime();
-                    $current_datetime = date_format($current_datetime, 'Y-m-d');
-                    $tm_current = strtotime($current_datetime);
-                    if (date("d", $tm) == date("d", $tm_current))
-                        echo 'Сегодня ' . date("H:i", $tm);
-                    elseif(date("d", $tm) == date(date("d")+1, $tm_current))
-                        echo 'Завтра ' . date("H:i", $tm);
-                    else
-                        echo date("d.m.Y", $tm) ." ". date("H:i", $tm);
-
-                    echo '</div>';
-                    if (!$game['need_ball'] == 1)
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#F44336;" title="Нужен мяч"></i>';
-                    else
-                        echo '<i class="fa fa-futbol-o" aria-hidden="true" style="color:#4CAF50;" title="Мяч есть"></i>';
-                    echo '<button class="mid-blue-btn" onclick="plus('.$game['id'].',\''.$game['plus'].'\')" data-id-game="'.$game['id'].'"> <span class="symbol">'.$game['plus'].'</span> <span class="players">'.$game['count'].'</span></button></div>';
-                }
-            }
-        ?>  Это нужно было удалить-->
-
-
     <div class="gamesWrap">
     <?php Pjax::begin(['enablePushState' => false, 'id' => 'games']); ?>
         <div class="col-lg-offset-1 col-lg-4 col-md-offset-1 col-md-5 col-sm-5 col-xs-12 box games shadow" id="game_list">
@@ -412,7 +385,7 @@ $this->registerJs("
                     }else{
                     ?>
                     <p class="noinfo">
-                        <i class="fa  fa-futbol-o fa-4x"></i><br>
+                        <i class="fa  fa-futbol-o fa-2x green"></i><br>
                         В ближайшее время игр нет<br> Создай игру сам!
                     </p>
                     <?php 

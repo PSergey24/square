@@ -127,6 +127,12 @@
 	display: table;
 	width: 100%;
 	font-size: 14px;
+	position: relative;
+}
+.header span{
+	color: rgba(0,0,0,.37);
+	font-weight: 400;
+	margin-left: 1px;
 }
 .games{
 	margin-bottom: 30px;
@@ -138,6 +144,9 @@
 }
 .game:hover{
 	background-color: #f7fcfa;
+}
+.game:hover .right{
+	background: linear-gradient(to right,rgba(247,252,250,0) 40%,#f7fcfa 100%);
 }
 .gameTop{
 	position: relative;
@@ -360,21 +369,23 @@
 	padding-right: 30px !important;
 }
 h3{
-	font-size: 25px !important;
+	font-size: 20px !important;
 	font-weight: 300 !important;
 	margin-top: 30px !important;
-	margin-bottom: 20px !important;
+	margin-bottom: 15px !important;
 }
 .photoName	{
 	margin-bottom: 10px !important
 }
 .add, .red{
 	cursor: pointer;
-	font-size: 14px;
-	font-weight: 400;
-	margin-top: 10px;
+	font-size: 12px;
+	font-weight: 500;
 	color: #337ab7;
 	display: block;
+}
+.red{
+	margin-top: 10px;
 }
 .more{
 	text-align: center;
@@ -383,7 +394,9 @@ h3{
 	margin-bottom: 20px;
 }	
 .add{
-	float: right;
+	position: absolute;
+	top: 16px;
+	right: 15px;
 }
 .add:hover, .red:hover, .more:hover{
 	color: #23527c;
@@ -392,15 +405,24 @@ h3{
 	margin-right: 5px;
 }
 .photos{
-	padding: 0 !important;
-	padding-left: 2px !important;
+	padding-left: 12px !important;
+}
+.photos .chat{
+	margin-top: 20px !important
 }
 .photo{
+	padding: 0 10px !important;
+	margin-top: 20px;
+}
+.photoSize{
 	height: 155px;
 	background-size: cover;
 	background-position: center;
+	border-radius: 3px;
 }
-
+.photoWrap{
+	padding: 0px 10px;
+}
 
 label{
 	display: block;
@@ -554,17 +576,14 @@ input[type="checkbox"]:checked {
 
 }
 @media (min-width: 992px) and (max-width: 1199px) {
-	.photo{
+	.photoSize{
 		height: 135px;
 	}
 }
 @media (min-width: 768px) and (max-width: 991px) {
-	
-    h3 {
-    	font-size: 20px !important;
-    }
-    	.photo{
-		height: 140px;
+
+    	.photoSize{
+		height: 130px;
 	}
 	.chatWrap{
 		padding-right: 30px !important;
@@ -593,17 +612,11 @@ input[type="checkbox"]:checked {
 
     direction: ltr;
   }
-    h3 {
-    	font-size: 20px !important;
-    }
-    .add{
-    	margin-top: 5px;
-    }
 	.container{
 		padding: 0 !important;
 	}
 	.photos{
-		padding: 0 !important;
+		padding: 0px 2px !important;
 	}
 	.box{
 		margin-bottom: 2.5rem;
@@ -618,14 +631,20 @@ input[type="checkbox"]:checked {
 	.img{
 	margin-right: 0px;
 	}
-	.chat{
-		height: 270px;
-	}
+
 	.chatWrap, .gamesWrap{
 		padding:0 10px !important;
 	}
+	.photos .chat{
+	margin-top: 30px !important;
+	padding-bottom: 15px !important;
+	}
 	.photo{
-		height: 160px;
+		padding: 0 5px !important;
+		margin-top: 15px;
+	}
+	.photoWrap{
+		padding: 0px 5px;
 	}
 	.games{
 		margin-top: 20px !important;

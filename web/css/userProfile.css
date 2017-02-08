@@ -64,7 +64,7 @@
 }
 .box{
 	padding: 0 0;
-	margin-top: 20px !important;
+	margin-top: 25px !important;
 }
 .contentUserBox{
 	margin-bottom: 2.5rem;
@@ -185,6 +185,14 @@
 }
 
 
+
+.usersSquare #map{
+	margin: 0px !important;
+	border-radius: 0px !important;
+}
+.usersSquare .noinfo{
+	padding-bottom: 20px;
+}
 @media (max-width: 767px) {
 	.s{
 		padding-left: 15px;
@@ -239,6 +247,16 @@
 	.row{
 		margin: 0 !important;
 	}
+
+.options .call{
+	box-shadow: none !important;
+	color: rgb(255,255,255);
+	font-weight: 400; 
+	font-size: 16px;
+}
+.options .mid-green-btn{
+	margin-right: 10px;
+}
 @media (min-width: 768px) and (max-width: 991px) { 
 
 	.top-info{
@@ -268,7 +286,15 @@
 	.top{
 		margin-bottom: 40px !important;
 	}
-
+	.contentUser{
+		padding: 0px !important;
+	}
+	.box{
+		margin-top: 15px !important;
+	}
+	.usersSquares{
+		padding: 10px !important;
+	}
 }
 
 /* ЦВЕТА В ЗАВИСИМОСТИ ОТ СПОРТА*/

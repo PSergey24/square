@@ -410,7 +410,22 @@ $this->registerJs("
                     }else{
                     ?>
                     <div class="nophoto">
-                        <i class="fa fa-futbol-o fa-spin fa-4x fa-fw" aria-hidden="true"></i><br>
+                    <?php $i = 0;
+                    foreach ($listGame as $listGame) { ?>
+                        <?= $this->render('_card', [
+                            'listGame' => $listGame,
+                            'i' => $i,
+                            'countUsersArr' => $countUsersArr,
+                            'plusMan' => $plusMan,
+                            'idUsersArr' => $idUsersArr,
+                            'nameSportArr' => $nameSportArr,
+                            'nameAreaArr' => $nameAreaArr,
+                            'pictureUsersArr' => $pictureUsersArr
+                        ]) ?>
+                    <?php $i++; }  ?>
+                </div>
+                 <div class="nophoto">
+                        <i class="fa fa-futbol-o fa-spin fa-2x fa-fw" aria-hidden="true"></i><br>
                         Игры не найдены.<br>
                         Измени настройки поиска или cоздай игру сам<br>  на любой площадке<br>
                         <a href="/court" class="mid-blue-btn">Найти площадку</a>
