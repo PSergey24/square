@@ -36,7 +36,8 @@ p {
 }
 /* СКРОЛЛ ----------------------------------------*/
 ::-webkit-scrollbar{
-    width:4px !important;
+    width:3px !important;
+
 }
 ::-webkit-scrollbar-thumb{
     border-width:1px 1px 1px 2px;
@@ -51,6 +52,7 @@ p {
 ::-webkit-scrollbar-track{
     border-width:0;
     background-color: #D8D8E1;
+	background-color: rgba(0,0,0,0)!important;	
 }
 ::-webkit-scrollbar-track:hover{
     background-color: #D8D8E1;
@@ -306,7 +308,7 @@ border:1px solid green;
 			margin-top: 11px;
 			float:right;
 			padding: 5px 15px;
-			padding-bottom: 6px;
+			padding-top: 4px;
 			background: #00d12d;
 			font-size: 12px;
 			font-weight: 400;

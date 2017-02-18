@@ -323,7 +323,100 @@
 	z-index: 2;
 	padding: 0 !important;
 	padding-bottom: 20px !important;
+	height: 400px;
 }
+.messagesWrap{
+	text-align: left !important;
+	position: relative;
+	height: 350px;
+	padding-right: 15px;
+}
+.messages{
+	height: 309px;
+	overflow-y:scroll;
+	margin-right: -15px;
+	padding-left: 52px;
+}
+.message{
+	position: relative;
+}
+.userPic{
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background: gray;
+	position: absolute;
+	left: -37px;
+	background-image: url(../img/uploads/Nick.jpg);
+	background-size: cover;
+	top: 3px;
+}
+.userText{
+	position: relative;
+	padding-right: 35px;
+}
+.userText i{
+	position: absolute;
+	right: 15px;
+	top: 3px;
+	opacity: 0;
+}
+
+.userText:hover i{
+	opacity: 0.13;
+}
+.userText i:hover{
+	opacity: 0.37;
+	cursor: pointer;
+}
+.userName{
+	font-weight: 500;
+	margin-bottom: 0px;
+}
+.Mdate{
+	font-weight: 300;
+	color: rgba(0,0,0,.54);
+	font-size: 12px;
+	display: inline-block;
+	margin-left: 7px;
+}
+.chatBot{
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	text-align: center;
+}
+
+.writeText{
+	width: 100%;
+	border: none !important;
+	border-top: 1px solid rgba(0,0,0,.13) !important;
+	padding-top: 10px;
+	padding-left: 52px;
+	padding-right: 35px;
+	padding-bottom: 5px;
+}
+.chatBot textarea:focus{
+	outline: none !important;
+}
+textarea{
+	resize: none;
+}
+.chatBot textarea {
+	position: relative;
+}
+.chatBot i {
+	position: absolute;
+	right: 14px;
+	top:15px;
+	cursor: pointer;
+	color: rgba(0,0,0,.37);	
+}
+.chatBot i:hover{
+	color: rgba(0,0,0,.54);
+}
+
 
 
 .h2-box{

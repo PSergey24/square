@@ -155,10 +155,8 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     <?php
                     }else{
                     ?>
-<<<<<<< HEAD
                     <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
-=======
                     <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
     <!--                 <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-2x green" aria-hidden="true"></i>
