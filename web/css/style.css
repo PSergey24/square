@@ -267,14 +267,16 @@ border:1px solid green;
 		float:right;
 		z-index: 100;
 	}
-		#enter{
-			line-height: 50px;
+		#enter{	
 			float:right;
 			color:rgba(255,255,255,0.7);
 			text-decoration: none;
 			font-size: 14px;
-			padding:0px 20px;
+			padding:5px 15px;
 			font-weight: 400;
+			margin-top: 10px;
+			background-color: 
+			line-height:50px;
 		}
 			#enter:hover{
 				text-decoration: none;
@@ -641,15 +643,16 @@ position: relative;
 		margin-right: 0 !important;
 	}
 	#registration{
-		margin:0 20px 0 0;
+		margin:0 0px 0 0;
 		}
 	#enter{
 			border-radius: 5px;
-			text-transform: uppercase;
 			color:rgba(255,255,255,1);
 			text-decoration: none;
 			font-size: 0.8125rem;
-			padding:7px 20px;
+			padding:5px 15px;
+			border-radius: 3px;
+			background: #03a9f4;
 		}
 			#enter:hover{
 				text-decoration: none;

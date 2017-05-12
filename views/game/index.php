@@ -328,7 +328,7 @@ $this->registerJs("
                             <i class="fa fa-location-arrow" aria-hidden="true"></i>
                         </div>
                     </div>
-                    <div class="filters">
+                    <div class="filters filterHidden">
                         <div class="stroke col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <div class="pre col-lg-2 col-xs-12 col-sm-12 align">Место</div>
                             <div class="col-lg-3 col-xs-6 col-sm-6" id="city">
