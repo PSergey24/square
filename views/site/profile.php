@@ -155,15 +155,23 @@ $this->registerJs('$("#game-create").on("pjax:end", function() {
                     <?php
                     }else{
                     ?>
+
                     <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-4x" aria-hidden="true"></i>
                     <button class="mid-green-btn" data-toggle="modal" data-target=".bs-example-modal-lg">Создать игру</button>
-    <!--                 <p class="noinfo">
+                   <p class="noinfo">
                         <i class="fa fa-hand-peace-o fa-2x green" aria-hidden="true"></i>
->>>>>>> origin/features/design
+
                         <br>Здесь будут отображаться<br> ближайшие игры на твоих площадках
                     </p>
-                    <?php
+                    
+
+                        <p class="noinfo">
+                            <i class="fa fa-hand-peace-o fa-2x green" aria-hidden="true"></i><br>
+                            Здесь будут отображаться игры <br class="hidden-xs"> на твоих площадках и с твоим участием
+                        </p>
+                        <a href="/game" class="mid-green-btn find" style="margin-bottom:17px !important;">Найти игры</a>
+                        <?php
                     }
                     ?>
                     <?php 
