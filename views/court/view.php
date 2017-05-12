@@ -429,10 +429,10 @@ $this->registerJs("
                             </p>
                         </div>
                     </div>
-
+                    
                 </div>
                 <div class="chatBot">
-                    <textarea rows="3" placeholder="Напишите в чат..." class="writeText"></textarea>
+                    <textarea rows="1" placeholder="Напишите в чат..." class="writeText"></textarea>
                     <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
                 </div>
             </div>

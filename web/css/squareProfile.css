@@ -336,6 +336,7 @@
 	overflow-y:scroll;
 	margin-right: -15px;
 	padding-left: 52px;
+	padding-top: 12px;
 }
 .message{
 	position: relative;
