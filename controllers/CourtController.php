@@ -25,6 +25,7 @@ use app\custom\HTMLSelectData;
 use app\models\UploadForm;
 use yii\web\UploadedFile;
 
+
 /**
  * CourtController implements the CRUD actions for Court model.
  */
@@ -193,9 +194,11 @@ class CourtController extends Controller
                 $userAuth = 0;
 
             $court = Court::find()
-                ->select('id, address, type_id, name, lat, lon, description')
+                ->select('id, address, type_id, name, lat, lon, description, approved')
                 ->where(['id' => $id])
                 ->one();
+            if($court['approved'] == '1')
+                die('Площадка еще не прошла модерацию');
             $courtSport = SportType::find()
                 ->select('name')
                 ->where(['id' => $court['type_id']])
@@ -321,7 +324,7 @@ class CourtController extends Controller
         $model = new Court();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('../profile');
         } else {
 
             $district_cities = ArrayHelper::map(DistrictCity::find()

@@ -9,7 +9,7 @@ $this->params['picture_href'] = Profile::getAvatar();
 
 <div id="menu" class="container-fluid">
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 forSmall">
-            <a href="/court" id="logo" class="hidden-xs"><?= Html::img('@web/img/logon.png') ?></a>
+            <a href="/court" id="logo" class="hidden-xs"><?= Html::img('@web/img/logo.png') ?></a>
             <a href="/court" id="logo" class="visible-xs"><?= Html::img('@web/img/logo1.png') ?>
             <ul class="main-menu">
                 <a href="/court"><li id="court"><i class="fa fa-map visible-xs fa-2x" aria-hidden="true"></i><span>Площадки</span></li></a>

@@ -25,9 +25,11 @@ use yii\widgets\Pjax;
         'action' => $string
     ]) ?>
 
-    <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label(false) ?>
+    <div class="text-center">
+        <?= $form->field($model, 'imageFiles[]')->fileInput(['multiple' => true, 'accept' => 'image/*'])->label(false) ?>
+    </div>
 
-    <button>Загрзуить фото</button>
+    <div class="text-center"><button class="mid-green-btn">Загрзуить фото</button></div>
 
 	<?php ActiveForm::end() ?>
 

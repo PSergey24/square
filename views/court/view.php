@@ -44,8 +44,11 @@ $this->registerJs("
 
         if (court.type_id == 1) {
             var pinImgLink = '/img/basket.png';
-        }else
+        }else if(court.type_id == 2){
             var pinImgLink = '/img/foot.png';
+        }else{
+            var pinImgLink = '/img/volleyball.png';
+        }
 
         var marker = new google.maps.Marker({
             position: latlng,
@@ -361,10 +364,81 @@ $this->registerJs("
     <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 chatWrap">
         <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12 box chat shadow">
             <div class="header"><div class="menu">Чат площадки</div></div>
-            <p class="noinfo">
-                <i class="fa fa-cog fa-spin fa-3x fa-fw blue"></i><br>
-                Чат находится<br> в процессе разработки
-            </p>
+            <div class="messagesWrap">
+                <div class="messages">
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">SuperBro</a><div class="Mdate">25 окт. 15:08</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Привет всем, чуваки!  
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">MazaBrazer</a><div class="Mdate">25 окт. 15:09</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Здарова, как поживаешь? 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">SuperBro</a><div class="Mdate">25 окт. 15:10</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Рекомендую автору полистать эти вещи. Первый файл как пример технического уровня исполнения логотипов.  
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">SuperBro</a><div class="Mdate">25 окт. 15:08</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Привет всем, чуваки!  
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">MazaBrazer</a><div class="Mdate">25 окт. 15:09</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Здарова, как поживаешь? 
+                            </p>
+                        </div>
+                    </div>
+                    <div class="message">
+                        <a href="#"><div class="userPic"></div></a>
+                        <div class="text">
+
+                            <div class="userName"><a href="#">SuperBro</a><div class="Mdate">25 окт. 15:10</div></div>
+                            <p class="userText">
+                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                Рекомендую автору полистать эти вещи. Первый файл как пример технического уровня исполнения логотипов.  
+                            </p>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="chatBot">
+                    <textarea rows="1" placeholder="Напишите в чат..." class="writeText"></textarea>
+                    <i class="fa fa-paper-plane fa-lg" aria-hidden="true"></i>
+                </div>
+            </div>
         </div>
     </div>
     <div class="gamesWrap">

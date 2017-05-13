@@ -51,8 +51,8 @@ class Court extends \yii\db\ActiveRecord
         return [
             [['lat', 'lon', 'creator_id', 'approved'], 'required'],
             ['address', 'required', 'message' => 'Установите маркер на карте'],
-            // ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
-            // ['description', 'required', 'message' => 'Напишите небольшое описание площадки'],
+            ['built_up_area', 'required', 'message' => 'Укажите примерный размер площадки'],
+            ['description', 'required', 'message' => 'Напишите небольшое описание площадки'],
             ['name', 'required', 'message' => 'Напишите название площадки'],
             ['type_id', 'required', 'message' => 'Не выбран тип площадки'],
             ['district_city_id', 'required', 'message' => 'Не выбран район города'],
