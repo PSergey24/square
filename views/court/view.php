@@ -44,8 +44,11 @@ $this->registerJs("
 
         if (court.type_id == 1) {
             var pinImgLink = '/img/basket.png';
-        }else
+        }else if(court.type_id == 2){
             var pinImgLink = '/img/foot.png';
+        }else{
+            var pinImgLink = '/img/volleyball.png';
+        }
 
         var marker = new google.maps.Marker({
             position: latlng,
